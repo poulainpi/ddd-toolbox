@@ -1,0 +1,8 @@
+.DS_*
+*.log
+logs
+
+node_modules
+
+.idea
+.env
