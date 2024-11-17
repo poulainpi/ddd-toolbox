@@ -1,0 +1,9 @@
+{
+  "name": "domain-storytelling",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/feature-domain-storytelling/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project domain-storytelling --web",
+  "targets": {}
+}
