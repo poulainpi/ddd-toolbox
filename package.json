@@ -2,9 +2,10 @@
   "name": "@ddd-toolbox/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "prepare": "husky install"
+  },
   "private": true,
-  "type": "module",
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@nx/devkit": "20.1.0",
@@ -35,6 +36,7 @@
     "eslint-plugin-playwright": "^1.6.2",
     "eslint-plugin-react": "7.35.0",
     "eslint-plugin-react-hooks": "5.0.0",
+    "husky": "^9.1.6",
     "jsdom": "~22.1.0",
     "nx": "20.1.0",
     "postcss": "8.4.38",
@@ -50,5 +52,11 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "6.11.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,css,md}": [
+      "pnpm exec nx affected:lint --fix --files",
+      "pnpm exec nx format:write --files"
+    ]
   }
 }
