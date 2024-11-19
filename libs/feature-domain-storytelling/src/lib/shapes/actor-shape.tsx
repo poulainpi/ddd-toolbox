@@ -10,6 +10,8 @@ import {
   useDefaultColorTheme,
 } from 'tldraw';
 import { SHAPE_SIZE } from './shapes-constants';
+import { LoadableIcon } from '@ddd-toolbox/ui';
+import dynamicIconImports from 'lucide-react/dynamicIconImports';
 
 type ActorShapeProps = TLBaseShape<
   'my-custom-shape',
@@ -27,7 +29,7 @@ export class ActorShape extends ShapeUtil<ActorShapeProps> {
   };
 
   getDefaultProps(): ActorShapeProps['props'] {
-    return { text: '', icon: 'person' };
+    return { text: '', icon: 'user' };
   }
 
   getGeometry(): Geometry2d {
@@ -44,7 +46,11 @@ export class ActorShape extends ShapeUtil<ActorShapeProps> {
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id;
 
     return (
-      <HTMLContainer style={{ backgroundColor: '#efefef' }}>
+      <HTMLContainer className="flex flex-col items-center">
+        <LoadableIcon
+          name={shape.props.icon as keyof typeof dynamicIconImports}
+          size={70}
+        />
         <TextLabel
           shapeId={shape.id}
           text={shape.props.text}

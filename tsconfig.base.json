@@ -17,7 +17,8 @@
     "paths": {
       "@ddd-toolbox/domain-storytelling": [
         "libs/feature-domain-storytelling/src/index.ts"
-      ]
+      ],
+      "@ddd-toolbox/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
