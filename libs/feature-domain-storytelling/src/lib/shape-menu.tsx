@@ -1,6 +1,7 @@
 import { track, useEditor } from 'tldraw';
 import { useEffect, useState } from 'react';
 import { SHAPE_SIZE } from './shapes/shapes-constants';
+import { MoveUpRightIcon } from 'lucide-react';
 
 export const ShapeMenu = track(function ShapeMenu() {
   const editor = useEditor();
@@ -19,12 +20,14 @@ export const ShapeMenu = track(function ShapeMenu() {
 
   return isDragging || isMouseDown ? null : (
     <div
-      className="absolute w-10 h-10 bg-white"
+      className="absolute w-10 h-10 bg-background"
       style={{
         left: selectedShapeScreenPoint.x + SHAPE_SIZE + 5,
         top: selectedShapeScreenPoint.y,
       }}
-    ></div>
+    >
+      <MoveUpRightIcon size={20} className="text-foreground" />
+    </div>
   );
 });
 

@@ -18,7 +18,10 @@
       "@ddd-toolbox/domain-storytelling": [
         "libs/feature-domain-storytelling/src/index.ts"
       ],
-      "@ddd-toolbox/ui": ["libs/ui/src/index.ts"]
+      "@ddd-toolbox/ui": ["libs/ui/src/index.ts"],
+      "@ddd-toolbox/ui/*": ["libs/ui/src/*"],
+      "@ddd-toolbox/util": ["libs/util/src/index.ts"],
+      "@ddd-toolbox/util/*": ["libs/util/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
