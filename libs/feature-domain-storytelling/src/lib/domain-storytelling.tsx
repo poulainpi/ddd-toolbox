@@ -1,14 +1,14 @@
-import { TLComponents, Tldraw } from 'tldraw';
-import 'tldraw/tldraw.css';
-import { ActorShape } from './shapes/actor-shape';
-import { DomainObjectsPanel } from './domain-objects-panel';
-import { ActorToolUtil } from './tools/actor-tool-util';
-import { ShapeArrows } from './shape-arrows';
-import { registerSideEffects } from './shapes/side-effects';
+import { TLComponents, Tldraw } from 'tldraw'
+import 'tldraw/tldraw.css'
+import { ActorShape } from './shapes/actor-shape'
+import { DomainObjectsPanel } from './domain-objects-panel'
+import { ActorToolUtil } from './tools/actor-tool-util'
+import { ShapeArrows } from './shape-arrows'
+import { registerSideEffects } from './shapes/side-effects'
 
 const components: TLComponents = {
   OnTheCanvas: ShapeArrows,
-};
+}
 
 export function DomainStorytelling() {
   return (
@@ -20,14 +20,14 @@ export function DomainStorytelling() {
           components={components}
           tools={[ActorToolUtil]}
           onMount={(editor) => {
-            registerSideEffects(editor);
+            registerSideEffects(editor)
           }}
         >
           <DomainObjectsPanel />
         </Tldraw>
       </div>
     </div>
-  );
+  )
 }
 
-export default DomainStorytelling;
+export default DomainStorytelling

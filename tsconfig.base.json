@@ -15,9 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ddd-toolbox/domain-storytelling": [
-        "libs/feature-domain-storytelling/src/index.ts"
-      ],
+      "@ddd-toolbox/domain-storytelling": ["libs/feature-domain-storytelling/src/index.ts"],
       "@ddd-toolbox/ui": ["libs/ui/src/index.ts"],
       "@ddd-toolbox/ui/*": ["libs/ui/src/*"],
       "@ddd-toolbox/util": ["libs/util/src/index.ts"],

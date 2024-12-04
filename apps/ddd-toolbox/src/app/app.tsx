@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 export function App() {
   return (
@@ -14,7 +14,7 @@ export function App() {
         </ul>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,9 +1,5 @@
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-} from 'react-router-dom';
-import { Layout } from './layout';
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom'
+import { Layout } from './layout'
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -11,12 +7,10 @@ export const router = createBrowserRouter(
       <Route
         path="domain-storytelling"
         lazy={async () => {
-          const { DomainStorytelling } = await import(
-            '@ddd-toolbox/domain-storytelling'
-          );
-          return { Component: DomainStorytelling };
+          const { DomainStorytelling } = await import('@ddd-toolbox/domain-storytelling')
+          return { Component: DomainStorytelling }
         }}
       />
     </Route>
   )
-);
+)

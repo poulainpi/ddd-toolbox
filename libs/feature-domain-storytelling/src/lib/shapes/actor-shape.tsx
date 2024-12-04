@@ -8,28 +8,28 @@ import {
   TextLabel,
   TLBaseShape,
   useDefaultColorTheme,
-} from 'tldraw';
-import { SHAPE_SIZE } from './shapes-constants';
-import { LoadableIcon } from '@ddd-toolbox/ui';
-import dynamicIconImports from 'lucide-react/dynamicIconImports';
+} from 'tldraw'
+import { SHAPE_SIZE } from './shapes-constants'
+import { LoadableIcon } from '@ddd-toolbox/ui'
+import dynamicIconImports from 'lucide-react/dynamicIconImports'
 
 type ActorShapeProps = TLBaseShape<
   'my-custom-shape',
   {
-    text: string;
-    icon: string;
+    text: string
+    icon: string
   }
->;
+>
 
 export class ActorShape extends ShapeUtil<ActorShapeProps> {
-  static override type = 'actor-shape' as const;
+  static override type = 'actor-shape' as const
   static override props: RecordProps<ActorShapeProps> = {
     text: T.string,
     icon: T.string,
-  };
+  }
 
   getDefaultProps(): ActorShapeProps['props'] {
-    return { text: '', icon: 'user' };
+    return { text: '', icon: 'user' }
   }
 
   getGeometry(): Geometry2d {
@@ -38,28 +38,21 @@ export class ActorShape extends ShapeUtil<ActorShapeProps> {
       height: SHAPE_SIZE,
       isFilled: true,
       isLabel: false,
-    });
+    })
   }
 
   hideSelectionBoundsFg(_shape: ActorShapeProps): boolean {
-    return true;
+    return true
   }
 
   component(shape: ActorShapeProps) {
-    const theme = useDefaultColorTheme();
+    const theme = useDefaultColorTheme()
 
-    const isSelected = this.editor.getOnlySelectedShapeId() === shape.id;
+    const isSelected = this.editor.getOnlySelectedShapeId() === shape.id
 
     return (
-      <HTMLContainer
-        className="flex flex-col items-center relative"
-        style={{ pointerEvents: 'all' }}
-      >
-        <LoadableIcon
-          name={shape.props.icon as keyof typeof dynamicIconImports}
-          size={70}
-          className="mt-1"
-        />
+      <HTMLContainer className="flex flex-col items-center relative" style={{ pointerEvents: 'all' }}>
+        <LoadableIcon name={shape.props.icon as keyof typeof dynamicIconImports} size={70} className="mt-1" />
         <TextLabel
           shapeId={shape.id}
           text={shape.props.text}
@@ -73,22 +66,22 @@ export class ActorShape extends ShapeUtil<ActorShapeProps> {
           isSelected={isSelected}
         />
       </HTMLContainer>
-    );
+    )
   }
 
   override getText(shape: ActorShapeProps) {
-    return shape.props.text;
+    return shape.props.text
   }
 
   indicator(_shape: ActorShapeProps) {
-    return <rect width={SHAPE_SIZE} height={SHAPE_SIZE} />;
+    return <rect width={SHAPE_SIZE} height={SHAPE_SIZE} />
   }
 
   canResize(_shape: ActorShapeProps): boolean {
-    return false;
+    return false
   }
 
   canEdit(_shape: ActorShapeProps): boolean {
-    return true;
+    return true
   }
 }

@@ -1,17 +1,17 @@
-import { useEditor, useValue } from 'tldraw';
-import { ActorShape } from './shapes/actor-shape';
+import { useEditor, useValue } from 'tldraw'
+import { ActorShape } from './shapes/actor-shape'
 
 export function ShapeArrows() {
-  const editor = useEditor();
+  const editor = useEditor()
 
   const selectedShapeBounds = useValue(
     'selection bounds',
     () => {
-      const screenBounds = editor.getViewportScreenBounds();
-      const rotation = editor.getSelectionRotation();
-      const rotatedPageBounds = editor.getSelectionRotatedPageBounds();
-      const selectedShape = editor.getSelectedShapes()[0];
-      if (!rotatedPageBounds) return;
+      const screenBounds = editor.getViewportScreenBounds()
+      const rotation = editor.getSelectionRotation()
+      const rotatedPageBounds = editor.getSelectionRotatedPageBounds()
+      const selectedShape = editor.getSelectedShapes()[0]
+      if (!rotatedPageBounds) return
 
       return {
         x: rotatedPageBounds.x - screenBounds.x,
@@ -20,22 +20,19 @@ export function ShapeArrows() {
         height: rotatedPageBounds.height,
         rotation: rotation,
         selectedShape,
-      };
+      }
     },
     [editor]
-  );
+  )
 
   const startArrowCreation = () => {
-    editor.setCurrentTool('arrow');
-    editor.setHintingShapes([editor.getSelectedShapes()[0].id]);
-    editor.getCurrentTool().transition('pointing', {});
-  };
+    editor.setCurrentTool('arrow')
+    editor.setHintingShapes([editor.getSelectedShapes()[0].id])
+    editor.getCurrentTool().transition('pointing', {})
+  }
 
-  if (
-    !selectedShapeBounds ||
-    selectedShapeBounds.selectedShape.type != ActorShape.type
-  ) {
-    return;
+  if (!selectedShapeBounds || selectedShapeBounds.selectedShape.type != ActorShape.type) {
+    return
   }
 
   return (
@@ -66,5 +63,5 @@ export function ShapeArrows() {
         onPointerDown={startArrowCreation}
       ></div>
     </div>
-  );
+  )
 }

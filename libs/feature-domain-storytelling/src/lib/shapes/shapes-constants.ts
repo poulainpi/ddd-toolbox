@@ -1,1 +1,1 @@
-export const SHAPE_SIZE = 100;
+export const SHAPE_SIZE = 100
