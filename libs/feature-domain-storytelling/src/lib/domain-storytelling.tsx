@@ -1,7 +1,14 @@
-import { Tldraw } from 'tldraw';
+import { TLComponents, Tldraw } from 'tldraw';
 import 'tldraw/tldraw.css';
 import { ActorShape } from './shapes/actor-shape';
-import { ShapeMenu } from './shape-menu';
+import { DomainObjectsPanel } from './domain-objects-panel';
+import { ActorToolUtil } from './tools/actor-tool-util';
+import { ShapeArrows } from './shape-arrows';
+import { registerSideEffects } from './shapes/side-effects';
+
+const components: TLComponents = {
+  OnTheCanvas: ShapeArrows,
+};
 
 export function DomainStorytelling() {
   return (
@@ -10,11 +17,13 @@ export function DomainStorytelling() {
       <div style={{ position: 'fixed', inset: 0 }}>
         <Tldraw
           shapeUtils={[ActorShape]}
+          components={components}
+          tools={[ActorToolUtil]}
           onMount={(editor) => {
-            editor.createShape({ type: 'actor-shape' });
+            registerSideEffects(editor);
           }}
         >
-          <ShapeMenu />
+          <DomainObjectsPanel />
         </Tldraw>
       </div>
     </div>

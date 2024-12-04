@@ -1,13 +1,16 @@
 import { track, useEditor } from 'tldraw';
 import { useEffect, useState } from 'react';
-import { SHAPE_SIZE } from './shapes/shapes-constants';
 import { MoveUpRightIcon } from 'lucide-react';
+import { Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui';
+import { SHAPE_SIZE } from './shapes/shapes-constants';
+import { Button } from '@ddd-toolbox/ui/lib/ui/button';
 
 export const ShapeMenu = track(function ShapeMenu() {
   const editor = useEditor();
   const selectedShape = editor.getOnlySelectedShape();
-  const isMouseDown = useMouseDown(); // trick because isDragging is not observable
   const isDragging = editor.inputs.isDragging;
+
+  useMouseDown(); // trick because isDragging is not observable
 
   if (selectedShape == null) {
     return null;
@@ -18,16 +21,38 @@ export const ShapeMenu = track(function ShapeMenu() {
     y: selectedShape.y,
   });
 
-  return isDragging || isMouseDown ? null : (
-    <div
-      className="absolute w-10 h-10 bg-background"
-      style={{
-        left: selectedShapeScreenPoint.x + SHAPE_SIZE + 5,
-        top: selectedShapeScreenPoint.y,
-      }}
-    >
-      <MoveUpRightIcon size={20} className="text-foreground" />
-    </div>
+  return (
+    <Popover open={!isDragging}>
+      <PopoverAnchor asChild={true}>
+        <div
+          className="absolute invisible"
+          style={{
+            left: selectedShapeScreenPoint.x,
+            top: selectedShapeScreenPoint.y,
+            width: SHAPE_SIZE,
+            height: SHAPE_SIZE,
+          }}
+        ></div>
+      </PopoverAnchor>
+
+      <PopoverContent
+        side="right"
+        align="start"
+        hasOutAnimation={false}
+        className="w-24"
+      >
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => {
+            editor.setCurrentTool('clicked-arrow');
+            editor.setHintingShapes([selectedShape]);
+          }}
+        >
+          <MoveUpRightIcon />
+        </Button>
+      </PopoverContent>
+    </Popover>
   );
 });
 

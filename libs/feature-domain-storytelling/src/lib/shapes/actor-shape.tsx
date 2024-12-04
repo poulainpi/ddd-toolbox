@@ -37,7 +37,12 @@ export class ActorShape extends ShapeUtil<ActorShapeProps> {
       width: SHAPE_SIZE,
       height: SHAPE_SIZE,
       isFilled: true,
+      isLabel: false,
     });
+  }
+
+  hideSelectionBoundsFg(_shape: ActorShapeProps): boolean {
+    return true;
   }
 
   component(shape: ActorShapeProps) {
@@ -46,10 +51,14 @@ export class ActorShape extends ShapeUtil<ActorShapeProps> {
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id;
 
     return (
-      <HTMLContainer className="flex flex-col items-center">
+      <HTMLContainer
+        className="flex flex-col items-center relative"
+        style={{ pointerEvents: 'all' }}
+      >
         <LoadableIcon
           name={shape.props.icon as keyof typeof dynamicIconImports}
           size={70}
+          className="mt-1"
         />
         <TextLabel
           shapeId={shape.id}
@@ -71,7 +80,7 @@ export class ActorShape extends ShapeUtil<ActorShapeProps> {
     return shape.props.text;
   }
 
-  indicator(shape: ActorShapeProps) {
+  indicator(_shape: ActorShapeProps) {
     return <rect width={SHAPE_SIZE} height={SHAPE_SIZE} />;
   }
 
