@@ -1,4 +1,5 @@
 import { StateNode } from 'tldraw'
+import { SHAPE_SIZE } from '../shapes/shapes-constants'
 
 export class ActorToolUtil extends StateNode {
   static override id = 'actor'
@@ -13,8 +14,8 @@ export class ActorToolUtil extends StateNode {
     const { currentPagePoint } = this.editor.inputs
     this.editor.createShape({
       type: 'actor-shape',
-      x: currentPagePoint.x,
-      y: currentPagePoint.y,
+      x: currentPagePoint.x - SHAPE_SIZE / 2,
+      y: currentPagePoint.y - SHAPE_SIZE / 2,
       props: { icon: this.icon },
     })
     this.editor.setCurrentTool('select')
