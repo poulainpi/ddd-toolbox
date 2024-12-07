@@ -59,7 +59,7 @@
     "react-router-dom": "6.11.2",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "tldraw": "^3.4.1"
+    "tldraw": "^3.6.0"
   },
   "lint-staged": {
     "*.{ts,tsx,css,json,md}": [

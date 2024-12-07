@@ -5,6 +5,7 @@ import { ActorShape } from './actor-shape'
 export function registerSideEffects(editor: Editor) {
   disablePreciseBindings(editor)
   fixArrowPositioning(editor)
+  deleteArrowsWithoutStartAndEndBindings(editor)
 }
 
 function disablePreciseBindings(editor: Editor) {
@@ -25,16 +26,33 @@ function disablePreciseBindings(editor: Editor) {
 
 function fixArrowPositioning(editor: Editor) {
   editor.sideEffects.registerBeforeCreateHandler('shape', (shape, source) => {
-    const hintingShape = editor.getHintingShape()[0]
-    if (hintingShape?.type === ActorShape.type) {
-      const { x, y } = getReplacedArrowRelativePoint(hintingShape, editor.inputs.currentPagePoint)
-      return {
-        ...shape,
-        x: hintingShape.x + x,
-        y: hintingShape.y + y,
+    if (shape.type === 'arrow') {
+      const hintingShape = editor.getHintingShape()[0]
+      if (hintingShape?.type === ActorShape.type) {
+        const { x, y } = getReplacedArrowRelativePoint(hintingShape, editor.inputs.currentPagePoint)
+        return {
+          ...shape,
+          x: hintingShape.x + x,
+          y: hintingShape.y + y,
+        }
       }
     }
     return shape
+  })
+}
+
+function deleteArrowsWithoutStartAndEndBindings(editor: Editor) {
+  editor.sideEffects.registerAfterChangeHandler('instance', (prev, next) => {
+    if (['cross', 'grabbing'].includes(prev.cursor.type) && next.cursor.type === 'default') {
+      const selectedShape = editor.getSelectedShapes()[0]
+      if (selectedShape?.type === 'arrow' && !editor.inputs.isDragging) {
+        const hasStartAndEndBindings = editor.getBindingsFromShape(selectedShape, 'arrow').length >= 2
+        if (!hasStartAndEndBindings) {
+          editor.deleteShape(selectedShape)
+        }
+      }
+    }
+    return next
   })
 }
 
