@@ -21,8 +21,8 @@ type ActorShapeProps = TLBaseShape<
   }
 >
 
-export class ActorShape extends ShapeUtil<ActorShapeProps> {
-  static override type = 'actor-shape' as const
+export class ActorShapeUtil extends ShapeUtil<ActorShapeProps> {
+  static override type = 'actor' as const
   static override props: RecordProps<ActorShapeProps> = {
     text: T.string,
     icon: T.string,

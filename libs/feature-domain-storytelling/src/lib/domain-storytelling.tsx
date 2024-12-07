@@ -1,6 +1,6 @@
 import { TLComponents, Tldraw } from 'tldraw'
 import 'tldraw/tldraw.css'
-import { ActorShape } from './shapes/actor-shape'
+import { ActorShapeUtil } from './shapes/actor-shape-util'
 import { DomainObjectsPanel } from './domain-objects-panel'
 import { ActorToolUtil } from './tools/actor-tool-util'
 import { ShapeArrows } from './shape-arrows'
@@ -16,7 +16,7 @@ export function DomainStorytelling() {
       <h1>Welcome to DomainStorytelling!</h1>
       <div style={{ position: 'fixed', inset: 0 }}>
         <Tldraw
-          shapeUtils={[ActorShape]}
+          shapeUtils={[ActorShapeUtil]}
           components={components}
           tools={[ActorToolUtil]}
           onMount={(editor) => {

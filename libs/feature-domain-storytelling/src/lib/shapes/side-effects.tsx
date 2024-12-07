@@ -1,11 +1,17 @@
 import { Editor, TLShape, Vec } from 'tldraw'
 import { SHAPE_SIZE } from './shapes-constants'
-import { ActorShape } from './actor-shape'
+import { ActorShapeUtil } from './actor-shape-util'
 
 export function registerSideEffects(editor: Editor) {
+  console.log(editor.shapeUtils)
   disablePreciseBindings(editor)
   fixArrowPositioning(editor)
   deleteArrowsWithoutStartAndEndBindings(editor)
+  editor.sideEffects.registerAfterChangeHandler('shape', (prev, next) => {
+    if (prev.type === 'arrow') {
+      console.log(prev, next)
+    }
+  })
 }
 
 function disablePreciseBindings(editor: Editor) {
@@ -28,7 +34,7 @@ function fixArrowPositioning(editor: Editor) {
   editor.sideEffects.registerBeforeCreateHandler('shape', (shape, source) => {
     if (shape.type === 'arrow') {
       const hintingShape = editor.getHintingShape()[0]
-      if (hintingShape?.type === ActorShape.type) {
+      if (hintingShape?.type === ActorShapeUtil.type) {
         const { x, y } = getReplacedArrowRelativePoint(hintingShape, editor.inputs.currentPagePoint)
         return {
           ...shape,
