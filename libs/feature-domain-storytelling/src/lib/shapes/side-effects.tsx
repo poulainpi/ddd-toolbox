@@ -1,11 +1,11 @@
-import { Editor, TLShape, Vec } from 'tldraw'
+import { Editor, TLArrowShape, TLShape, Vec } from 'tldraw'
 import { SHAPE_SIZE } from './shapes-constants'
 import { ActorShapeUtil } from './actor-shape-util'
 
 export function registerSideEffects(editor: Editor) {
   disablePreciseBindings(editor)
   fixArrowPositioning(editor)
-  deleteArrowsWithoutStartAndEndBindings(editor)
+  deleteArrowsWithoutStartAndEndBindingsOrStartEditing(editor)
 }
 
 function disablePreciseBindings(editor: Editor) {
@@ -41,7 +41,7 @@ function fixArrowPositioning(editor: Editor) {
   })
 }
 
-function deleteArrowsWithoutStartAndEndBindings(editor: Editor) {
+function deleteArrowsWithoutStartAndEndBindingsOrStartEditing(editor: Editor) {
   editor.sideEffects.registerAfterChangeHandler('instance', (prev, next) => {
     if (['cross', 'grabbing'].includes(prev.cursor.type) && next.cursor.type === 'default') {
       const selectedShape = editor.getSelectedShapes()[0]
@@ -49,6 +49,14 @@ function deleteArrowsWithoutStartAndEndBindings(editor: Editor) {
         const hasStartAndEndBindings = editor.getBindingsFromShape(selectedShape, 'arrow').length >= 2
         if (!hasStartAndEndBindings) {
           editor.deleteShape(selectedShape)
+        } else if ((selectedShape as TLArrowShape).props.text.trim() === '') {
+          setTimeout(() => {
+            editor.setEditingShape(selectedShape)
+            editor.setCurrentTool('select.editing_shape', {
+              target: 'shape',
+              shape: selectedShape,
+            })
+          })
         }
       }
     }
