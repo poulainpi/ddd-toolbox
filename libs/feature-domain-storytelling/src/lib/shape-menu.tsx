@@ -2,7 +2,7 @@ import { track, useEditor } from 'tldraw'
 import { useEffect, useState } from 'react'
 import { MoveUpRightIcon } from 'lucide-react'
 import { Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
-import { SHAPE_SIZE } from './shapes/shapes-constants'
+import { ACTOR_SHAPE_SIZE } from './shapes/shapes-constants'
 import { Button } from '@ddd-toolbox/ui/lib/ui/button'
 
 export const ShapeMenu = track(function ShapeMenu() {
@@ -29,8 +29,8 @@ export const ShapeMenu = track(function ShapeMenu() {
           style={{
             left: selectedShapeScreenPoint.x,
             top: selectedShapeScreenPoint.y,
-            width: SHAPE_SIZE,
-            height: SHAPE_SIZE,
+            width: ACTOR_SHAPE_SIZE,
+            height: ACTOR_SHAPE_SIZE,
           }}
         ></div>
       </PopoverAnchor>

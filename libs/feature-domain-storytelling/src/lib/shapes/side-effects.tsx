@@ -1,6 +1,7 @@
 import { Editor, TLArrowShape, TLShape, Vec } from 'tldraw'
-import { SHAPE_SIZE } from './shapes-constants'
+import { ACTOR_SHAPE_SIZE, WORK_OBJECT_SHAPE_SIZE } from './shapes-constants'
 import { ActorShapeUtil } from './actor-shape-util'
+import { WorkObjectShapeUtil } from './work-object-shape-util'
 
 export function registerSideEffects(editor: Editor) {
   disablePreciseBindings(editor)
@@ -28,7 +29,7 @@ function fixArrowPositioning(editor: Editor) {
   editor.sideEffects.registerBeforeCreateHandler('shape', (shape, source) => {
     if (shape.type === 'arrow') {
       const hintingShape = editor.getHintingShape()[0]
-      if (hintingShape?.type === ActorShapeUtil.type) {
+      if (([ActorShapeUtil.type, WorkObjectShapeUtil.type] as string[]).includes(hintingShape?.type)) {
         const { x, y } = getReplacedArrowRelativePoint(hintingShape, editor.inputs.currentPagePoint)
         return {
           ...shape,
@@ -65,8 +66,10 @@ function deleteArrowsWithoutStartAndEndBindingsOrStartEditing(editor: Editor) {
 }
 
 function getReplacedArrowRelativePoint(hintingShape: TLShape, initialArrowPoint: Vec): { x: number; y: number } {
-  const centerX = hintingShape.x + SHAPE_SIZE / 2
-  const centerY = hintingShape.y + SHAPE_SIZE / 2
+  const size = hintingShape.type === ActorShapeUtil.type ? ACTOR_SHAPE_SIZE : WORK_OBJECT_SHAPE_SIZE
+
+  const centerX = hintingShape.x + size / 2
+  const centerY = hintingShape.y + size / 2
 
   const offsetX = initialArrowPoint.x - centerX
   const offsetY = initialArrowPoint.y - centerY
@@ -76,13 +79,13 @@ function getReplacedArrowRelativePoint(hintingShape: TLShape, initialArrowPoint:
 
   if (Math.abs(offsetX) > Math.abs(offsetY)) {
     if (offsetX > 0) {
-      return { x: SHAPE_SIZE, y: mouseY }
+      return { x: size, y: mouseY }
     } else {
       return { x: 0, y: mouseY }
     }
   } else {
     if (offsetY > 0) {
-      return { x: mouseX, y: SHAPE_SIZE }
+      return { x: mouseX, y: size }
     } else {
       return { x: mouseX, y: 0 }
     }

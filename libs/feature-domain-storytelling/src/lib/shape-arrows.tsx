@@ -1,5 +1,6 @@
 import { useEditor, useValue } from 'tldraw'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
+import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
 
 export function ShapeArrows() {
   const editor = useEditor()
@@ -31,7 +32,10 @@ export function ShapeArrows() {
     editor.getCurrentTool().transition('pointing', {})
   }
 
-  if (!selectedShapeBounds || selectedShapeBounds.selectedShape.type !== ActorShapeUtil.type) {
+  if (
+    !selectedShapeBounds ||
+    !([ActorShapeUtil.type, WorkObjectShapeUtil.type] as string[]).includes(selectedShapeBounds.selectedShape.type)
+  ) {
     return
   }
 

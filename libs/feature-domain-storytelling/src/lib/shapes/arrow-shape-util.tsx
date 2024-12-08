@@ -1,57 +1,77 @@
-import { ArrowShapeUtil as DefaultArrowShapeUtil, TLArrowShape } from 'tldraw'
+import { ArrowShapeUtil as DefaultArrowShapeUtil, TLArrowBindingProps, TLArrowShape } from 'tldraw'
 import { ActorShapeUtil } from './actor-shape-util'
 
 export class ArrowShapeUtil extends DefaultArrowShapeUtil {
-  override onEditEnd(shape: TLArrowShape) {
-    const {
-      id,
-      type,
-      props: { text },
-    } = shape
+  override onEditEnd(arrow: TLArrowShape) {
+    const shapeAtStart = this.editor
+      .getBindingsFromShape(arrow, 'arrow')
+      .find((binding) => (binding.props as TLArrowBindingProps).terminal === 'start')?.toId
 
+    if (shapeAtStart == null || this.editor.getShape(shapeAtStart)?.type !== ActorShapeUtil.type) {
+      this.trimEndOfTextOf(arrow)
+      return
+    }
+
+    const newActivityNumber = this.parseActivityNumber(arrow.props.text)
+    if (!Number.isInteger(newActivityNumber)) {
+      this.initializeActivityNumberOf(arrow)
+      return
+    }
+
+    const thereWasANeedForAnUpdate = this.updateOtherArrowsActivityNumberIfNeeded(arrow)
+    if (!thereWasANeedForAnUpdate) {
+      this.trimEndOfTextOf(arrow)
+    }
+  }
+
+  private parseActivityNumber(text: string) {
+    return Number.parseInt(text.split('.')[0])
+  }
+
+  private initializeActivityNumberOf(shape: TLArrowShape) {
     const activitiesArrows = this.getActivitiesArrows()
     const activitiesNumbers = activitiesArrows
       .map((shape) => shape.meta.activityNumber as number)
       .filter(Number.isInteger)
 
-    let newActivityNumber = this.parseActivityNumber(text)
-    if (!Number.isInteger(newActivityNumber)) {
-      newActivityNumber = Math.max(0, ...activitiesNumbers) + 1
-      this.editor.updateShapes<TLArrowShape>([
-        {
-          id,
-          type,
-          props: {
-            text: `${newActivityNumber}. ${text.trimEnd()}`,
-          },
-          meta: {
-            activityNumber: newActivityNumber,
-          },
+    const newActivityNumber = Math.max(0, ...activitiesNumbers) + 1
+    this.editor.updateShapes<TLArrowShape>([
+      {
+        id: shape.id,
+        type: shape.type,
+        props: {
+          text: `${newActivityNumber}. ${shape.props.text.trimEnd()}`,
         },
-      ])
+        meta: {
+          activityNumber: newActivityNumber,
+        },
+      },
+    ])
+  }
 
-      return
-    }
-
+  private updateOtherArrowsActivityNumberIfNeeded(arrow: TLArrowShape): boolean {
+    const activitiesArrows = this.getActivitiesArrows()
+    const newActivityNumber = this.parseActivityNumber(arrow.props.text)
     const arrowWithSameActivityNumber = activitiesArrows.find(
-      (currentArrow) => currentArrow.meta.activityNumber === newActivityNumber && currentArrow.id !== shape.id
+      (currentArrow) => currentArrow.meta.activityNumber === newActivityNumber && currentArrow.id !== arrow.id
     )
+
     if (arrowWithSameActivityNumber != null) {
-      const oldActivityNumber = shape.meta.activityNumber as number
+      const oldActivityNumber = arrow.meta.activityNumber as number
 
       this.editor.updateShapes<TLArrowShape>(
         activitiesArrows
           .filter((currentArrow) => {
             const currentActivityNumber = currentArrow.meta.activityNumber as number
             return (
-              currentArrow.id === shape.id ||
+              currentArrow.id === arrow.id ||
               (currentActivityNumber >= newActivityNumber &&
                 (newActivityNumber > oldActivityNumber || currentActivityNumber < oldActivityNumber))
             )
           })
           .map((currentArrow) => {
             const updatedActivityNumber =
-              currentArrow.id === shape.id ? newActivityNumber : (currentArrow.meta.activityNumber as number) + 1
+              currentArrow.id === arrow.id ? newActivityNumber : (currentArrow.meta.activityNumber as number) + 1
 
             return {
               id: currentArrow.id,
@@ -67,25 +87,23 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
             }
           })
       )
-
-      return
+      return true
     }
+    return false
+  }
 
-    if (text.trimEnd() !== shape.props.text) {
+  private trimEndOfTextOf(arrow: TLArrowShape) {
+    if (arrow.props.text.trimEnd() !== arrow.props.text) {
       this.editor.updateShapes<TLArrowShape>([
         {
-          id,
-          type,
+          id: arrow.id,
+          type: arrow.type,
           props: {
-            text: text.trimEnd(),
+            text: arrow.props.text.trimEnd(),
           },
         },
       ])
     }
-  }
-
-  private parseActivityNumber(text: string) {
-    return Number.parseInt(text.split('.')[0])
   }
 
   private getActivitiesArrows(): TLArrowShape[] {
