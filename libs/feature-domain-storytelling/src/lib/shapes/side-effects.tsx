@@ -3,15 +3,9 @@ import { SHAPE_SIZE } from './shapes-constants'
 import { ActorShapeUtil } from './actor-shape-util'
 
 export function registerSideEffects(editor: Editor) {
-  console.log(editor.shapeUtils)
   disablePreciseBindings(editor)
   fixArrowPositioning(editor)
   deleteArrowsWithoutStartAndEndBindings(editor)
-  editor.sideEffects.registerAfterChangeHandler('shape', (prev, next) => {
-    if (prev.type === 'arrow') {
-      console.log(prev, next)
-    }
-  })
 }
 
 function disablePreciseBindings(editor: Editor) {

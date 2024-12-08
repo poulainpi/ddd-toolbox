@@ -31,7 +31,7 @@ export function ShapeArrows() {
     editor.getCurrentTool().transition('pointing', {})
   }
 
-  if (!selectedShapeBounds || selectedShapeBounds.selectedShape.type != ActorShapeUtil.type) {
+  if (!selectedShapeBounds || selectedShapeBounds.selectedShape.type !== ActorShapeUtil.type) {
     return
   }
 

@@ -5,6 +5,7 @@ import { DomainObjectsPanel } from './domain-objects-panel'
 import { ActorToolUtil } from './tools/actor-tool-util'
 import { ShapeArrows } from './shape-arrows'
 import { registerSideEffects } from './shapes/side-effects'
+import { ArrowShapeUtil } from './shapes/arrow-shape-util'
 
 const components: TLComponents = {
   OnTheCanvas: ShapeArrows,
@@ -20,6 +21,9 @@ export function DomainStorytelling() {
           components={components}
           tools={[ActorToolUtil]}
           onMount={(editor) => {
+            // @ts-expect-error it's the only way to override the arrow shape util at the moment
+            editor.shapeUtils.arrow = new ArrowShapeUtil(editor)
+
             registerSideEffects(editor)
           }}
         >
