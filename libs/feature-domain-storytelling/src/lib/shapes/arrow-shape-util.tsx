@@ -1,5 +1,6 @@
 import { ArrowShapeUtil as DefaultArrowShapeUtil, TLArrowBindingProps, TLArrowShape } from 'tldraw'
 import { ActorShapeUtil } from './actor-shape-util'
+import { getActivitiesArrows } from './activities-arrows'
 
 export class ArrowShapeUtil extends DefaultArrowShapeUtil {
   override onEditEnd(arrow: TLArrowShape) {
@@ -29,7 +30,7 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
   }
 
   private initializeActivityNumberOf(shape: TLArrowShape) {
-    const activitiesArrows = this.getActivitiesArrows()
+    const activitiesArrows = getActivitiesArrows(this.editor)
     const activitiesNumbers = activitiesArrows
       .map((shape) => shape.meta.activityNumber as number)
       .filter(Number.isInteger)
@@ -50,7 +51,7 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
   }
 
   private updateOtherArrowsActivityNumberIfNeeded(arrow: TLArrowShape): boolean {
-    const activitiesArrows = this.getActivitiesArrows()
+    const activitiesArrows = getActivitiesArrows(this.editor)
     const newActivityNumber = this.parseActivityNumber(arrow.props.text)
     const arrowWithSameActivityNumber = activitiesArrows.find(
       (currentArrow) => currentArrow.meta.activityNumber === newActivityNumber && currentArrow.id !== arrow.id
@@ -104,17 +105,5 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
         },
       ])
     }
-  }
-
-  private getActivitiesArrows(): TLArrowShape[] {
-    const bindingsOnActors = this.editor
-      .getCurrentPageShapes()
-      .filter((shape) => shape.type === ActorShapeUtil.type)
-      .map((shape) => this.editor.getBindingsInvolvingShape(shape, 'arrow'))
-      .flat()
-
-    return bindingsOnActors
-      .map((binding) => this.editor.getShape(binding.fromId))
-      .filter((shape) => shape?.type === ArrowShapeUtil.type) as TLArrowShape[]
   }
 }
