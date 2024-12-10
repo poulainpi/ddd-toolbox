@@ -16,7 +16,7 @@ const components: TLComponents = {
 }
 
 export function DomainStorytelling() {
-  const isShapeHiddenUpdater = useAtom('isShapeHiddenUpdater', 0)
+  const storyChangedUpdater = useAtom('storyChangedUpdater', 0)
 
   return (
     <div>
@@ -35,12 +35,12 @@ export function DomainStorytelling() {
           isShapeHidden={(shape, editor) => {
             return (
               editor.getCurrentToolId() === PlayStoryToolUtil.id &&
-              (editor.getCurrentTool() as PlayStoryToolUtil).isHidden(shape, isShapeHiddenUpdater)
+              (editor.getCurrentTool() as PlayStoryToolUtil).isHidden(shape, storyChangedUpdater)
             )
           }}
         >
           <DomainObjectsPanel />
-          <PlayStoryZone />
+          <PlayStoryZone storyChangedUpdater={storyChangedUpdater} />
         </Tldraw>
       </div>
     </div>

@@ -1,29 +1,43 @@
-import { track, useEditor } from 'tldraw'
+import { Atom, track, useEditor } from 'tldraw'
 import { PlayIcon, SquareIcon, StepBackIcon, StepForwardIcon } from 'lucide-react'
 import { Button } from '@ddd-toolbox/ui/lib/ui/button'
 import { PlayStoryToolUtil } from './tools/play-story-tool-util'
 import { ReactElement } from 'react'
 
-export const PlayStoryZone = track(function PlayStroryZone() {
+export const PlayStoryZone = track(function PlayStoryZone({
+  storyChangedUpdater,
+}: {
+  storyChangedUpdater: Atom<number, unknown>
+}) {
   const editor = useEditor()
   const currentTool = editor.getCurrentTool()
   const isStoryPlaying = currentTool instanceof PlayStoryToolUtil
+  storyChangedUpdater.get()
 
   return (
-    <div className="absolute w-36 bg-background rounded-md shadow-md top-4 right-48 p-2 z-[300]">
-      {isStoryPlaying && (
+    <div className="absolute w-52 bg-background rounded-md shadow-md top-4 right-48 p-2 z-[300] flex items-center">
+      {isStoryPlaying ? (
         <>
           <StoryButton Icon={<StepBackIcon />} onClick={() => (currentTool as PlayStoryToolUtil).stepBackward()} />
           <StoryButton Icon={<StepForwardIcon />} onClick={() => (currentTool as PlayStoryToolUtil).stepForward()} />
+          <StoryButton
+            Icon={<SquareIcon />}
+            onClick={() => {
+              editor.setCurrentTool('select')
+            }}
+          />
+          <div className="text-foreground text-lg ml-2">
+            {currentTool.getCurrentStep()} / {currentTool.getStepsCount()}
+          </div>
         </>
+      ) : (
+        <StoryButton
+          Icon={<PlayIcon />}
+          onClick={() => {
+            editor.setCurrentTool(PlayStoryToolUtil.id)
+          }}
+        />
       )}
-
-      <StoryButton
-        Icon={isStoryPlaying ? <SquareIcon /> : <PlayIcon />}
-        onClick={() => {
-          editor.setCurrentTool(isStoryPlaying ? 'select' : PlayStoryToolUtil.id)
-        }}
-      />
     </div>
   )
 })

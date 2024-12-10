@@ -1,4 +1,4 @@
-import { Atom, StateNode, TLArrowBindingProps, TLArrowShape, TLPointerEventInfo, TLShape, TLShapeId } from 'tldraw'
+import { Atom, getArrowBindings, StateNode, TLArrowBindingProps, TLArrowShape, TLShape, TLShapeId } from 'tldraw'
 import { getActivitiesArrows } from '../shapes/activities-arrows'
 import { ActorShapeUtil } from '../shapes/actor-shape-util'
 
@@ -8,7 +8,7 @@ export class PlayStoryToolUtil extends StateNode {
   private currentStep = 0
   private hiddenShapeIds: Map<TLShapeId, boolean> = new Map()
   private activitiesArrows: TLArrowShape[] = []
-  private isShapeHiddenUpdater: Atom<number, unknown> | undefined
+  private storyChangedUpdater: Atom<number, unknown> | undefined
   private appearedShapeIds: TLShapeId[][] = []
 
   override onEnter() {
@@ -22,15 +22,16 @@ export class PlayStoryToolUtil extends StateNode {
     this.hiddenShapeIds = new Map()
   }
 
-  isHidden(shape: TLShape, isShapeHiddenUpdater: Atom<number, unknown>): boolean {
-    this.isShapeHiddenUpdater = isShapeHiddenUpdater
-    isShapeHiddenUpdater.get()
+  public isHidden(shape: TLShape, storyChangedUpdater: Atom<number, unknown>): boolean {
+    this.storyChangedUpdater = storyChangedUpdater
+    storyChangedUpdater.get()
 
     this.initializeIfNeeded()
     return this.hiddenShapeIds.get(shape.id) ?? false
   }
 
-  stepBackward() {
+  public stepBackward() {
+    if (this.currentStep === 1) return
     ;(this.appearedShapeIds.pop() ?? []).forEach((shapeId) => {
       this.hiddenShapeIds.set(shapeId, true)
     })
@@ -38,7 +39,9 @@ export class PlayStoryToolUtil extends StateNode {
     this.currentStep--
   }
 
-  stepForward() {
+  public stepForward() {
+    if (this.currentStep === this.getStepsCount()) return
+
     this.currentStep++
     const appearedShapeIds = [] as TLShapeId[]
 
@@ -52,6 +55,14 @@ export class PlayStoryToolUtil extends StateNode {
     this.appearedShapeIds.push(appearedShapeIds)
 
     this.updateIsHiddenFunction()
+  }
+
+  public getCurrentStep(): number {
+    return this.currentStep
+  }
+
+  public getStepsCount(): number {
+    return this.activitiesArrows.length
   }
 
   private getShapeIdsAtStep(step: number): TLShapeId[] {
@@ -69,12 +80,16 @@ export class PlayStoryToolUtil extends StateNode {
     const shapeIds = new Set<TLShapeId>([shape.id])
 
     if (shape.type === 'arrow') {
-      const [startBinding, endBinding] = this.editor.getBindingsFromShape(shape, 'arrow')
-      shapeIds.add(startBinding.toId)
+      const { start: startBinding, end: endBinding } = getArrowBindings(this.editor, shape as TLArrowShape)
+      if (startBinding != null) {
+        shapeIds.add(startBinding.toId)
+      }
 
-      const endShape = this.editor.getShape(endBinding.toId)
-      if (endShape != null) {
-        this.getLinkedShapeIdsOf(endShape).forEach((id) => shapeIds.add(id))
+      if (endBinding != null) {
+        const endShape = this.editor.getShape(endBinding.toId)
+        if (endShape != null) {
+          this.getLinkedShapeIdsOf(endShape).forEach((id) => shapeIds.add(id))
+        }
       }
     } else {
       const bindings = this.editor
@@ -101,6 +116,6 @@ export class PlayStoryToolUtil extends StateNode {
   }
 
   private updateIsHiddenFunction() {
-    this.isShapeHiddenUpdater?.set(this.isShapeHiddenUpdater.get() + 1)
+    this.storyChangedUpdater?.set(this.storyChangedUpdater.get() + 1)
   }
 }
