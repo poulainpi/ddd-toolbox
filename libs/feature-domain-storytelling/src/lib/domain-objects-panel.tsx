@@ -16,11 +16,19 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
     <div className="absolute min-h-96 bg-background rounded-md shadow-md top-16 left-6 p-2 z-[300] divide-y">
       <div className="grid grid-cols-2 content-start justify-items-center gap-1 pb-1">
         <DomainObjectButton type="actor" icon="user" />
+        <DomainObjectButton type="actor" icon="users" />
         <DomainObjectButton type="actor" icon="server" />
       </div>
 
       <div className="grid grid-cols-2 content-start justify-items-center gap-1 pt-1">
         <DomainObjectButton type="work-object" icon="message-circle" />
+        <DomainObjectButton type="work-object" icon="phone" />
+        <DomainObjectButton type="work-object" icon="file" />
+        <DomainObjectButton type="work-object" icon="at-sign" />
+        <DomainObjectButton type="work-object" icon="dollar-sign" />
+        <DomainObjectButton type="work-object" icon="calendar" />
+        <DomainObjectButton type="work-object" icon="thumbs-up" />
+        <DomainObjectButton type="work-object" icon="thumbs-down" />
       </div>
     </div>
   )
