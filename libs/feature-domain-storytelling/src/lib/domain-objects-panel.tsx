@@ -4,10 +4,13 @@ import { LoadableIcon } from '@ddd-toolbox/ui'
 import dynamicIconImports from 'lucide-react/dynamicIconImports'
 import { cn } from '@ddd-toolbox/util'
 import { DomainObjectToolUtil } from './tools/domain-object-tool-util'
+import { PlayStoryToolUtil } from './tools/play-story-tool-util'
 
 export const DomainObjectsPanel = track(function DomainObjectsPanel() {
   const editor = useEditor()
-  editor.getCurrentTool() // only used to refresh child on tool change
+  const isStoryPlaying = editor.getCurrentTool() instanceof PlayStoryToolUtil
+
+  if (isStoryPlaying) return null
 
   return (
     <div className="absolute min-h-96 bg-background rounded-md shadow-md top-16 left-6 p-2 z-[300] divide-y">
