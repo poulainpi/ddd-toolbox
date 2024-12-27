@@ -1,12 +1,40 @@
 import * as React from 'react'
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { Slot } from '@radix-ui/react-slot'
-import { Controller, ControllerProps, FieldPath, FieldValues, FormProvider, useFormContext } from 'react-hook-form'
+import {
+  Controller,
+  ControllerProps,
+  FieldPath,
+  FieldValues,
+  FormProvider,
+  useFormContext,
+  UseFormReturn,
+} from 'react-hook-form'
 
-import { cn } from '@ddd-toolbox/lib/utils'
-import { Label } from '@ddd-toolbox/ui/lib/ui/label'
+import { Label } from './label'
+import { cn } from '@ddd-toolbox/util'
 
-const Form = FormProvider
+type FormProps<TFieldValues extends FieldValues> = {
+  children: React.ReactNode
+  form: UseFormReturn<TFieldValues>
+  onSubmit: (data: TFieldValues) => void
+  className?: string
+}
+
+const Form = <TFieldValues extends FieldValues = FieldValues>({
+  children,
+  form,
+  onSubmit,
+  className,
+}: FormProps<TFieldValues>) => {
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={className}>
+        {children}
+      </form>
+    </FormProvider>
+  )
+}
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,

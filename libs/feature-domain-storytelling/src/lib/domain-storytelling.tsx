@@ -1,7 +1,7 @@
 import { TLComponents, Tldraw, useAtom } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
-import { DomainObjectsPanel } from './domain-objects-panel'
+import { DomainObjectsPanel } from './panel/domain-objects-panel'
 import { ActorToolUtil } from './tools/actor-tool-util'
 import { ShapeArrows } from './shape-arrows'
 import { registerSideEffects } from './shapes/side-effects'
