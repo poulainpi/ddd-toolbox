@@ -10,6 +10,7 @@ import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
 import { WorkObjectToolUtil } from './tools/work-object-tool-util'
 import { PlayStoryToolUtil } from './tools/play-story-tool-util'
 import { PlayStoryZone } from './play-story-zone'
+import { useTheme } from '@ddd-toolbox/ui/lib/ui/hooks/use-theme'
 
 const components: TLComponents = {
   OnTheCanvas: ShapeArrows,
@@ -17,6 +18,7 @@ const components: TLComponents = {
 
 export function DomainStorytelling() {
   const storyChangedUpdater = useAtom('storyChangedUpdater', 0)
+  useTheme()
 
   return (
     <div>
