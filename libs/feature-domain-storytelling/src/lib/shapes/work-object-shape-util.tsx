@@ -1,4 +1,4 @@
-import { RecordProps, T } from 'tldraw'
+import { DefaultColorStyle, RecordProps, T } from 'tldraw'
 import { WORK_OBJECT_SHAPE_SIZE } from './shapes-constants'
 import { DomainObjectShapeUtil, TLDomainObjectShape } from './domain-object-shape-util'
 
@@ -9,11 +9,12 @@ export class WorkObjectShapeUtil extends DomainObjectShapeUtil<'work-object'> {
 
   static override props: RecordProps<TLWorkObjectShape> = {
     text: T.string,
+    color: DefaultColorStyle,
     icon: T.string,
   }
 
   getDefaultProps(): TLWorkObjectShape['props'] {
-    return { text: '', icon: 'message-circle' }
+    return { text: '', color: 'black', icon: 'message-circle' }
   }
 
   getSize(): number {

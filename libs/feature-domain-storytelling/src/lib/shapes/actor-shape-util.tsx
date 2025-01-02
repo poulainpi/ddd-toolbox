@@ -1,4 +1,4 @@
-import { RecordProps, T } from 'tldraw'
+import { DefaultColorStyle, RecordProps, T } from 'tldraw'
 import { ACTOR_SHAPE_SIZE } from './shapes-constants'
 import { DomainObjectShapeUtil, TLDomainObjectShape } from './domain-object-shape-util'
 
@@ -9,11 +9,12 @@ export class ActorShapeUtil extends DomainObjectShapeUtil<'actor'> {
 
   static override props: RecordProps<TLActorShape> = {
     text: T.string,
+    color: DefaultColorStyle,
     icon: T.string,
   }
 
   getDefaultProps(): TLActorShape['props'] {
-    return { text: '', icon: 'user' }
+    return { text: '', color: 'black', icon: 'user' }
   }
 
   getSize(): number {

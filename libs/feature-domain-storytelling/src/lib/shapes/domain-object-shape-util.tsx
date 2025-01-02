@@ -1,8 +1,20 @@
-import { Geometry2d, HTMLContainer, Rectangle2d, ShapeUtil, TextLabel, TLBaseShape, useDefaultColorTheme } from 'tldraw'
+import {
+  Geometry2d,
+  HTMLContainer,
+  Rectangle2d,
+  ShapeUtil,
+  TextLabel,
+  TLBaseShape,
+  TLDefaultColorStyle,
+  useDefaultColorTheme,
+} from 'tldraw'
 import { LoadableIcon } from '@ddd-toolbox/ui'
 import dynamicIconImports from 'lucide-react/dynamicIconImports'
 
-export type TLDomainObjectShape<Type extends string> = TLBaseShape<Type, { text: string; icon: string }>
+export type TLDomainObjectShape<Type extends string> = TLBaseShape<
+  Type,
+  { text: string; color: TLDefaultColorStyle; icon: string }
+>
 
 export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUtil<TLDomainObjectShape<Type>> {
   override getGeometry(): Geometry2d {
@@ -29,6 +41,7 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
           name={shape.props.icon as keyof typeof dynamicIconImports}
           size={this.getSize() - 30}
           className="mt-1"
+          color={theme[shape.props.color].fill}
         />
         <TextLabel
           shapeId={shape.id}
@@ -38,7 +51,7 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
           verticalAlign="end"
           font="draw"
           fontSize={20}
-          labelColor={theme['black'].fill}
+          labelColor={theme[shape.props.color].fill}
           lineHeight={1}
           isSelected={isSelected}
         />

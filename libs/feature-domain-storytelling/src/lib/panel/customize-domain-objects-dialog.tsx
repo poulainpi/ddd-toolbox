@@ -19,11 +19,12 @@ import {
   setActors,
   setWorkObjects,
 } from '../states/use-domain-objects'
-import { useToast } from '@ddd-toolbox/ui/lib/ui/hooks/use-toast'
+import { toast, useToast } from '@ddd-toolbox/ui/lib/ui/hooks/use-toast'
 import { ToastAction } from '@ddd-toolbox/ui/lib/ui/toast'
 import { useForm } from 'react-hook-form'
 import { Form } from '@ddd-toolbox/ui/lib/ui/form'
 import { FormInput } from '@ddd-toolbox/ui/lib/ui/form-input'
+import { Separator } from '@ddd-toolbox/ui/lib/ui/separator'
 
 export interface CustomizeDomainObjectsDialogProps {
   actors: string[]
@@ -31,8 +32,6 @@ export interface CustomizeDomainObjectsDialogProps {
 }
 
 export function CustomizeDomainObjectsDialog({ actors, workObjects }: CustomizeDomainObjectsDialogProps) {
-  const { toast } = useToast()
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -88,7 +87,7 @@ export function CustomizeDomainObjectsDialog({ actors, workObjects }: CustomizeD
             ))}
           </div>
 
-          <div className="border-t border-solid border-border my-4"></div>
+          <Separator className="my-4" />
 
           <div className="flex justify-between items-center">
             <span className="text-lg">Work Objects</span>
