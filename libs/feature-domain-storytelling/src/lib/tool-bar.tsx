@@ -18,7 +18,7 @@ export const ToolBar = track(function ToolBar() {
   const isReadonlyMode = useReadonly()
 
   return (
-    <div className="absolute bg-background rounded-md shadow-md bottom-2 left-1/2 -translate-x-1/2 p-2 z-[300] flex gap-1">
+    <div className="absolute bg-muted/50 rounded-md shadow-md bottom-2 left-1/2 -translate-x-1/2 p-2 z-[300] flex gap-1">
       {tools
         .filter((tool) => !isReadonlyMode || tool.usableInReadOnly)
         .map((tool, index) => {

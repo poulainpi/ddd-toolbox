@@ -17,7 +17,7 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
   if (isStoryPlaying) return null
 
   return (
-    <div className="absolute min-h-96 bg-background rounded-md shadow-md top-16 left-6 p-2 pb-11 z-[300]">
+    <div className="absolute min-h-96 bg-muted/50 rounded-md shadow-md top-16 left-6 p-2 pb-11 z-[300]">
       <div className="divide-y flex flex-col h-full">
         <div className="grid grid-cols-2 content-start justify-items-center gap-1 pb-1">
           {actors.map((actor) => (

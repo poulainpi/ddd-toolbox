@@ -15,7 +15,7 @@ export const PlayStoryZone = track(function PlayStoryZone({
   storyChangedUpdater.get()
 
   return (
-    <div className="absolute w-52 bg-background rounded-md shadow-md top-4 right-48 p-2 z-[300] flex items-center">
+    <div className="absolute w-52 bg-muted/50 rounded-md shadow-md top-4 right-48 p-2 z-[300] flex items-center">
       {isStoryPlaying ? (
         <>
           <StoryButton Icon={<StepBackIcon />} onClick={() => (currentTool as PlayStoryToolUtil).stepBackward()} />
