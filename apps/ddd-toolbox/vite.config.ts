@@ -38,5 +38,6 @@ export default defineConfig({
       reportsDirectory: '../../coverage/apps/ddd-toolbox',
       provider: 'v8',
     },
+    passWithNoTests: true,
   },
 })

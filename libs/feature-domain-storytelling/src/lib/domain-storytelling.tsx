@@ -11,9 +11,11 @@ import { WorkObjectToolUtil } from './tools/work-object-tool-util'
 import { PlayStoryToolUtil } from './tools/play-story-tool-util'
 import { PlayStoryZone } from './play-story-zone'
 import { useTheme } from '@ddd-toolbox/ui/lib/ui/hooks/use-theme'
+import { ToolBar } from './tool-bar'
 
 const components: TLComponents = {
   OnTheCanvas: ShapeArrows,
+  Toolbar: null,
 }
 
 export function DomainStorytelling() {
@@ -42,6 +44,7 @@ export function DomainStorytelling() {
           }}
         >
           <DomainObjectsPanel />
+          <ToolBar />
           <PlayStoryZone storyChangedUpdater={storyChangedUpdater} />
         </Tldraw>
       </div>
