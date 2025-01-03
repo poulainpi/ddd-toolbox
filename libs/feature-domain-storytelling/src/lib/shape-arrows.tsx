@@ -11,8 +11,8 @@ export function ShapeArrows() {
       const screenBounds = editor.getViewportScreenBounds()
       const rotation = editor.getSelectionRotation()
       const rotatedPageBounds = editor.getSelectionRotatedPageBounds()
-      const selectedShape = editor.getSelectedShapes()[0]
-      if (!rotatedPageBounds) return
+      const selectedShapes = editor.getSelectedShapes()
+      if (!rotatedPageBounds || selectedShapes.length != 1) return
 
       return {
         x: rotatedPageBounds.x - screenBounds.x,
@@ -20,7 +20,7 @@ export function ShapeArrows() {
         width: rotatedPageBounds.width,
         height: rotatedPageBounds.height,
         rotation: rotation,
-        selectedShape,
+        selectedShape: selectedShapes[0],
       }
     },
     [editor]
