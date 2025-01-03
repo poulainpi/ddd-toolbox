@@ -51,19 +51,19 @@ export function ShapeArrows() {
       }}
     >
       <div
-        className="absolute visible -top-3 left-1/2 -translate-x-1/2 w-0 h-0 border-[12px] border-transparent border-b-background border-t-0 z-[10]"
+        className="absolute visible -top-3 left-1/2 -translate-x-1/2 w-0 h-0 border-[12px] border-transparent border-b-foreground border-t-0 z-[10]"
         onPointerDown={startArrowCreation}
       ></div>
       <div
-        className="absolute visible -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 border-[12px] border-transparent border-t-background border-b-0 z-[10]"
+        className="absolute visible -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 border-[12px] border-transparent border-t-foreground border-b-0 z-[10]"
         onPointerDown={startArrowCreation}
       ></div>
       <div
-        className="absolute visible -left-3 top-1/2 -translate-y-1/2 w-0 h-0 border-[12px] border-transparent border-r-background border-l-0 z-[10]"
+        className="absolute visible -left-3 top-1/2 -translate-y-1/2 w-0 h-0 border-[12px] border-transparent border-r-foreground border-l-0 z-[10]"
         onPointerDown={startArrowCreation}
       ></div>
       <div
-        className="absolute visible -right-3 top-1/2 -translate-y-1/2 w-0 h-0 border-[12px] border-transparent border-l-background border-r-0 z-[10]"
+        className="absolute visible -right-3 top-1/2 -translate-y-1/2 w-0 h-0 border-[12px] border-transparent border-l-foreground border-r-0 z-[10]"
         onPointerDown={startArrowCreation}
       ></div>
     </div>
