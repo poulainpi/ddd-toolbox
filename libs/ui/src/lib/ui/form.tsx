@@ -18,6 +18,7 @@ type FormProps<TFieldValues extends FieldValues> = {
   children: React.ReactNode
   form: UseFormReturn<TFieldValues>
   onSubmit: (data: TFieldValues) => void
+  id?: string
   className?: string
 }
 
@@ -25,11 +26,12 @@ const Form = <TFieldValues extends FieldValues = FieldValues>({
   children,
   form,
   onSubmit,
+  id,
   className,
 }: FormProps<TFieldValues>) => {
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={className}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={className} id={id}>
         {children}
       </form>
     </FormProvider>

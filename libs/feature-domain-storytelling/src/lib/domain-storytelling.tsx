@@ -12,10 +12,12 @@ import { PlayStoryToolUtil } from './tools/play-story-tool-util'
 import { PlayStoryZone } from './play-story-zone'
 import { useTheme } from '@ddd-toolbox/ui/lib/ui/hooks/use-theme'
 import { ToolBar } from './tool-bar'
+import { Menubar } from './menubar/menubar'
 
 const components: TLComponents = {
   OnTheCanvas: ShapeArrows,
   Toolbar: null,
+  MenuPanel: null,
 }
 
 export function DomainStorytelling() {
@@ -42,7 +44,9 @@ export function DomainStorytelling() {
               (editor.getCurrentTool() as PlayStoryToolUtil).isHidden(shape, storyChangedUpdater)
             )
           }}
+          persistenceKey="domain-storytelling"
         >
+          <Menubar />
           <DomainObjectsPanel />
           <ToolBar />
           <PlayStoryZone storyChangedUpdater={storyChangedUpdater} />

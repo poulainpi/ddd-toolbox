@@ -1,2 +1,2 @@
-export * from './lib/loadable-icon'
+export * from './lib/ui/loadable-icon'
 export * from './lib/ui/popover'
