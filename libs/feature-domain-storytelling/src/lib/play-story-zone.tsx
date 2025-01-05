@@ -1,6 +1,6 @@
 import { Atom, track, useEditor } from 'tldraw'
 import { PlayIcon, SquareIcon, StepBackIcon, StepForwardIcon } from 'lucide-react'
-import { Button } from '@ddd-toolbox/ui/lib/ui/button'
+import { Button } from '@ddd-toolbox/ui'
 import { PlayStoryToolUtil } from './tools/play-story-tool-util'
 import { ReactElement } from 'react'
 

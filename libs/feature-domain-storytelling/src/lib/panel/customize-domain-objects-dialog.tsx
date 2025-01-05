@@ -1,15 +1,20 @@
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@ddd-toolbox/ui/lib/ui/dialog'
+  Form,
+  FormInput,
+  LoadableIcon,
+  Separator,
+  toast,
+  ToastAction,
+} from '@ddd-toolbox/ui'
 import { PlusIcon, SettingsIcon } from 'lucide-react'
-import { Button } from '@ddd-toolbox/ui/lib/ui/button'
 import { cn } from '@ddd-toolbox/util'
-import { LoadableIcon } from '@ddd-toolbox/ui'
 import dynamicIconImports from 'lucide-react/dynamicIconImports'
 import {
   addActor,
@@ -19,12 +24,7 @@ import {
   setActors,
   setWorkObjects,
 } from '../states/use-domain-objects'
-import { toast, useToast } from '@ddd-toolbox/ui/lib/ui/hooks/use-toast'
-import { ToastAction } from '@ddd-toolbox/ui/lib/ui/toast'
 import { useForm } from 'react-hook-form'
-import { Form } from '@ddd-toolbox/ui/lib/ui/form'
-import { FormInput } from '@ddd-toolbox/ui/lib/ui/form-input'
-import { Separator } from '@ddd-toolbox/ui/lib/ui/separator'
 
 export interface CustomizeDomainObjectsDialogProps {
   actors: string[]

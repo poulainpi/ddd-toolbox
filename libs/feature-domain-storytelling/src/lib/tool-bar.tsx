@@ -1,6 +1,6 @@
 import { track, useEditor, useReadonly } from 'tldraw'
 import { cn } from '@ddd-toolbox/util'
-import { Button } from '@ddd-toolbox/ui/lib/ui/button'
+import { Button } from '@ddd-toolbox/ui'
 import { EraserIcon, HandIcon, MousePointerClickIcon, MousePointerIcon, PenIcon, TypeIcon } from 'lucide-react'
 
 const tools = [

@@ -1,9 +1,8 @@
 import { track, useEditor } from 'tldraw'
 import { useEffect, useState } from 'react'
 import { MoveUpRightIcon } from 'lucide-react'
-import { Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
+import { Button, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
 import { ACTOR_SHAPE_SIZE } from './shapes/shapes-constants'
-import { Button } from '@ddd-toolbox/ui/lib/ui/button'
 
 export const ShapeMenu = track(function ShapeMenu() {
   const editor = useEditor()

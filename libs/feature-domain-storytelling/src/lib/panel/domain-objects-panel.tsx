@@ -1,6 +1,5 @@
 import { track, useEditor } from 'tldraw'
-import { Button } from '@ddd-toolbox/ui/lib/ui/button'
-import { LoadableIcon } from '@ddd-toolbox/ui'
+import { Button, LoadableIcon } from '@ddd-toolbox/ui'
 import dynamicIconImports from 'lucide-react/dynamicIconImports'
 import { cn } from '@ddd-toolbox/util'
 import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'

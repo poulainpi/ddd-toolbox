@@ -1,4 +1,5 @@
 import {
+  Button,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -12,9 +13,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@ddd-toolbox/ui/lib/ui/dropdown-menu'
+} from '@ddd-toolbox/ui'
 import { getUserPreferences, setUserPreferences, TLUserPreferences, track, useEditor } from 'tldraw'
-import { Button } from '@ddd-toolbox/ui/lib/ui/button'
 import {
   DownloadIcon,
   ExternalLinkIcon,

@@ -1,5 +1,5 @@
-import { Button } from '@ddd-toolbox/ui/lib/ui/button'
 import {
+  Button,
   Dialog,
   DialogClose,
   DialogContent,
@@ -8,10 +8,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@ddd-toolbox/ui/lib/ui/dialog'
-import { Form } from '@ddd-toolbox/ui/lib/ui/form'
+  Form,
+  FormInput,
+} from '@ddd-toolbox/ui'
 import { useForm } from 'react-hook-form'
-import { FormInput } from '@ddd-toolbox/ui/lib/ui/form-input'
 import { changeStoryName, useStoryName } from '../states/use-story-name'
 
 export function StoryName() {

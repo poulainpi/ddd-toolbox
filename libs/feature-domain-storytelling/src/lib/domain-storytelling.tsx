@@ -10,7 +10,7 @@ import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
 import { WorkObjectToolUtil } from './tools/work-object-tool-util'
 import { PlayStoryToolUtil } from './tools/play-story-tool-util'
 import { PlayStoryZone } from './play-story-zone'
-import { useTheme } from '@ddd-toolbox/ui/lib/ui/hooks/use-theme'
+import { useTheme } from '@ddd-toolbox/ui'
 import { ToolBar } from './tool-bar'
 import { Menubar } from './menubar/menubar'
 
