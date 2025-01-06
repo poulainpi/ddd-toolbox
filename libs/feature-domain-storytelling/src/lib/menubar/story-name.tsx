@@ -12,7 +12,7 @@ import {
   FormInput,
 } from '@ddd-toolbox/ui'
 import { useForm } from 'react-hook-form'
-import { getUserPreferences, useEditor, useValue } from 'tldraw'
+import { useEditor, useValue } from 'tldraw'
 
 export function StoryName() {
   const editor = useEditor()

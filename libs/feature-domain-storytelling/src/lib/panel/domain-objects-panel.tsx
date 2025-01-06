@@ -4,14 +4,15 @@ import dynamicIconImports from 'lucide-react/dynamicIconImports'
 import { cn } from '@ddd-toolbox/util'
 import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
 import { PlayStoryToolUtil } from '../tools/play-story-tool-util'
-import { useActors, useWorkObjects } from '../states/use-domain-objects'
+import { useWorkObjects } from '../states/use-work-objects'
 import { CustomizeDomainObjectsDialog } from './customize-domain-objects-dialog'
+import { useActors } from '../states/use-actors'
 
 export const DomainObjectsPanel = track(function DomainObjectsPanel() {
   const editor = useEditor()
   const isStoryPlaying = editor.getCurrentTool() instanceof PlayStoryToolUtil
-  const actors = useActors()
-  const workObjects = useWorkObjects()
+  const actorsState = useActors()
+  const workObjectsState = useWorkObjects()
 
   if (isStoryPlaying) return null
 
@@ -19,18 +20,18 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
     <div className="absolute min-h-96 bg-muted/50 rounded-md shadow-md top-16 left-6 p-2 pb-11 z-[300]">
       <div className="divide-y flex flex-col h-full">
         <div className="grid grid-cols-2 content-start justify-items-center gap-1 pb-1">
-          {actors.map((actor) => (
+          {actorsState.actors.map((actor) => (
             <DomainObjectButton key={actor} type="actor" icon={actor} />
           ))}
         </div>
 
         <div className="grid grid-cols-2 content-start justify-items-center gap-1 pt-1">
-          {workObjects.map((workObject) => (
+          {workObjectsState.workObjects.map((workObject) => (
             <DomainObjectButton key={workObject} type="work-object" icon={workObject} />
           ))}
         </div>
 
-        <CustomizeDomainObjectsDialog actors={actors} workObjects={workObjects} />
+        <CustomizeDomainObjectsDialog actorsState={actorsState} workObjectsState={workObjectsState} />
       </div>
     </div>
   )

@@ -16,22 +16,18 @@ import {
 import { PlusIcon, SettingsIcon } from 'lucide-react'
 import { cn } from '@ddd-toolbox/util'
 import dynamicIconImports from 'lucide-react/dynamicIconImports'
-import {
-  addActor,
-  addWorkObject,
-  deleteActor,
-  deleteWorkObject,
-  setActors,
-  setWorkObjects,
-} from '../states/use-domain-objects'
+import { UseWorkObjectsReturn } from '../states/use-work-objects'
 import { useForm } from 'react-hook-form'
+import { UseActorsReturn } from '../states/use-actors'
 
 export interface CustomizeDomainObjectsDialogProps {
-  actors: string[]
-  workObjects: string[]
+  actorsState: UseActorsReturn
+  workObjectsState: UseWorkObjectsReturn
 }
 
-export function CustomizeDomainObjectsDialog({ actors, workObjects }: CustomizeDomainObjectsDialogProps) {
+export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: CustomizeDomainObjectsDialogProps) {
+  const actors = actorsState.actors
+  const workObjects = workObjectsState.workObjects
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -62,7 +58,7 @@ export function CustomizeDomainObjectsDialog({ actors, workObjects }: CustomizeD
             <span className="text-lg">Actors</span>
             <AddDomainObjectForm
               alreadyUsedDomainObjects={actors}
-              onDomainObjectAdded={(actor: string) => addActor(actor)}
+              onDomainObjectAdded={(actor: string) => actorsState.addActor(actor)}
             />
           </div>
 
@@ -76,12 +72,12 @@ export function CustomizeDomainObjectsDialog({ actors, workObjects }: CustomizeD
                   toast({
                     title: `Actor "${actor}" deleted`,
                     action: (
-                      <ToastAction altText="Undo the actor deletion" onClick={() => setActors(oldActors)}>
+                      <ToastAction altText="Undo the actor deletion" onClick={() => actorsState.setActors(oldActors)}>
                         Undo
                       </ToastAction>
                     ),
                   })
-                  deleteActor(actor)
+                  actorsState.deleteActor(actor)
                 }}
               />
             ))}
@@ -93,7 +89,7 @@ export function CustomizeDomainObjectsDialog({ actors, workObjects }: CustomizeD
             <span className="text-lg">Work Objects</span>
             <AddDomainObjectForm
               alreadyUsedDomainObjects={workObjects}
-              onDomainObjectAdded={(workObject: string) => addWorkObject(workObject)}
+              onDomainObjectAdded={(workObject: string) => workObjectsState.addWorkObject(workObject)}
             />
           </div>
 
@@ -109,13 +105,13 @@ export function CustomizeDomainObjectsDialog({ actors, workObjects }: CustomizeD
                     action: (
                       <ToastAction
                         altText="Undo the work object deletion"
-                        onClick={() => setWorkObjects(oldWorkObjects)}
+                        onClick={() => workObjectsState.setWorkObjects(oldWorkObjects)}
                       >
                         Undo
                       </ToastAction>
                     ),
                   })
-                  deleteWorkObject(workObject)
+                  workObjectsState.deleteWorkObject(workObject)
                 }}
               />
             ))}
