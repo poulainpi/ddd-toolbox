@@ -12,10 +12,11 @@ import {
   FormInput,
 } from '@ddd-toolbox/ui'
 import { useForm } from 'react-hook-form'
-import { changeStoryName, useStoryName } from '../states/use-story-name'
+import { getUserPreferences, useEditor, useValue } from 'tldraw'
 
 export function StoryName() {
-  const name = useStoryName()
+  const editor = useEditor()
+  const name = useValue('name', () => editor.getDocumentSettings().name || 'untitled', [])
 
   return (
     <Dialog>
@@ -30,7 +31,10 @@ export function StoryName() {
           <DialogDescription>Change the name of your story here.</DialogDescription>
         </DialogHeader>
 
-        <ChangeStoryNameForm initialName={name} onSubmit={(newName) => changeStoryName(newName)} />
+        <ChangeStoryNameForm
+          initialName={name}
+          onSubmit={(newName) => editor.updateDocumentSettings({ name: newName })}
+        />
 
         <DialogFooter>
           <DialogClose asChild>
