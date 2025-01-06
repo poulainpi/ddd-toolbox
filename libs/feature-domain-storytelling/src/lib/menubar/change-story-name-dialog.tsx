@@ -1,43 +1,45 @@
 import {
   Button,
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   Form,
   FormInput,
 } from '@ddd-toolbox/ui'
 import { useForm } from 'react-hook-form'
 import { useStoryName } from '../states/use-story-name'
+import { UseDisclosureReturn } from '@ddd-toolbox/util'
 
-export function StoryName() {
+export interface StoryNameProps {
+  disclosure: UseDisclosureReturn
+  isNewStory: boolean
+}
+
+export function ChangeStoryNameDialog({ disclosure, isNewStory }: StoryNameProps) {
   const { storyName, setStoryName } = useStoryName()
 
+  function onSubmit(newName: string) {
+    setStoryName(newName)
+    disclosure.close()
+  }
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="sm">
-          {storyName}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={disclosure.isOpen} onOpenChange={disclosure.setIsOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit story name</DialogTitle>
-          <DialogDescription>Change the name of your story here.</DialogDescription>
+          <DialogTitle>{isNewStory ? 'New' : 'Edit'} story name </DialogTitle>
+          <DialogDescription>{isNewStory ? 'Create' : 'Change'} the name of your story here.</DialogDescription>
         </DialogHeader>
 
-        <ChangeStoryNameForm initialName={storyName} onSubmit={(newName) => setStoryName(newName)} />
+        <ChangeStoryNameForm initialName={storyName} onSubmit={onSubmit} />
 
         <DialogFooter>
-          <DialogClose asChild>
-            <Button type="submit" form="story-name">
-              Save
-            </Button>
-          </DialogClose>
+          <Button type="submit" form="story-name">
+            Save
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

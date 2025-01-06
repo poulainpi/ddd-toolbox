@@ -14,10 +14,11 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@ddd-toolbox/ui'
-import { getUserPreferences, setUserPreferences, TLUserPreferences, track, useEditor } from 'tldraw'
+import { getUserPreferences, setUserPreferences, TLUserPreferences, useEditor, useValue } from 'tldraw'
 import {
   DownloadIcon,
   ExternalLinkIcon,
+  FilePlusIcon,
   FolderIcon,
   GithubIcon,
   ImageDownIcon,
@@ -26,13 +27,17 @@ import {
   SunMoonIcon,
 } from 'lucide-react'
 
-export const AppMenu = track(function AppMenu() {
+export interface AppMenuProps {
+  newStory: () => void
+}
+
+export function AppMenu({ newStory }: AppMenuProps) {
   const editor = useEditor()
-  const instanceState = editor.getInstanceState()
-  const userPreferences = getUserPreferences()
+  const gridModeActivated = useValue('grid mode activated', () => editor.getInstanceState().isGridMode, [])
+  const userPreferences = useValue('user preferences', getUserPreferences, [])
   const theme = userPreferences.colorScheme ?? 'system'
 
-  const changeUserPreferences = (newPreferences: Partial<TLUserPreferences>) => {
+  function changeUserPreferences(newPreferences: Partial<TLUserPreferences>) {
     setUserPreferences({
       ...getUserPreferences(),
       ...newPreferences,
@@ -75,6 +80,11 @@ export const AppMenu = track(function AppMenu() {
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
+
+          <DropdownMenuItem onClick={newStory}>
+            <FilePlusIcon />
+            <span>New story</span>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
 
@@ -93,8 +103,8 @@ export const AppMenu = track(function AppMenu() {
                 Always snap
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
-                checked={instanceState.isGridMode}
-                onCheckedChange={() => editor.updateInstanceState({ isGridMode: !instanceState.isGridMode })}
+                checked={gridModeActivated}
+                onCheckedChange={() => editor.updateInstanceState({ isGridMode: !gridModeActivated })}
                 closeOnSelect={false}
               >
                 Show grid
@@ -141,4 +151,4 @@ export const AppMenu = track(function AppMenu() {
       </DropdownMenuContent>
     </DropdownMenu>
   )
-})
+}
