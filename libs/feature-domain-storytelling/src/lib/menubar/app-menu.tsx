@@ -26,6 +26,7 @@ import {
   SettingsIcon,
   SunMoonIcon,
 } from 'lucide-react'
+import { useStoryPersistance } from '../states/use-story-persistance'
 
 export interface AppMenuProps {
   newStory: () => void
@@ -36,6 +37,7 @@ export function AppMenu({ newStory }: AppMenuProps) {
   const gridModeActivated = useValue('grid mode activated', () => editor.getInstanceState().isGridMode, [])
   const userPreferences = useValue('user preferences', getUserPreferences, [])
   const theme = userPreferences.colorScheme ?? 'system'
+  const { open, saveAs } = useStoryPersistance()
 
   function changeUserPreferences(newPreferences: Partial<TLUserPreferences>) {
     setUserPreferences({
@@ -54,12 +56,12 @@ export function AppMenu({ newStory }: AppMenuProps) {
 
       <DropdownMenuContent>
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={open}>
             <FolderIcon />
             <span>Open</span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={saveAs}>
             <DownloadIcon />
             <span>Save to...</span>
           </DropdownMenuItem>

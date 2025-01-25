@@ -13,6 +13,8 @@ import { PlayStoryZone } from './play-story-zone'
 import { useTheme } from '@ddd-toolbox/ui'
 import { ToolBar } from './tool-bar'
 import { Menubar } from './menubar/menubar'
+import { changeHappened } from './states/use-story-persistance'
+import { BrowserListener } from './browser-listener'
 
 const components: TLComponents = {
   OnTheCanvas: ShapeArrows,
@@ -37,6 +39,8 @@ export function DomainStorytelling() {
             editor.shapeUtils.arrow = new ArrowShapeUtil(editor)
 
             registerSideEffects(editor)
+
+            editor.store.listen(() => changeHappened(), { scope: 'document' })
           }}
           isShapeHidden={(shape, editor) => {
             return (
@@ -44,8 +48,9 @@ export function DomainStorytelling() {
               (editor.getCurrentTool() as PlayStoryToolUtil).isHidden(shape, storyChangedUpdater)
             )
           }}
-          persistenceKey="domain-storytelling"
+          persistenceKey={process.env.NODE_ENV === 'development' ? 'domain-storytelling' : undefined}
         >
+          <BrowserListener />
           <Menubar />
           <DomainObjectsPanel />
           <ToolBar />
