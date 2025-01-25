@@ -1,7 +1,7 @@
 import { TLComponents, Tldraw, useAtom } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
-import { DomainObjectsPanel } from './panel/domain-objects-panel'
+import { DomainObjectsPanel } from './domain-objects-panel/domain-objects-panel'
 import { ActorToolUtil } from './tools/actor-tool-util'
 import { ShapeArrows } from './shape-arrows'
 import { registerSideEffects } from './shapes/side-effects'
@@ -15,11 +15,13 @@ import { ToolBar } from './tool-bar'
 import { Menubar } from './menubar/menubar'
 import { changeHappened } from './states/use-story-persistance'
 import { BrowserListener } from './browser-listener'
+import { ZoomPanel } from './zoom-panel'
 
 const components: TLComponents = {
   OnTheCanvas: ShapeArrows,
   Toolbar: null,
   MenuPanel: null,
+  NavigationPanel: null,
 }
 
 export function DomainStorytelling() {
@@ -55,6 +57,7 @@ export function DomainStorytelling() {
           <DomainObjectsPanel />
           <ToolBar />
           <PlayStoryZone storyChangedUpdater={storyChangedUpdater} />
+          <ZoomPanel />
         </Tldraw>
       </div>
     </div>

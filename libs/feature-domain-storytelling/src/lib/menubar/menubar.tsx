@@ -20,7 +20,7 @@ export const Menubar = track(function Menubar() {
   }
 
   return (
-    <div className="absolute top-0 left-0 bg-muted/50 p-1 pr-3 flex items-center gap-1">
+    <div className="absolute top-0 left-0 bg-muted/50 p-1 flex items-center gap-1">
       <AppMenu newStory={newStory} />
       <Button variant="ghost" size="sm" onClick={renameStoryDisclosure.open}>
         {storyName}
