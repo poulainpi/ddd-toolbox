@@ -1,17 +1,11 @@
-import { lazy, memo, Suspense } from 'react'
-import { LoaderCircle, LucideProps } from 'lucide-react'
-import dynamicIconImports from 'lucide-react/dynamicIconImports'
+import { memo } from 'react'
+import { LucideProps } from 'lucide-react'
+import { DynamicIcon, IconName } from 'lucide-react/dynamic'
 
 interface LoadableIconProps extends Omit<LucideProps, 'ref'> {
-  name: keyof typeof dynamicIconImports
+  name: IconName
 }
 
 export const LoadableIcon = memo(({ name, ...props }: LoadableIconProps) => {
-  const LucideIcon = lazy(dynamicIconImports[name])
-
-  return (
-    <Suspense fallback={<LoaderCircle className="animate-spin" {...props} />}>
-      <LucideIcon {...props} />
-    </Suspense>
-  )
+  return <DynamicIcon name={name} {...props} />
 })

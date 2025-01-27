@@ -15,10 +15,10 @@ import {
 } from '@ddd-toolbox/ui'
 import { PlusIcon, SettingsIcon } from 'lucide-react'
 import { cn } from '@ddd-toolbox/util'
-import dynamicIconImports from 'lucide-react/dynamicIconImports'
 import { UseWorkObjectsReturn } from '../states/use-work-objects'
 import { useForm } from 'react-hook-form'
 import { UseActorsReturn } from '../states/use-actors'
+import { dynamicIconImports, IconName } from 'lucide-react/dynamic'
 
 export interface CustomizeDomainObjectsDialogProps {
   actorsState: UseActorsReturn
@@ -130,7 +130,7 @@ function DeleteDomainObjectButton({ icon, onClick }: { icon: string; onClick: ()
       className={cn('[&_svg]:size-6 hover:text-destructive-foreground hover:bg-destructive/90')}
       onClick={onClick}
     >
-      <LoadableIcon name={icon as keyof typeof dynamicIconImports} />
+      <LoadableIcon name={icon as IconName} />
     </Button>
   )
 }
@@ -147,7 +147,7 @@ function AddDomainObjectForm({
   function onSubmit({ icon }: { icon: string }) {
     if (alreadyUsedDomainObjects.includes(icon)) {
       form.setError('icon', { message: `"${icon}" is already used` })
-    } else if (dynamicIconImports[icon as keyof typeof dynamicIconImports] === undefined) {
+    } else if (dynamicIconImports[icon as IconName] === undefined) {
       form.setError('icon', { message: 'Icon not found' })
     } else {
       form.setValue('icon', '')

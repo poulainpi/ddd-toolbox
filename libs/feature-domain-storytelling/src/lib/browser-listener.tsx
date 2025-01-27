@@ -7,7 +7,6 @@ export const BrowserListener = track(function BrowserListener() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      console.log(e)
       switch (e.key) {
         case 's': {
           if (isControlKeyPressed(e)) {

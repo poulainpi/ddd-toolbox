@@ -1,12 +1,12 @@
 import { track, useEditor } from 'tldraw'
 import { Button, LoadableIcon } from '@ddd-toolbox/ui'
-import dynamicIconImports from 'lucide-react/dynamicIconImports'
 import { cn } from '@ddd-toolbox/util'
 import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
 import { PlayStoryToolUtil } from '../tools/play-story-tool-util'
 import { useWorkObjects } from '../states/use-work-objects'
 import { CustomizeDomainObjectsDialog } from './customize-domain-objects-dialog'
 import { useActors } from '../states/use-actors'
+import { IconName } from 'lucide-react/dynamic'
 
 export const DomainObjectsPanel = track(function DomainObjectsPanel() {
   const editor = useEditor()
@@ -52,7 +52,7 @@ function DomainObjectButton({ type, icon }: { type: 'actor' | 'work-object'; ico
         editor.setCurrentTool(type, { icon })
       }}
     >
-      <LoadableIcon name={icon as keyof typeof dynamicIconImports} />
+      <LoadableIcon name={icon as IconName} />
     </Button>
   )
 }

@@ -9,7 +9,7 @@ import {
   useDefaultColorTheme,
 } from 'tldraw'
 import { LoadableIcon } from '@ddd-toolbox/ui'
-import dynamicIconImports from 'lucide-react/dynamicIconImports'
+import { IconName } from 'lucide-react/dynamic'
 
 export type TLDomainObjectShape<Type extends string> = TLBaseShape<
   Type,
@@ -38,7 +38,7 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
     return (
       <HTMLContainer className="flex flex-col items-center relative" style={{ pointerEvents: 'all' }}>
         <LoadableIcon
-          name={shape.props.icon as keyof typeof dynamicIconImports}
+          name={shape.props.icon as IconName}
           size={this.getSize() - 30}
           className="mt-1"
           color={theme[shape.props.color].fill}
