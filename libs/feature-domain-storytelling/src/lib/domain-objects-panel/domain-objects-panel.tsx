@@ -40,7 +40,7 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
 function DomainObjectButton({ type, icon }: { type: 'actor' | 'work-object'; icon: string }) {
   const editor = useEditor()
   const tool = editor.getCurrentTool()
-  const isToolSelected = tool instanceof DomainObjectToolUtil && tool.icon === icon
+  const isToolSelected = tool instanceof DomainObjectToolUtil && tool.icon === icon && tool.id === type
 
   return (
     <Button
