@@ -1,4 +1,4 @@
-import { TLComponents, Tldraw, useAtom } from 'tldraw'
+import { DefaultSizeStyle, TLComponents, Tldraw, useAtom } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
 import { DomainObjectsPanel } from './domain-objects-panel/domain-objects-panel'
@@ -43,6 +43,8 @@ export function DomainStorytelling() {
             registerSideEffects(editor)
 
             editor.store.listen(() => changeHappened(), { scope: 'document' })
+
+            editor.setStyleForNextShapes(DefaultSizeStyle, 's')
           }}
           isShapeHidden={(shape, editor) => {
             return (

@@ -54,7 +54,7 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
     const activitiesArrows = getActivitiesArrows(this.editor)
     const newActivityNumber = this.parseActivityNumber(arrow.props.text)
     const arrowWithSameActivityNumber = activitiesArrows.find(
-      (currentArrow) => currentArrow.meta.activityNumber === newActivityNumber && currentArrow.id !== arrow.id
+      (currentArrow) => currentArrow.meta.activityNumber === newActivityNumber && currentArrow.id !== arrow.id,
     )
 
     if (arrowWithSameActivityNumber != null) {
@@ -79,14 +79,14 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
               type: currentArrow.type,
               props: {
                 text: `${updatedActivityNumber}. ${currentArrow.props.text.substring(
-                  currentArrow.props.text.indexOf('.') + 2
+                  currentArrow.props.text.indexOf('.') + 2,
                 )}`,
               },
               meta: {
                 activityNumber: updatedActivityNumber,
               },
             }
-          })
+          }),
       )
       return true
     }

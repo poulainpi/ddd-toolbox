@@ -50,10 +50,11 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
           align="middle"
           verticalAlign="end"
           font="draw"
-          fontSize={20}
+          fontSize={18}
           labelColor={theme[shape.props.color].fill}
           lineHeight={1}
           isSelected={isSelected}
+          textWidth={140}
         />
       </HTMLContainer>
     )
