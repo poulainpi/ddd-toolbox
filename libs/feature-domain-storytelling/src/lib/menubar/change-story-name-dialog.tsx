@@ -38,7 +38,7 @@ export function ChangeStoryNameDialog({ disclosure, isNewStory }: StoryNameProps
 
         <DialogFooter>
           <Button type="submit" form="story-name">
-            Save
+            {isNewStory ? 'Create' : 'Save'}
           </Button>
         </DialogFooter>
       </DialogContent>
