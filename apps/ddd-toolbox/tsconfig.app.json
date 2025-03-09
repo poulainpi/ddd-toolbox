@@ -20,8 +20,11 @@
   ],
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
-    { "path": "../../libs/util" },
-    { "path": "../../libs/ui" },
-    { "path": "../../libs/feature-domain-storytelling" }
+    {
+      "path": "../../libs/feature-domain-storytelling"
+    },
+    {
+      "path": "../../libs/ui"
+    }
   ]
 }
