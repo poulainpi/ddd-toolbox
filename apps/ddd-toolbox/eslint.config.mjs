@@ -1,7 +1,7 @@
-const nx = require('@nx/eslint-plugin')
-const baseConfig = require('../../eslint.config.js')
+import baseConfig from '../../eslint.config.mjs';
+import nx from '@nx/eslint-plugin';
 
-module.exports = [
+export default [
   ...baseConfig,
   ...nx.configs['flat/react'],
   {

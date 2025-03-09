@@ -13,7 +13,7 @@
     ]
   },
   "include": [
-    "vite.config.ts",
+    "vite.config.mts",
     "vite.config.mts",
     "vitest.config.ts",
     "vitest.config.mts",
