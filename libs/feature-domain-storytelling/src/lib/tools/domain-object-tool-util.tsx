@@ -1,4 +1,4 @@
-import { StateNode } from 'tldraw'
+import { createShapeId, StateNode } from 'tldraw'
 
 export abstract class DomainObjectToolUtil extends StateNode {
   public icon = ''
@@ -8,15 +8,19 @@ export abstract class DomainObjectToolUtil extends StateNode {
     this.editor.setCursor({ type: 'cross', rotation: 0 })
   }
 
-  override onPointerDown() {
+  override onPointerUp() {
     const { currentPagePoint } = this.editor.inputs
+    const id = createShapeId()
     this.editor.createShape({
+      id,
       type: this.getShapeType(),
       x: currentPagePoint.x - this.getSize() / 2,
       y: currentPagePoint.y - this.getSize() / 2,
       props: { icon: this.icon },
     })
-    this.editor.setCurrentTool('select')
+
+    this.editor.select(id)
+    this.editor.setEditingShape(id)
   }
 
   abstract getShapeType(): string
