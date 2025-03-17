@@ -1,15 +1,16 @@
 import {
   Geometry2d,
   HTMLContainer,
+  PlainTextLabel,
   Rectangle2d,
   ShapeUtil,
-  TextLabel,
   TLBaseShape,
   TLDefaultColorStyle,
   useDefaultColorTheme,
 } from 'tldraw'
 import { LoadableIcon } from '@ddd-toolbox/ui'
 import { IconName } from 'lucide-react/dynamic'
+import { useCallback } from 'react'
 
 export type TLDomainObjectShape<Type extends string> = TLBaseShape<
   Type,
@@ -35,6 +36,17 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
 
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id
 
+    const handleKeyDown = useCallback(
+      (e: KeyboardEvent) => {
+        if (this.editor.getEditingShapeId() !== shape.id) return
+
+        if (e.key === 'Enter' && !e.shiftKey) {
+          this.editor.complete()
+        }
+      },
+      [this.editor, shape],
+    )
+
     return (
       <HTMLContainer className="flex flex-col items-center relative" style={{ pointerEvents: 'all' }}>
         <LoadableIcon
@@ -43,7 +55,7 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
           className="mt-1"
           color={theme[shape.props.color].fill}
         />
-        <TextLabel
+        <PlainTextLabel
           shapeId={shape.id}
           text={shape.props.text}
           type={shape.type}
@@ -55,6 +67,7 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
           lineHeight={1}
           isSelected={isSelected}
           textWidth={140}
+          onKeyDown={handleKeyDown}
         />
       </HTMLContainer>
     )
