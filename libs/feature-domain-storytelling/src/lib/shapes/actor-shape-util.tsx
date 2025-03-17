@@ -13,11 +13,15 @@ export class ActorShapeUtil extends DomainObjectShapeUtil<'actor'> {
     icon: T.string,
   }
 
-  getDefaultProps(): TLActorShape['props'] {
+  override getDefaultProps(): TLActorShape['props'] {
     return { text: '', color: 'black', icon: 'user' }
   }
 
-  getSize(): number {
+  override getSize(): number {
     return ACTOR_SHAPE_SIZE
+  }
+
+  override getLabelYPosition(): number {
+    return 74
   }
 }

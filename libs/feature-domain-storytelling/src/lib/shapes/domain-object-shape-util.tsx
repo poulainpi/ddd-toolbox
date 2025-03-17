@@ -60,7 +60,7 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
           text={shape.props.text}
           type={shape.type}
           align="middle"
-          verticalAlign="end"
+          verticalAlign="start"
           font="draw"
           fontSize={18}
           labelColor={theme[shape.props.color].fill}
@@ -68,6 +68,7 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
           isSelected={isSelected}
           textWidth={140}
           onKeyDown={handleKeyDown}
+          style={{ position: 'absolute', top: this.getLabelYPosition() + 'px' }}
         />
       </HTMLContainer>
     )
@@ -90,4 +91,6 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
   }
 
   abstract getSize(): number
+
+  abstract getLabelYPosition(): number
 }

@@ -13,11 +13,15 @@ export class WorkObjectShapeUtil extends DomainObjectShapeUtil<'work-object'> {
     icon: T.string,
   }
 
-  getDefaultProps(): TLWorkObjectShape['props'] {
+  override getDefaultProps(): TLWorkObjectShape['props'] {
     return { text: '', color: 'black', icon: 'message-circle' }
   }
 
-  getSize(): number {
+  override getSize(): number {
     return WORK_OBJECT_SHAPE_SIZE
+  }
+
+  override getLabelYPosition(): number {
+    return 56
   }
 }
