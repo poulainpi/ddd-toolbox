@@ -1,8 +1,10 @@
-import { track, useEditor, useValue } from 'tldraw'
+import { track, useEditor } from 'tldraw'
 import { useEffect, useState } from 'react'
 import { MoveUpRightIcon } from 'lucide-react'
 import { Button, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
 import { ACTOR_SHAPE_SIZE } from './shapes/shapes-constants'
+import { ActorShapeUtil } from './shapes/actor-shape-util'
+import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
 
 export const ShapeMenu = track(function ShapeMenu() {
   const editor = useEditor()
@@ -11,7 +13,10 @@ export const ShapeMenu = track(function ShapeMenu() {
 
   useMouseDown() // trick because isDragging is not observable
 
-  if (selectedShape == null) {
+  if (
+    selectedShape == null ||
+    (selectedShape.type !== ActorShapeUtil.type && selectedShape.type !== WorkObjectShapeUtil.type)
+  ) {
     return null
   }
 
@@ -34,7 +39,16 @@ export const ShapeMenu = track(function ShapeMenu() {
         ></div>
       </PopoverAnchor>
 
-      <PopoverContent side="right" align="start" hasOutAnimation={false} className="w-24">
+      <PopoverContent
+        side="right"
+        align="start"
+        hasOpenAnimation={false}
+        hasOutAnimation={false}
+        onOpenAutoFocus={(event) => {
+          event.preventDefault() // prevent focus to let the shape input focused
+        }}
+        className="w-24"
+      >
         <Button
           variant="outline"
           size="icon"
