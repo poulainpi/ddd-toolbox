@@ -3,7 +3,6 @@ import 'tldraw/tldraw.css'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
 import { DomainObjectsPanel } from './domain-objects-panel/domain-objects-panel'
 import { ActorToolUtil } from './tools/actor-tool-util'
-import { ShapeArrows } from './shape-arrows'
 import { registerSideEffects } from './shapes/side-effects'
 import { ArrowShapeUtil } from './shapes/arrow-shape-util'
 import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
@@ -16,9 +15,10 @@ import { Menubar } from './menubar/menubar'
 import { changeHappened } from './states/use-story-persistance'
 import { BrowserListener } from './browser-listener'
 import { ZoomPanel } from './zoom-panel'
+import { ShapeMenu } from './shape-menu'
+import { ClickedArrowToolUtil } from './tools/clicked-arrow-tool-util'
 
 const components: TLComponents = {
-  OnTheCanvas: ShapeArrows,
   Toolbar: null,
   MenuPanel: null,
   NavigationPanel: null,
@@ -35,7 +35,7 @@ export function DomainStorytelling() {
         <Tldraw
           shapeUtils={[ActorShapeUtil, WorkObjectShapeUtil]}
           components={components}
-          tools={[ActorToolUtil, WorkObjectToolUtil, PlayStoryToolUtil]}
+          tools={[ActorToolUtil, WorkObjectToolUtil, PlayStoryToolUtil, ClickedArrowToolUtil]}
           onMount={(editor) => {
             // @ts-expect-error it's the only way to override the arrow shape util at the moment
             editor.shapeUtils.arrow = new ArrowShapeUtil(editor)
@@ -60,6 +60,7 @@ export function DomainStorytelling() {
           <ToolBar />
           <PlayStoryZone storyChangedUpdater={storyChangedUpdater} />
           <ZoomPanel />
+          <ShapeMenu />
         </Tldraw>
       </div>
     </div>

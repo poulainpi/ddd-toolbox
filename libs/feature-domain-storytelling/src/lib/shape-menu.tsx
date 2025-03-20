@@ -1,4 +1,4 @@
-import { track, useEditor } from 'tldraw'
+import { track, useEditor, useValue } from 'tldraw'
 import { useEffect, useState } from 'react'
 import { MoveUpRightIcon } from 'lucide-react'
 import { Button, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'

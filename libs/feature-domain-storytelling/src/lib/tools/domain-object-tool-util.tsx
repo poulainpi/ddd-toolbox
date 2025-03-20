@@ -5,7 +5,7 @@ export abstract class DomainObjectToolUtil extends StateNode {
 
   override onEnter({ icon }: { icon: string }) {
     this.icon = icon
-    this.editor.setCursor({ type: 'cross', rotation: 0 })
+    this.editor.setCursor({ type: 'cross' })
   }
 
   override onPointerUp() {
