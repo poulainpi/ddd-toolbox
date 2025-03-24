@@ -53,8 +53,8 @@ export const ShapeMenu = track(function ShapeMenu() {
           variant="outline"
           size="icon"
           onClick={() => {
-            editor.setCurrentTool('clicked-arrow')
             editor.setHintingShapes([selectedShape])
+            editor.setCurrentTool('clicked-arrow')
           }}
         >
           <MoveUpRightIcon />

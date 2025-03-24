@@ -47,7 +47,8 @@ function deleteArrowsWithoutStartAndEndBindingsOrStartEditing(editor: Editor) {
     if (['cross', 'grabbing'].includes(prev.cursor.type) && next.cursor.type === 'default') {
       const selectedShape = editor.getSelectedShapes()[0]
       if (selectedShape?.type === 'arrow' && !editor.inputs.isDragging) {
-        const hasStartAndEndBindings = editor.getBindingsFromShape(selectedShape, 'arrow').length >= 2
+        const bindings = editor.getBindingsFromShape(selectedShape, 'arrow')
+        const hasStartAndEndBindings = bindings.length >= 2 && bindings[0].toId != bindings[1].toId
         if (!hasStartAndEndBindings) {
           editor.deleteShape(selectedShape)
         } else if ((selectedShape as TLArrowShape).props.text.trim() === '') {
