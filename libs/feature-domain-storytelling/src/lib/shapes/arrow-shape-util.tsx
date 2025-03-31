@@ -19,10 +19,12 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
       return
     }
 
-    const thereWasANeedForAnUpdate = this.updateOtherArrowsActivityNumberIfNeeded(arrow)
-    if (!thereWasANeedForAnUpdate) {
+    if (newActivityNumber === arrow.meta.activityNumber) {
       this.trimEndOfTextOf(arrow)
+      return
     }
+
+    this.updateArrowsActivityNumberBasedOnChangedArrow(arrow)
   }
 
   private parseActivityNumber(text: string) {
@@ -50,7 +52,7 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
     ])
   }
 
-  private updateOtherArrowsActivityNumberIfNeeded(arrow: TLArrowShape): boolean {
+  private updateArrowsActivityNumberBasedOnChangedArrow(arrow: TLArrowShape) {
     const activitiesArrows = getActivitiesArrows(this.editor)
     const newActivityNumber = this.parseActivityNumber(arrow.props.text)
     const arrowWithSameActivityNumber = activitiesArrows.find(
@@ -88,9 +90,15 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
             }
           }),
       )
-      return true
+    } else {
+      this.editor.updateShape({
+        id: arrow.id,
+        type: arrow.type,
+        meta: {
+          activityNumber: newActivityNumber,
+        },
+      })
     }
-    return false
   }
 
   private trimEndOfTextOf(arrow: TLArrowShape) {
