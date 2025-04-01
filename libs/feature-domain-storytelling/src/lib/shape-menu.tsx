@@ -1,10 +1,15 @@
 import { track, useEditor } from 'tldraw'
 import { useEffect, useState } from 'react'
 import { MoveUpRightIcon } from 'lucide-react'
-import { Button, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
+import { Button, LoadableIcon, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
 import { ACTOR_SHAPE_SIZE } from './shapes/shapes-constants'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
 import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
+import { useActors } from './states/use-actors'
+import { useWorkObjects } from './states/use-work-objects'
+import { IconName } from 'lucide-react/dynamic'
+import { WorkObjectToolUtil } from './tools/work-object-tool-util'
+import { ActorToolUtil } from './tools/actor-tool-util'
 
 export const ShapeMenu = track(function ShapeMenu() {
   const editor = useEditor()
@@ -12,6 +17,9 @@ export const ShapeMenu = track(function ShapeMenu() {
   const isDragging = editor.inputs.isDragging
 
   useMouseDown() // trick because isDragging is not observable
+
+  const { actors } = useActors()
+  const { workObjects } = useWorkObjects()
 
   if (
     selectedShape == null ||
@@ -47,18 +55,49 @@ export const ShapeMenu = track(function ShapeMenu() {
         onOpenAutoFocus={(event) => {
           event.preventDefault() // prevent focus to let the shape input focused
         }}
-        className="w-24"
+        className="w-fit max-w-[170px] p-1 divide-y flex flex-col gap-1"
       >
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            editor.setHintingShapes([selectedShape])
-            editor.setCurrentTool('clicked-arrow')
-          }}
-        >
-          <MoveUpRightIcon />
-        </Button>
+        <div className="flex pb-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              editor.setHintingShapes([selectedShape])
+              editor.setCurrentTool('clicked-arrow')
+            }}
+          >
+            <MoveUpRightIcon />
+          </Button>
+        </div>
+
+        <div className="flex flex-wrap">
+          {selectedShape.type === ActorShapeUtil.type &&
+            workObjects.map((workObject) => (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  editor.selectNone()
+                  editor.setCurrentTool(WorkObjectToolUtil.id, { icon: workObject, initiatorShapeId: selectedShape.id })
+                }}
+              >
+                <LoadableIcon name={workObject as IconName} />
+              </Button>
+            ))}
+          {selectedShape.type === WorkObjectShapeUtil.type &&
+            actors.map((actor) => (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  editor.selectNone()
+                  editor.setCurrentTool(ActorToolUtil.id, { icon: actor, initiatorShapeId: selectedShape.id })
+                }}
+              >
+                <LoadableIcon name={actor as IconName} />
+              </Button>
+            ))}
+        </div>
       </PopoverContent>
     </Popover>
   )
