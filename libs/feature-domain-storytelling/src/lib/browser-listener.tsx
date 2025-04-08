@@ -1,12 +1,21 @@
-import { track } from 'tldraw'
+import { track, useEditor } from 'tldraw'
 import { useEffect } from 'react'
 import { useStoryPersistance } from './states/use-story-persistance'
 
 export const BrowserListener = track(function BrowserListener() {
   const { save, latestChangesSaved } = useStoryPersistance()
+  const editor = useEditor()
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement
+
+      if (target.tagName?.toLowerCase() === 'textarea') {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          editor.complete()
+        }
+      }
+
       switch (e.key) {
         case 's': {
           if (isControlKeyPressed(e)) {

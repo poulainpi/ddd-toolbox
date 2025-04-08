@@ -36,17 +36,6 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
 
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id
 
-    const handleKeyDown = useCallback(
-      (e: KeyboardEvent) => {
-        if (this.editor.getEditingShapeId() !== shape.id) return
-
-        if (e.key === 'Enter' && !e.shiftKey) {
-          this.editor.complete()
-        }
-      },
-      [this.editor, shape],
-    )
-
     return (
       <HTMLContainer className="flex flex-col items-center relative" style={{ pointerEvents: 'all' }}>
         <LoadableIcon
@@ -67,7 +56,6 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
           lineHeight={1}
           isSelected={isSelected}
           textWidth={140}
-          onKeyDown={handleKeyDown}
           style={{ position: 'absolute', top: this.getLabelYPosition() + 'px' }}
         />
       </HTMLContainer>
