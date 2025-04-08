@@ -15,7 +15,11 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
 
     const newActivityNumber = this.parseActivityNumber(arrow.props.text)
     if (!Number.isInteger(newActivityNumber)) {
-      this.initializeActivityNumberOf(arrow)
+      if (arrow.meta.activityNumber == null) {
+        this.initializeActivityNumberOf(arrow)
+      } else {
+        this.updateWithActivityNumber(arrow, arrow.meta.activityNumber as number)
+      }
       return
     }
 
@@ -38,15 +42,19 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
       .filter(Number.isInteger)
 
     const newActivityNumber = Math.max(0, ...activitiesNumbers) + 1
+    this.updateWithActivityNumber(shape, newActivityNumber)
+  }
+
+  private updateWithActivityNumber(shape: TLArrowShape, activityNumber: number) {
     this.editor.updateShapes<TLArrowShape>([
       {
         id: shape.id,
         type: shape.type,
         props: {
-          text: `${newActivityNumber}. ${shape.props.text.trimEnd()}`,
+          text: `${activityNumber}. ${shape.props.text.trimEnd()}`,
         },
         meta: {
-          activityNumber: newActivityNumber,
+          activityNumber: activityNumber,
         },
       },
     ])
