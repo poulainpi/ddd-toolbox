@@ -1,42 +1,25 @@
-import { Atom, track, useEditor } from 'tldraw'
+import { track } from 'tldraw'
 import { PlayIcon, SquareIcon, StepBackIcon, StepForwardIcon } from 'lucide-react'
 import { Button } from '@ddd-toolbox/ui'
-import { PlayStoryToolUtil } from './tools/play-story-tool-util'
 import { ReactElement } from 'react'
+import { useStoryPlay } from './states/use-story-play'
 
-export const PlayStoryZone = track(function PlayStoryZone({
-  storyChangedUpdater,
-}: {
-  storyChangedUpdater: Atom<number, unknown>
-}) {
-  const editor = useEditor()
-  const currentTool = editor.getCurrentTool()
-  const isStoryPlaying = currentTool instanceof PlayStoryToolUtil
-  storyChangedUpdater.get()
+export const PlayStoryZone = track(function PlayStoryZone() {
+  const { isPlaying, currentStep, stepsCount, stepBackward, stepForward, play, stop } = useStoryPlay()
 
   return (
     <div className="absolute w-52 bg-muted/50 rounded-md shadow-md top-4 right-48 p-2 z-[300] flex items-center">
-      {isStoryPlaying ? (
+      {isPlaying ? (
         <>
-          <StoryButton Icon={<StepBackIcon />} onClick={() => (currentTool as PlayStoryToolUtil).stepBackward()} />
-          <StoryButton Icon={<StepForwardIcon />} onClick={() => (currentTool as PlayStoryToolUtil).stepForward()} />
-          <StoryButton
-            Icon={<SquareIcon />}
-            onClick={() => {
-              editor.setCurrentTool('select')
-            }}
-          />
+          <StoryButton Icon={<StepBackIcon />} onClick={stepBackward} />
+          <StoryButton Icon={<StepForwardIcon />} onClick={stepForward} />
+          <StoryButton Icon={<SquareIcon />} onClick={stop} />
           <div className="text-foreground text-lg ml-2">
-            {currentTool.getCurrentStep()} / {currentTool.getStepsCount()}
+            {currentStep} / {stepsCount}
           </div>
         </>
       ) : (
-        <StoryButton
-          Icon={<PlayIcon />}
-          onClick={() => {
-            editor.setCurrentTool(PlayStoryToolUtil.id)
-          }}
-        />
+        <StoryButton Icon={<PlayIcon />} onClick={play} />
       )}
     </div>
   )

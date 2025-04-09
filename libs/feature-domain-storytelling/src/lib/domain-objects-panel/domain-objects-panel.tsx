@@ -2,15 +2,14 @@ import { track, useEditor } from 'tldraw'
 import { Button, LoadableIcon } from '@ddd-toolbox/ui'
 import { cn } from '@ddd-toolbox/util'
 import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
-import { PlayStoryToolUtil } from '../tools/play-story-tool-util'
 import { useWorkObjects } from '../states/use-work-objects'
 import { CustomizeDomainObjectsDialog } from './customize-domain-objects-dialog'
 import { useActors } from '../states/use-actors'
 import { IconName } from 'lucide-react/dynamic'
+import { useStoryPlay } from '../states/use-story-play'
 
 export const DomainObjectsPanel = track(function DomainObjectsPanel() {
-  const editor = useEditor()
-  const isStoryPlaying = editor.getCurrentTool() instanceof PlayStoryToolUtil
+  const { isPlaying: isStoryPlaying } = useStoryPlay()
   const actorsState = useActors()
   const workObjectsState = useWorkObjects()
 

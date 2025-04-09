@@ -1,4 +1,4 @@
-import { DefaultSizeStyle, TLComponents, Tldraw, useAtom } from 'tldraw'
+import { DefaultSizeStyle, TLComponents, Tldraw, useAtom, useValue } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
 import { DomainObjectsPanel } from './domain-objects-panel/domain-objects-panel'
@@ -7,7 +7,6 @@ import { registerSideEffects } from './shapes/side-effects'
 import { ArrowShapeUtil } from './shapes/arrow-shape-util'
 import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
 import { WorkObjectToolUtil } from './tools/work-object-tool-util'
-import { PlayStoryToolUtil } from './tools/play-story-tool-util'
 import { PlayStoryZone } from './play-story-zone'
 import { useTheme } from '@ddd-toolbox/ui'
 import { ToolBar } from './tool-bar'
@@ -17,6 +16,7 @@ import { BrowserListener } from './browser-listener'
 import { ZoomPanel } from './zoom-panel'
 import { ShapeMenu } from './shape-menu'
 import { ClickedArrowToolUtil } from './tools/clicked-arrow-tool-util'
+import { $hiddenShapesState } from './states/use-story-play'
 
 const components: TLComponents = {
   Toolbar: null,
@@ -25,7 +25,6 @@ const components: TLComponents = {
 }
 
 export function DomainStorytelling() {
-  const storyChangedUpdater = useAtom('storyChangedUpdater', 0)
   useTheme()
 
   return (
@@ -35,7 +34,7 @@ export function DomainStorytelling() {
         <Tldraw
           shapeUtils={[ActorShapeUtil, WorkObjectShapeUtil]}
           components={components}
-          tools={[ActorToolUtil, WorkObjectToolUtil, PlayStoryToolUtil, ClickedArrowToolUtil]}
+          tools={[ActorToolUtil, WorkObjectToolUtil, ClickedArrowToolUtil]}
           onMount={(editor) => {
             // @ts-expect-error it's the only way to override the arrow shape util at the moment
             editor.shapeUtils.arrow = new ArrowShapeUtil(editor)
@@ -46,11 +45,8 @@ export function DomainStorytelling() {
 
             editor.setStyleForNextShapes(DefaultSizeStyle, 's')
           }}
-          isShapeHidden={(shape, editor) => {
-            return (
-              editor.getCurrentToolId() === PlayStoryToolUtil.id &&
-              (editor.getCurrentTool() as PlayStoryToolUtil).isHidden(shape, storyChangedUpdater)
-            )
+          isShapeHidden={(shape, _editor) => {
+            return $hiddenShapesState.get().has(shape.id)
           }}
           persistenceKey={process.env.NODE_ENV === 'development' ? 'domain-storytelling' : undefined}
         >
@@ -58,7 +54,7 @@ export function DomainStorytelling() {
           <Menubar />
           <DomainObjectsPanel />
           <ToolBar />
-          <PlayStoryZone storyChangedUpdater={storyChangedUpdater} />
+          <PlayStoryZone />
           <ZoomPanel />
           <ShapeMenu />
         </Tldraw>
