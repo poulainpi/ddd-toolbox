@@ -1,4 +1,4 @@
-import { DefaultSizeStyle, TLComponents, Tldraw, useAtom, useValue } from 'tldraw'
+import { DefaultSizeStyle, TLComponents, Tldraw } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
 import { DomainObjectsPanel } from './domain-objects-panel/domain-objects-panel'
@@ -7,7 +7,6 @@ import { registerSideEffects } from './shapes/side-effects'
 import { ArrowShapeUtil } from './shapes/arrow-shape-util'
 import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
 import { WorkObjectToolUtil } from './tools/work-object-tool-util'
-import { PlayStoryZone } from './play-story-zone'
 import { useTheme } from '@ddd-toolbox/ui'
 import { ToolBar } from './tool-bar'
 import { Menubar } from './menubar/menubar'
@@ -55,7 +54,6 @@ export function DomainStorytelling() {
           <Menubar />
           <DomainObjectsPanel />
           <ToolBar />
-          <PlayStoryZone />
           <ZoomPanel />
           <ShapeMenu />
         </Tldraw>

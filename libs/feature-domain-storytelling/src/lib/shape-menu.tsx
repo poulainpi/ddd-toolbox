@@ -74,6 +74,7 @@ export const ShapeMenu = track(function ShapeMenu() {
           {selectedShape.type === ActorShapeUtil.type &&
             workObjects.map((workObject) => (
               <Button
+                key={workObject}
                 variant="ghost"
                 size="icon"
                 onClick={() => {
@@ -87,6 +88,7 @@ export const ShapeMenu = track(function ShapeMenu() {
           {selectedShape.type === WorkObjectShapeUtil.type &&
             actors.map((actor) => (
               <Button
+                key={actor}
                 variant="ghost"
                 size="icon"
                 onClick={() => {
