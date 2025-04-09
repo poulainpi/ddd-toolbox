@@ -15,6 +15,7 @@ export const ShapeMenu = track(function ShapeMenu() {
   const editor = useEditor()
   const selectedShape = editor.getOnlySelectedShape()
   const isDragging = editor.inputs.isDragging
+  const isEditingShape = editor.getEditingShapeId() !== null
 
   useMouseDown() // trick because isDragging is not observable
 
@@ -34,7 +35,7 @@ export const ShapeMenu = track(function ShapeMenu() {
   })
 
   return (
-    <Popover open={!isDragging}>
+    <Popover open={!isDragging && !isEditingShape}>
       <PopoverAnchor asChild={true}>
         <div
           className="absolute invisible"
@@ -70,23 +71,9 @@ export const ShapeMenu = track(function ShapeMenu() {
           </Button>
         </div>
 
-        <div className="flex flex-wrap">
-          {selectedShape.type === ActorShapeUtil.type &&
-            workObjects.map((workObject) => (
-              <Button
-                key={workObject}
-                variant="ghost"
-                size="icon"
-                onClick={() => {
-                  editor.selectNone()
-                  editor.setCurrentTool(WorkObjectToolUtil.id, { icon: workObject, initiatorShapeId: selectedShape.id })
-                }}
-              >
-                <LoadableIcon name={workObject as IconName} />
-              </Button>
-            ))}
-          {selectedShape.type === WorkObjectShapeUtil.type &&
-            actors.map((actor) => (
+        {selectedShape.type === WorkObjectShapeUtil.type && (
+          <div className="flex flex-wrap">
+            {actors.map((actor) => (
               <Button
                 key={actor}
                 variant="ghost"
@@ -99,7 +86,29 @@ export const ShapeMenu = track(function ShapeMenu() {
                 <LoadableIcon name={actor as IconName} />
               </Button>
             ))}
-        </div>
+          </div>
+        )}
+
+        {(selectedShape.type === ActorShapeUtil.type || selectedShape.type === WorkObjectShapeUtil.type) && (
+          <div className="flex flex-wrap">
+            {workObjects.map((workObject) => (
+              <Button
+                key={workObject}
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  editor.selectNone()
+                  editor.setCurrentTool(WorkObjectToolUtil.id, {
+                    icon: workObject,
+                    initiatorShapeId: selectedShape.id,
+                  })
+                }}
+              >
+                <LoadableIcon name={workObject as IconName} />
+              </Button>
+            ))}
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   )

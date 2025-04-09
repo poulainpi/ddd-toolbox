@@ -62,7 +62,7 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
             />
           </div>
 
-          <div className="flex mt-2">
+          <div className="flex flex-wrap mt-2">
             {actors.map((actor) => (
               <DeleteDomainObjectButton
                 key={actor}
@@ -93,7 +93,7 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
             />
           </div>
 
-          <div className="flex mt-2">
+          <div className="flex flex-wrap mt-2">
             {workObjects.map((workObject) => (
               <DeleteDomainObjectButton
                 key={workObject}
