@@ -7,6 +7,7 @@ export function registerSideEffects(editor: Editor) {
   disablePreciseBindings(editor)
   fixArrowPositioning(editor)
   deleteArrowsWithoutStartAndEndBindingsOrStartEditing(editor)
+  deleteOrphanArrowsWhenDeletingShape(editor)
 }
 
 function disablePreciseBindings(editor: Editor) {
@@ -63,6 +64,20 @@ function deleteArrowsWithoutStartAndEndBindingsOrStartEditing(editor: Editor) {
       }
     }
     return next
+  })
+}
+
+function deleteOrphanArrowsWhenDeletingShape(editor: Editor) {
+  editor.sideEffects.registerAfterDeleteHandler('shape', (shape) => {
+    editor.getCurrentPageShapes().forEach((shape) => {
+      if (shape.type === 'arrow') {
+        const bindings = editor.getBindingsFromShape(shape, 'arrow')
+        const hasStartAndEndBindings = bindings.length >= 2
+        if (!hasStartAndEndBindings) {
+          editor.deleteShape(shape)
+        }
+      }
+    })
   })
 }
 
