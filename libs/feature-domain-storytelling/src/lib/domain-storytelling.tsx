@@ -22,6 +22,7 @@ const components: TLComponents = {
   MenuPanel: null,
   NavigationPanel: null,
   StylePanel: null,
+  ContextMenu: null,
 }
 
 export function DomainStorytelling() {

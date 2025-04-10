@@ -1,6 +1,6 @@
 import { track, useEditor } from 'tldraw'
 import { useEffect, useState } from 'react'
-import { MoveUpRightIcon } from 'lucide-react'
+import { MoveUpRightIcon, Trash2Icon } from 'lucide-react'
 import { Button, LoadableIcon, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
 import { ACTOR_SHAPE_SIZE } from './shapes/shapes-constants'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
@@ -68,6 +68,15 @@ export const ShapeMenu = track(function ShapeMenu() {
             }}
           >
             <MoveUpRightIcon />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              editor.deleteShape(selectedShape)
+            }}
+          >
+            <Trash2Icon />
           </Button>
         </div>
 
