@@ -36,6 +36,7 @@ export function useStoryPersistance(): UseStoryPersistanceReturn {
   }
 
   async function save() {
+    const fileHandle = $persistanceState.get().fileHandle
     if (fileHandle == null) {
       await saveAs()
     } else {
