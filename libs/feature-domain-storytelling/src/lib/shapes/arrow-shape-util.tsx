@@ -41,8 +41,20 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
       .map((shape) => shape.meta.activityNumber as number)
       .filter(Number.isInteger)
 
-    const newActivityNumber = Math.max(0, ...activitiesNumbers) + 1
+    const newActivityNumber = this.findNextActivityNumber(activitiesNumbers)
     this.updateWithActivityNumber(shape, newActivityNumber)
+  }
+
+  private findNextActivityNumber(existingActivityNumbers: number[]) {
+    const sortedNumbers = [...new Set(existingActivityNumbers)].sort((a, b) => a - b)
+
+    for (let i = 0; i < sortedNumbers.length; i++) {
+      if (sortedNumbers[i] !== i + 1) {
+        return i + 1 // Return the first missing number
+      }
+    }
+
+    return sortedNumbers.length + 1 // If no missing number, return the next number
   }
 
   private updateWithActivityNumber(shape: TLArrowShape, activityNumber: number) {
