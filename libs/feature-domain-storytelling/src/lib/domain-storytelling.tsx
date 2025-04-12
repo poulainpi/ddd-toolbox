@@ -18,6 +18,7 @@ import { ClickedArrowToolUtil } from './tools/clicked-arrow-tool-util'
 import { $hiddenShapesState } from './states/use-story-play'
 
 const components: TLComponents = {
+  InFrontOfTheCanvas: ShapeMenu,
   Toolbar: null,
   MenuPanel: null,
   NavigationPanel: null,
@@ -56,7 +57,6 @@ export function DomainStorytelling() {
           <DomainObjectsPanel />
           <ToolBar />
           <ZoomPanel />
-          <ShapeMenu />
         </Tldraw>
       </div>
     </div>

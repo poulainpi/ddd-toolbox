@@ -1,8 +1,7 @@
-import { track, useEditor } from 'tldraw'
+import { useEditor, useValue } from 'tldraw'
 import { useEffect, useState } from 'react'
 import { MoveUpRightIcon, Trash2Icon } from 'lucide-react'
 import { Button, LoadableIcon, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
-import { ACTOR_SHAPE_SIZE } from './shapes/shapes-constants'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
 import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
 import { useActors } from './states/use-actors'
@@ -11,9 +10,8 @@ import { IconName } from 'lucide-react/dynamic'
 import { WorkObjectToolUtil } from './tools/work-object-tool-util'
 import { ActorToolUtil } from './tools/actor-tool-util'
 
-export const ShapeMenu = track(function ShapeMenu() {
+export function ShapeMenu() {
   const editor = useEditor()
-  const selectedShape = editor.getOnlySelectedShape()
   const isDragging = editor.inputs.isDragging
   const isEditingShape = editor.getEditingShapeId() !== null
 
@@ -22,17 +20,37 @@ export const ShapeMenu = track(function ShapeMenu() {
   const { actors } = useActors()
   const { workObjects } = useWorkObjects()
 
+  const selectedShapeBounds = useValue(
+    'selection bounds',
+    () => {
+      const screenBounds = editor.getViewportScreenBounds()
+      const rotation = editor.getSelectionRotation()
+      const rotatedScreenBounds = editor.getSelectionRotatedScreenBounds()
+      const selectedShapes = editor.getSelectedShapes()
+      if (!rotatedScreenBounds || selectedShapes.length != 1) return
+
+      return {
+        x: rotatedScreenBounds.x - screenBounds.x,
+        y: rotatedScreenBounds.y - screenBounds.y,
+        width: rotatedScreenBounds.width,
+        height: rotatedScreenBounds.height,
+        rotation: rotation,
+        selectedShape: selectedShapes[0],
+      }
+    },
+    [editor],
+  )
+
   if (
-    selectedShape == null ||
-    (selectedShape.type !== ActorShapeUtil.type && selectedShape.type !== WorkObjectShapeUtil.type)
+    !selectedShapeBounds ||
+    !([ActorShapeUtil.type, WorkObjectShapeUtil.type] as string[]).includes(selectedShapeBounds.selectedShape.type)
   ) {
-    return null
+    return
   }
 
-  const selectedShapeScreenPoint = editor.pageToScreen({
-    x: selectedShape.x,
-    y: selectedShape.y,
-  })
+  const selectedShape = selectedShapeBounds.selectedShape
+
+  console.log(selectedShapeBounds)
 
   return (
     <Popover open={!isDragging && !isEditingShape}>
@@ -40,10 +58,11 @@ export const ShapeMenu = track(function ShapeMenu() {
         <div
           className="absolute invisible"
           style={{
-            left: selectedShapeScreenPoint.x,
-            top: selectedShapeScreenPoint.y,
-            width: ACTOR_SHAPE_SIZE,
-            height: ACTOR_SHAPE_SIZE,
+            top: 0,
+            left: 0,
+            transform: `translate(${selectedShapeBounds.x}px, ${selectedShapeBounds.y}px) rotate(${selectedShapeBounds.rotation}rad)`,
+            width: selectedShapeBounds.width,
+            height: selectedShapeBounds.height,
           }}
         ></div>
       </PopoverAnchor>
@@ -121,7 +140,7 @@ export const ShapeMenu = track(function ShapeMenu() {
       </PopoverContent>
     </Popover>
   )
-})
+}
 
 const useMouseDown = () => {
   const [isMouseDown, setIsMouseDown] = useState(false)
