@@ -11,6 +11,7 @@ import {
 } from 'tldraw'
 import { getActivitiesArrows } from '../shapes/activities-arrows'
 import { ActorShapeUtil } from '../shapes/actor-shape-util'
+import { toast } from '@ddd-toolbox/ui'
 
 export const $hiddenShapesState = atom<Set<TLShapeId>>('hidden shapes', new Set())
 
@@ -54,10 +55,36 @@ export function useStoryPlay(): UseStoryPlayReturn {
     $storyPlayState.update((value) => ({ ...value, ...state }))
   }
 
+  const findMissingActivityNumbers = (activitiesNumbers: number[]): number[] => {
+    const maxNumber = Math.max(...activitiesNumbers)
+    const allNumbers = new Set(Array.from({ length: maxNumber }, (_, i) => i + 1))
+    const existingNumbers = new Set(activitiesNumbers)
+
+    const missingNumbers = Array.from(new Set([...allNumbers].filter((num) => !existingNumbers.has(num))))
+    return missingNumbers
+  }
+
+  const canPlayOrShowError = (activitiesArrows: TLArrowShape[]): boolean => {
+    const activitiesNumbers = activitiesArrows.map((arrow) => arrow.meta.activityNumber as number)
+    const missingActivityNumbers = findMissingActivityNumbers(activitiesNumbers)
+    if (missingActivityNumbers.length > 0) {
+      toast({
+        title: 'Domain Story is incomplete',
+        variant: 'destructive',
+        description: `The following activity numbers are missing: ${missingActivityNumbers.join(', ')}`,
+      })
+      return false
+    }
+    return true
+  }
+
   const play = () => {
-    editor.updateInstanceState({ isReadonly: true })
     if ($hiddenShapesState.get().size === 0) {
-      updateState({ isPlaying: true, activitiesArrows: getActivitiesArrows(editor) })
+      const activitiesArrows = getActivitiesArrows(editor)
+      if (!canPlayOrShowError(activitiesArrows)) return
+
+      editor.updateInstanceState({ isReadonly: true })
+      updateState({ isPlaying: true, activitiesArrows: activitiesArrows })
 
       const allShapeIds = new Set(editor.getCurrentPageShapeIds().values())
       updateHiddenShapes(allShapeIds)
