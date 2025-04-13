@@ -1,4 +1,4 @@
-import { track, useEditor } from 'tldraw'
+import { StateNode, track, useEditor, useValue } from 'tldraw'
 import { Button, LoadableIcon } from '@ddd-toolbox/ui'
 import { cn } from '@ddd-toolbox/util'
 import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
@@ -12,34 +12,53 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
   const { isPlaying: isStoryPlaying } = useStoryPlay()
   const actorsState = useActors()
   const workObjectsState = useWorkObjects()
+  const editor = useEditor()
+  const currentSelectedTool = useValue('current tool', () => editor.getCurrentTool(), [editor])
 
   if (isStoryPlaying) return null
 
   return (
-    <div className="absolute min-h-56 bg-muted/50 rounded-md shadow-md top-16 left-4 p-2 pb-11 z-[300]">
-      <div className="divide-y flex flex-col h-full">
-        <div className="grid grid-cols-2 content-start justify-items-center gap-1 pb-1">
-          {actorsState.actors.map((actor) => (
-            <DomainObjectButton key={actor} type="actor" icon={actor} />
-          ))}
-        </div>
+    <div className="absolute min-h-56 bg-background rounded-md shadow-md top-16 left-4 z-[300]">
+      <div className="bg-muted/50 p-2 pb-11">
+        <div className="divide-y flex flex-col h-full">
+          <div className="grid grid-cols-2 content-start justify-items-center gap-1 pb-1">
+            {actorsState.actors.map((actor) => (
+              <DomainObjectButton key={actor} type="actor" icon={actor} currentSelectedTool={currentSelectedTool} />
+            ))}
+          </div>
 
-        <div className="grid grid-cols-2 content-start justify-items-center gap-1 pt-1">
-          {workObjectsState.workObjects.map((workObject) => (
-            <DomainObjectButton key={workObject} type="work-object" icon={workObject} />
-          ))}
-        </div>
+          <div className="grid grid-cols-2 content-start justify-items-center gap-1 pt-1">
+            {workObjectsState.workObjects.map((workObject) => (
+              <DomainObjectButton
+                key={workObject}
+                type="work-object"
+                icon={workObject}
+                currentSelectedTool={currentSelectedTool}
+              />
+            ))}
+          </div>
 
-        <CustomizeDomainObjectsDialog actorsState={actorsState} workObjectsState={workObjectsState} />
+          <CustomizeDomainObjectsDialog actorsState={actorsState} workObjectsState={workObjectsState} />
+        </div>
       </div>
     </div>
   )
 })
 
-function DomainObjectButton({ type, icon }: { type: 'actor' | 'work-object'; icon: string }) {
+function DomainObjectButton({
+  type,
+  icon,
+  currentSelectedTool,
+}: {
+  type: 'actor' | 'work-object'
+  icon: string
+  currentSelectedTool?: StateNode
+}) {
   const editor = useEditor()
-  const tool = editor.getCurrentTool()
-  const isToolSelected = tool instanceof DomainObjectToolUtil && tool.icon === icon && tool.id === type
+  const isToolSelected =
+    currentSelectedTool instanceof DomainObjectToolUtil &&
+    currentSelectedTool.icon === icon &&
+    currentSelectedTool.id === type
 
   return (
     <Button

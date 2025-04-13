@@ -24,16 +24,18 @@ export const ZoomPanel = track(function ZoomPanel() {
   }
 
   return (
-    <div className="absolute bottom-0 left-0 bg-muted/50 p-1 items-center hidden md:flex">
-      <Button variant="ghost" size="icon" onClick={zoomOut}>
-        <MinusIcon />
-      </Button>
-      <Button variant="ghost" size="sm" className="w-16" onClick={resetZoom}>
-        {Math.floor(editor.getZoomLevel() * 100)}%
-      </Button>
-      <Button variant="ghost" size="icon" onClick={zoomIn}>
-        <PlusIcon />
-      </Button>
+    <div className="absolute bottom-0 left-0 bg-background items-center hidden">
+      <div className="bg-muted/50 p-1 md:flex">
+        <Button variant="ghost" size="icon" onClick={zoomOut}>
+          <MinusIcon />
+        </Button>
+        <Button variant="ghost" size="sm" className="w-16" onClick={resetZoom}>
+          {Math.floor(editor.getZoomLevel() * 100)}%
+        </Button>
+        <Button variant="ghost" size="icon" onClick={zoomIn}>
+          <PlusIcon />
+        </Button>
+      </div>
     </div>
   )
 })

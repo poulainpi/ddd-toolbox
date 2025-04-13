@@ -50,8 +50,6 @@ export function ShapeMenu() {
 
   const selectedShape = selectedShapeBounds.selectedShape
 
-  console.log(selectedShapeBounds)
-
   return (
     <Popover open={!isDragging && !isEditingShape}>
       <PopoverAnchor asChild={true}>

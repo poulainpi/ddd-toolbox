@@ -43,35 +43,37 @@ export const Menubar = track(function Menubar() {
   }
 
   return (
-    <div className="absolute top-0 left-0 bg-muted/50 p-1 flex items-center gap-1">
-      <AppMenu newStory={newStory} />
-      <Button variant="ghost" size="sm" onClick={renameStoryDisclosure.open}>
-        {storyName}
-      </Button>
+    <div className="absolute top-0 left-0 bg-background">
+      <div className="bg-muted/50 p-1 flex items-center gap-1">
+        <AppMenu newStory={newStory} />
+        <Button variant="ghost" size="sm" onClick={renameStoryDisclosure.open}>
+          {storyName}
+        </Button>
 
-      <ChangeStoryNameDialog disclosure={nameStoryDisclosure} isNewStory={true} />
-      <ChangeStoryNameDialog disclosure={renameStoryDisclosure} isNewStory={false} />
+        <ChangeStoryNameDialog disclosure={nameStoryDisclosure} isNewStory={true} />
+        <ChangeStoryNameDialog disclosure={renameStoryDisclosure} isNewStory={false} />
 
-      <Button variant="ghost" size="icon" onClick={save} disabled={latestChangesSaved}>
-        <SaveIcon />
-      </Button>
+        <Button variant="ghost" size="icon" onClick={save} disabled={latestChangesSaved}>
+          <SaveIcon />
+        </Button>
 
-      <AlertDialog open={confirmDeleteDisclosure.isOpen} onOpenChange={confirmDeleteDisclosure.setIsOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              There are some unsaved changes. Do you want to discard them?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction variant="destructive" onClick={discardAllAndCreateNewStory}>
-              Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        <AlertDialog open={confirmDeleteDisclosure.isOpen} onOpenChange={confirmDeleteDisclosure.setIsOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                There are some unsaved changes. Do you want to discard them?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction variant="destructive" onClick={discardAllAndCreateNewStory}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </div>
   )
 })

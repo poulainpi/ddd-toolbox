@@ -32,40 +32,42 @@ export const ToolBar = track(function ToolBar() {
   const { isPlaying, currentStep, stepsCount, stepBackward, stepForward, play, stop } = useStoryPlay()
 
   return (
-    <div className="absolute bg-muted/50 rounded-md shadow-md bottom-2 left-1/2 -translate-x-1/2 p-2 z-[300] flex divide-x">
-      <div className="flex gap-1 pr-2">
-        {tools
-          .filter((tool) => !isReadonlyMode || tool.usableInReadOnly)
-          .map((tool, index) => {
-            const isToolSelected = currentTool.id === tool.id
+    <div className="absolute bg-background rounded-md shadow-md bottom-2 left-1/2 -translate-x-1/2 z-[300]">
+      <div className="bg-muted/50 flex divide-x p-2">
+        <div className="flex gap-1 pr-2">
+          {tools
+            .filter((tool) => !isReadonlyMode || tool.usableInReadOnly)
+            .map((tool, index) => {
+              const isToolSelected = currentTool.id === tool.id
 
-            return (
-              <Button
-                key={index}
-                variant={isToolSelected ? undefined : 'ghost'}
-                size="icon"
-                className={cn('[&_svg]:size-6', ...(isToolSelected ? [] : ['text-foreground']))}
-                onClick={() => editor.setCurrentTool(tool.id)}
-              >
-                {tool.icon}
-              </Button>
-            )
-          })}
-      </div>
+              return (
+                <Button
+                  key={index}
+                  variant={isToolSelected ? undefined : 'ghost'}
+                  size="icon"
+                  className={cn('[&_svg]:size-6', ...(isToolSelected ? [] : ['text-foreground']))}
+                  onClick={() => editor.setCurrentTool(tool.id)}
+                >
+                  {tool.icon}
+                </Button>
+              )
+            })}
+        </div>
 
-      <div className="flex items-center gap-1 pl-2">
-        {isPlaying ? (
-          <>
-            <StoryButton Icon={<StepBackIcon />} onClick={stepBackward} />
-            <StoryButton Icon={<StepForwardIcon />} onClick={stepForward} />
-            <StoryButton Icon={<SquareIcon />} onClick={stop} />
-            <div className="text-foreground text-lg w-16 text-center">
-              {currentStep} / {stepsCount}
-            </div>
-          </>
-        ) : (
-          <StoryButton Icon={<PlayIcon />} onClick={play} />
-        )}
+        <div className="flex items-center gap-1 pl-2">
+          {isPlaying ? (
+            <>
+              <StoryButton Icon={<StepBackIcon />} onClick={stepBackward} />
+              <StoryButton Icon={<StepForwardIcon />} onClick={stepForward} />
+              <StoryButton Icon={<SquareIcon />} onClick={stop} />
+              <div className="text-foreground text-lg w-16 text-center">
+                {currentStep} / {stepsCount}
+              </div>
+            </>
+          ) : (
+            <StoryButton Icon={<PlayIcon />} onClick={play} />
+          )}
+        </div>
       </div>
     </div>
   )
