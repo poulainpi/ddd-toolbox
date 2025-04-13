@@ -27,6 +27,8 @@ import {
   SunMoonIcon,
 } from 'lucide-react'
 import { useStoryPersistance } from '../states/use-story-persistance'
+import { useDisclosure } from '@ddd-toolbox/util'
+import { DiscardChangesAlertDialog } from './discard-changes-alert-dialog'
 
 export interface AppMenuProps {
   newStory: () => void
@@ -37,7 +39,8 @@ export function AppMenu({ newStory }: AppMenuProps) {
   const gridModeActivated = useValue('grid mode activated', () => editor.getInstanceState().isGridMode, [])
   const userPreferences = useValue('user preferences', getUserPreferences, [])
   const theme = userPreferences.colorScheme ?? 'system'
-  const { open, saveAs } = useStoryPersistance()
+  const { latestChangesSaved, open, saveAs } = useStoryPersistance()
+  const confirmDiscardChangesDisclosure = useDisclosure()
 
   function changeUserPreferences(newPreferences: Partial<TLUserPreferences>) {
     setUserPreferences({
@@ -46,111 +49,123 @@ export function AppMenu({ newStory }: AppMenuProps) {
     })
   }
 
+  function checkUnsavedChangesAndOpen() {
+    if (latestChangesSaved) {
+      open()
+    } else {
+      confirmDiscardChangesDisclosure.open()
+    }
+  }
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <MenuIcon />
-        </Button>
-      </DropdownMenuTrigger>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <MenuIcon />
+          </Button>
+        </DropdownMenuTrigger>
 
-      <DropdownMenuContent>
-        <DropdownMenuGroup>
-          <DropdownMenuItem onClick={open}>
-            <FolderIcon />
-            <span>Open</span>
-          </DropdownMenuItem>
+        <DropdownMenuContent>
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={checkUnsavedChangesAndOpen}>
+              <FolderIcon />
+              <span>Open</span>
+            </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={saveAs}>
-            <DownloadIcon />
-            <span>Save to...</span>
-          </DropdownMenuItem>
+            <DropdownMenuItem onClick={saveAs}>
+              <DownloadIcon />
+              <span>Save to...</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <ImageDownIcon />
+                <span>Export image</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>
+                    <span>SVG</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <span>PNG</span>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+
+            <DropdownMenuItem onClick={newStory}>
+              <FilePlusIcon />
+              <span>New story</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
 
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <ImageDownIcon />
-              <span>Export image</span>
+              <SettingsIcon />
+              <span>Settings</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <DropdownMenuItem>
-                  <span>SVG</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>PNG</span>
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-
-          <DropdownMenuItem onClick={newStory}>
-            <FilePlusIcon />
-            <span>New story</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>
-            <SettingsIcon />
-            <span>Settings</span>
-          </DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent>
-              <DropdownMenuCheckboxItem
-                checked={userPreferences.isSnapMode || false}
-                onCheckedChange={() => changeUserPreferences({ isSnapMode: !userPreferences.isSnapMode })}
-                closeOnSelect={false}
-              >
-                Always snap
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={gridModeActivated}
-                onCheckedChange={() => editor.updateInstanceState({ isGridMode: !gridModeActivated })}
-                closeOnSelect={false}
-              >
-                Show grid
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
-
-        <DropdownMenuGroup>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <SunMoonIcon />
-              <span>Theme</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuRadioGroup
-                  value={theme}
-                  onValueChange={(newTheme) =>
-                    changeUserPreferences({
-                      colorScheme: newTheme as TLUserPreferences['colorScheme'],
-                    })
-                  }
+                <DropdownMenuCheckboxItem
+                  checked={userPreferences.isSnapMode || false}
+                  onCheckedChange={() => changeUserPreferences({ isSnapMode: !userPreferences.isSnapMode })}
+                  closeOnSelect={false}
                 >
-                  <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
+                  Always snap
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  checked={gridModeActivated}
+                  onCheckedChange={() => editor.updateInstanceState({ isGridMode: !gridModeActivated })}
+                  closeOnSelect={false}
+                >
+                  Show grid
+                </DropdownMenuCheckboxItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
 
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <GithubIcon />
-            <a href="https://github.com/poulainpi/ddd-toolbox" target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-            <ExternalLinkIcon className="ml-auto" />
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuGroup>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <SunMoonIcon />
+                <span>Theme</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuRadioGroup
+                    value={theme}
+                    onValueChange={(newTheme) =>
+                      changeUserPreferences({
+                        colorScheme: newTheme as TLUserPreferences['colorScheme'],
+                      })
+                    }
+                  >
+                    <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <GithubIcon />
+              <a href="https://github.com/poulainpi/ddd-toolbox" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <ExternalLinkIcon className="ml-auto" />
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <DiscardChangesAlertDialog disclosure={confirmDiscardChangesDisclosure} onConfirm={open} />
+    </>
   )
 }

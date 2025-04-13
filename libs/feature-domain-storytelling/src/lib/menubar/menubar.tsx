@@ -2,27 +2,18 @@ import { track, useEditor } from 'tldraw'
 import { AppMenu } from './app-menu'
 import { ChangeStoryNameDialog } from './change-story-name-dialog'
 import { useDisclosure } from '@ddd-toolbox/util'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  Button,
-} from '@ddd-toolbox/ui'
+import { Button } from '@ddd-toolbox/ui'
 import { useStoryName } from '../states/use-story-name'
 import { useStoryPersistance } from '../states/use-story-persistance'
 import { SaveIcon } from 'lucide-react'
+import { DiscardChangesAlertDialog } from './discard-changes-alert-dialog'
 
 export const Menubar = track(function Menubar() {
   const editor = useEditor()
   const { storyName } = useStoryName()
   const nameStoryDisclosure = useDisclosure()
   const renameStoryDisclosure = useDisclosure()
-  const confirmDeleteDisclosure = useDisclosure()
+  const confirmDiscardChangesDisclosure = useDisclosure()
   const { latestChangesSaved, save } = useStoryPersistance()
 
   function newStory() {
@@ -34,7 +25,7 @@ export const Menubar = track(function Menubar() {
   }
 
   function askToDiscardChanges() {
-    confirmDeleteDisclosure.open()
+    confirmDiscardChangesDisclosure.open()
   }
 
   function discardAllAndCreateNewStory() {
@@ -57,22 +48,10 @@ export const Menubar = track(function Menubar() {
           <SaveIcon />
         </Button>
 
-        <AlertDialog open={confirmDeleteDisclosure.isOpen} onOpenChange={confirmDeleteDisclosure.setIsOpen}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                There are some unsaved changes. Do you want to discard them?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction variant="destructive" onClick={discardAllAndCreateNewStory}>
-                Continue
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <DiscardChangesAlertDialog
+          disclosure={confirmDiscardChangesDisclosure}
+          onConfirm={discardAllAndCreateNewStory}
+        />
       </div>
     </div>
   )
