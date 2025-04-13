@@ -73,4 +73,16 @@ export class ClickedArrowToolUtil extends StateNode {
       point: point,
     } as TLPointerEventInfo)
   }
+
+  override onCancel() {
+    if (!this.arrow) return
+
+    const bindings = this.editor.getBindingsFromShape(this.arrow.id, 'arrow')
+    const hasStartAndEndBindings = bindings.length >= 2 && bindings[0].toId != bindings[1].toId
+    if (!hasStartAndEndBindings) {
+      this.editor.deleteShape(this.arrow)
+    }
+
+    this.editor.setCurrentTool('select')
+  }
 }

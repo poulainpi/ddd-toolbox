@@ -10,6 +10,10 @@ export abstract class DomainObjectToolUtil extends StateNode {
     this.editor.setCursor({ type: 'cross' })
   }
 
+  override onCancel() {
+    this.editor.setCurrentTool('select')
+  }
+
   override onPointerUp() {
     const { currentPagePoint } = this.editor.inputs
     const id = createShapeId()

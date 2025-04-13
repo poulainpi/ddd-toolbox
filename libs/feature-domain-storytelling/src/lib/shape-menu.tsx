@@ -50,6 +50,12 @@ export function ShapeMenu() {
 
   const selectedShape = selectedShapeBounds.selectedShape
 
+  function giveFocusToEditor() {
+    // Trick to give back focus to the editor to allow escape key to work
+    editor.blur()
+    editor.focus()
+  }
+
   return (
     <Popover open={!isDragging && !isEditingShape}>
       <PopoverAnchor asChild={true}>
@@ -80,8 +86,10 @@ export function ShapeMenu() {
             variant="ghost"
             size="icon"
             onClick={() => {
+              editor.selectNone()
               editor.setHintingShapes([selectedShape])
               editor.setCurrentTool('clicked-arrow')
+              giveFocusToEditor()
             }}
           >
             <MoveUpRightIcon />
@@ -107,6 +115,7 @@ export function ShapeMenu() {
                 onClick={() => {
                   editor.selectNone()
                   editor.setCurrentTool(ActorToolUtil.id, { icon: actor, initiatorShapeId: selectedShape.id })
+                  giveFocusToEditor()
                 }}
               >
                 <LoadableIcon name={actor as IconName} />
@@ -128,6 +137,7 @@ export function ShapeMenu() {
                     icon: workObject,
                     initiatorShapeId: selectedShape.id,
                   })
+                  giveFocusToEditor()
                 }}
               >
                 <LoadableIcon name={workObject as IconName} />
