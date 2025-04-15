@@ -17,7 +17,7 @@ export const Menubar = track(function Menubar() {
   const { latestChangesSaved, save } = useStoryPersistance()
 
   function newStory() {
-    if (latestChangesSaved) {
+    if (latestChangesSaved || editor.getCurrentPageShapes().length === 0) {
       discardAllAndCreateNewStory()
     } else {
       askToDiscardChanges()

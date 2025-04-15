@@ -50,7 +50,7 @@ export function AppMenu({ newStory }: AppMenuProps) {
   }
 
   function checkUnsavedChangesAndOpen() {
-    if (latestChangesSaved) {
+    if (latestChangesSaved || editor.getCurrentPageShapes().length === 0) {
       open()
     } else {
       confirmDiscardChangesDisclosure.open()
