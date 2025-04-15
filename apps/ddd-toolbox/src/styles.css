@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import '../../../libs/ui/src/lib/ui/index.css';
+@import '../../../libs/feature-domain-storytelling/src/lib/index.css';
 
 @plugin 'tailwindcss-animate';
 
