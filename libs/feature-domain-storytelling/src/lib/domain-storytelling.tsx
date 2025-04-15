@@ -16,6 +16,7 @@ import { ZoomPanel } from './zoom-panel'
 import { ShapeMenu } from './shape-menu'
 import { ClickedArrowToolUtil } from './tools/clicked-arrow-tool-util'
 import { $hiddenShapesState } from './states/use-story-play'
+import { setDefaultUserPreferencesWhenNotExisting } from './states/default-user-preferences'
 
 const components: TLComponents = {
   InFrontOfTheCanvas: ShapeMenu,
@@ -38,6 +39,8 @@ export function DomainStorytelling() {
           components={components}
           tools={[ActorToolUtil, WorkObjectToolUtil, ClickedArrowToolUtil]}
           onMount={(editor) => {
+            setDefaultUserPreferencesWhenNotExisting()
+
             // @ts-expect-error it's the only way to override the arrow shape util at the moment
             editor.shapeUtils.arrow = new ArrowShapeUtil(editor)
 
