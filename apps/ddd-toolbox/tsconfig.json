@@ -1,14 +1,6 @@
 {
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "allowJs": false,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "types": ["vite/client", "vitest"]
-  },
-  "files": [],
-  "include": [],
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
   "references": [
     {
       "path": "./tsconfig.app.json"
@@ -17,5 +9,5 @@
       "path": "./tsconfig.spec.json"
     }
   ],
-  "extends": "../../tsconfig.base.json"
+  "extends": ["astro/tsconfigs/strict", "../../tsconfig.base.json"]
 }

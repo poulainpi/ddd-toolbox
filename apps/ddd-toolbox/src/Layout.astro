@@ -1,0 +1,21 @@
+---
+import { Toaster } from '@ddd-toolbox/ui'
+import './styles.css'
+import type { only } from 'node:test'
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>dddtoolbox</title>
+  <base href="/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+</head>
+<body>
+<slot />
+<Toaster client:only="react" />
+</body>
+</html>
