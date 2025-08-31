@@ -1,14 +1,13 @@
 ---
-import { DomainStorytelling as ImportedDomainStorytelling } from '@ddd-toolbox/domain-storytelling'
-```
+import { DomainStorytelling as DomainStorytellingComponent } from '@ddd-toolbox/domain-storytelling'
 import Layout from '../Layout.astro'
 import { AstroSeo } from '@astrolib/seo'
 ---
 
-<AstroSeo title="Domain Storytelling | DDD Toolbox" />
+<AstroSeo title="Domain Storytelling | DDD Toolbox" description="Our Domain Storytelling tool lets you collaboratively sketch domain stories that make complex business processes easy to understand and improve" />
 
 <Layout>
-  <DomainStorytelling client:only="react">
-    <div slot="fallback">Loading</div>
-  </DomainStorytelling>
+  <DomainStorytellingComponent client:only="react">
+    <div slot="fallback">Loading...</div>
+  </DomainStorytellingComponent>
 </Layout>
