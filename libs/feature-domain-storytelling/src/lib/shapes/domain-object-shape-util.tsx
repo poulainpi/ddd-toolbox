@@ -8,9 +8,8 @@ import {
   TLDefaultColorStyle,
   useDefaultColorTheme,
 } from 'tldraw'
-import { LoadableIcon } from '@ddd-toolbox/ui'
+import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
 import { IconName } from 'lucide-react/dynamic'
-import { useCallback } from 'react'
 
 export type TLDomainObjectShape<Type extends string> = TLBaseShape<
   Type,
@@ -37,7 +36,7 @@ export abstract class DomainObjectShapeUtil<Type extends string> extends ShapeUt
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id
 
     return (
-      <HTMLContainer className="flex flex-col items-center relative" style={{ pointerEvents: 'all' }}>
+      <HTMLContainer className="relative flex flex-col items-center" style={{ pointerEvents: 'all' }}>
         <LoadableIcon
           name={shape.props.icon as IconName}
           size={this.getSize() - 30}

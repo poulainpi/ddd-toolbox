@@ -1,5 +1,6 @@
 import { StateNode, track, useEditor, useValue } from 'tldraw'
-import { Button, LoadableIcon } from '@ddd-toolbox/ui'
+import { Button } from '@ddd-toolbox/ui'
+import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
 import { cn } from '@ddd-toolbox/util'
 import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
 import { useWorkObjects } from '../states/use-work-objects'
@@ -18,9 +19,9 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
   if (isStoryPlaying) return null
 
   return (
-    <div className="absolute min-h-56 bg-background rounded-md shadow-md top-16 left-4 z-[300]">
+    <div className="bg-background absolute top-16 left-4 z-[300] min-h-56 rounded-md shadow-md">
       <div className="bg-muted/50 p-2 pb-11">
-        <div className="divide-y flex flex-col h-full">
+        <div className="flex h-full flex-col divide-y">
           <div className="grid grid-cols-2 content-start justify-items-center gap-1 pb-1">
             {actorsState.actors.map((actor) => (
               <DomainObjectButton key={actor} type="actor" icon={actor} currentSelectedTool={currentSelectedTool} />

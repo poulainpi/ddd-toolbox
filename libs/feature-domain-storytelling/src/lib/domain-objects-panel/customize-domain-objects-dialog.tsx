@@ -8,11 +8,11 @@ import {
   DialogTrigger,
   Form,
   FormInput,
-  LoadableIcon,
   Separator,
   toast,
   ToastAction,
 } from '@ddd-toolbox/ui'
+import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
 import { PlusIcon, SettingsIcon } from 'lucide-react'
 import { cn } from '@ddd-toolbox/util'
 import { UseWorkObjectsReturn } from '../states/use-work-objects'
@@ -34,7 +34,7 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
         <Button
           variant="ghost"
           size="icon"
-          className="[&_svg]:size-5 text-foreground absolute bottom-0 left-0 right-0 w-full"
+          className="text-foreground absolute right-0 bottom-0 left-0 w-full [&_svg]:size-5"
         >
           <SettingsIcon />
         </Button>
@@ -54,7 +54,7 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
         </DialogHeader>
 
         <div className="flex flex-col">
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <span className="text-lg">Actors</span>
             <AddDomainObjectForm
               alreadyUsedDomainObjects={actors}
@@ -62,7 +62,7 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
             />
           </div>
 
-          <div className="flex flex-wrap mt-2">
+          <div className="mt-2 flex flex-wrap">
             {actors.map((actor) => (
               <DeleteDomainObjectButton
                 key={actor}
@@ -85,7 +85,7 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
 
           <Separator className="my-4" />
 
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <span className="text-lg">Work Objects</span>
             <AddDomainObjectForm
               alreadyUsedDomainObjects={workObjects}
@@ -93,7 +93,7 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
             />
           </div>
 
-          <div className="flex flex-wrap mt-2">
+          <div className="mt-2 flex flex-wrap">
             {workObjects.map((workObject) => (
               <DeleteDomainObjectButton
                 key={workObject}
@@ -127,7 +127,7 @@ function DeleteDomainObjectButton({ icon, onClick }: { icon: string; onClick: ()
     <Button
       variant="ghost"
       size="icon"
-      className={cn('[&_svg]:size-6 hover:text-destructive-foreground hover:bg-destructive/90')}
+      className={cn('hover:text-destructive-foreground hover:bg-destructive/90 [&_svg]:size-6')}
       onClick={onClick}
     >
       <LoadableIcon name={icon as IconName} />

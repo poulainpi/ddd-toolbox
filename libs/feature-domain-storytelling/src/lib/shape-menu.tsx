@@ -1,7 +1,8 @@
 import { useEditor, useValue } from 'tldraw'
 import { useEffect, useState } from 'react'
 import { MoveUpRightIcon, Trash2Icon } from 'lucide-react'
-import { Button, LoadableIcon, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
+import { Button, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
+import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
 import { ActorShapeUtil } from './shapes/actor-shape-util'
 import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
 import { useActors } from './states/use-actors'
@@ -60,7 +61,7 @@ export function ShapeMenu() {
     <Popover open={!isDragging && !isEditingShape}>
       <PopoverAnchor asChild={true}>
         <div
-          className="absolute invisible"
+          className="invisible absolute"
           style={{
             top: 0,
             left: 0,
@@ -79,7 +80,7 @@ export function ShapeMenu() {
         onOpenAutoFocus={(event) => {
           event.preventDefault() // prevent focus to let the shape input focused
         }}
-        className="w-fit max-w-[170px] p-1 divide-y flex flex-col gap-1"
+        className="flex w-fit max-w-[170px] flex-col gap-1 divide-y p-1"
       >
         <div className="flex pb-1">
           <Button
