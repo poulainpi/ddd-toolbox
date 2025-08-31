@@ -1,0 +1,20 @@
+---
+import { AstroSeo } from '@astrolib/seo'
+import Layout from '../Layout.astro'
+import { HeroSection } from '../components/hero-section'
+import { ToolsGrid } from '../components/tools-grid'
+import { SiteHeader } from '../components/site-header'
+---
+
+<AstroSeo
+  title="DDD Toolbox | Domain-Driven Design Tools"
+  description="A comprehensive collection of Domain-Driven Design tools including Domain Storytelling, Event Storming, Context Mapping, and more. Build better software through collaborative domain modeling."
+/>
+
+<Layout>
+  <SiteHeader client:load />
+  <main>
+    <HeroSection client:load />
+    <ToolsGrid client:load />
+  </main>
+</Layout>

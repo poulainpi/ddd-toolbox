@@ -85,6 +85,7 @@ npx nx sync:check
 
 - Use Astro components for static content and layouts
 - Use React components (`.tsx`) for interactive features
+- React component file names should be in kebab-case (e.g., `my-component.tsx`)
 - Leverage Astro's partial hydration for optimal performance
 - Follow shadcn/ui patterns for consistent component design
 
