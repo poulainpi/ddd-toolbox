@@ -56,6 +56,9 @@ npx nx e2e ddd-toolbox-e2e
 # Lint all projects
 npx nx lint <project-name>
 
+# Lint affected files only
+npx nx affected:lint
+
 # Type checking
 npx nx typecheck <project-name>
 
@@ -120,3 +123,11 @@ Pre-commit hooks are configured with Husky to run:
 
 - Linting with auto-fix on affected files
 - Code formatting with Prettier on staged files
+
+**Commit Convention:**
+
+- Use conventional commit format for commit messages (e.g., `feat:`, `fix:`, `chore:`, `docs:`)
+
+**Development Workflow:**
+
+- After completing code changes, always run typecheck and lint commands to ensure no errors remain
