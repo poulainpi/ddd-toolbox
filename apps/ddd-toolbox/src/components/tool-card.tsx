@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 interface ToolCardProps {
   title: string
   description: string
-  status: 'available' | 'coming-soon'
+  status: 'available' | 'coming-soon' | 'coming-later'
   href?: string
   icon: React.ReactNode
 }
@@ -29,7 +29,7 @@ export function ToolCard({ title, description, status, href, icon }: ToolCardPro
           </div>
         </div>
         <Badge variant={isAvailable ? 'default' : 'secondary'} className="ml-4">
-          {isAvailable ? 'Available' : 'Coming Soon'}
+          {isAvailable ? 'Available' : status === 'coming-soon' ? 'Coming Soon' : 'Coming Later'}
         </Badge>
       </div>
 
@@ -58,7 +58,7 @@ export function ToolCard({ title, description, status, href, icon }: ToolCardPro
       {!isAvailable && (
         <div className="mt-6">
           <Button size="sm" variant="secondary" disabled className="w-full">
-            Coming Soon
+            {status === 'coming-soon' ? 'Coming Soon' : 'Coming Later'}
           </Button>
         </div>
       )}

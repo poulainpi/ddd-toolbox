@@ -24,7 +24,7 @@ const tools = [
     title: 'Context Mapping',
     description:
       'Define and visualize relationships between bounded contexts. Understand integration patterns and team interactions across different parts of your domain.',
-    status: 'coming-soon' as const,
+    status: 'coming-later' as const,
     icon: <Network className="h-6 w-6" />,
   },
   {
@@ -32,7 +32,7 @@ const tools = [
     title: 'Bounded Context Canvas',
     description:
       'Document and design your bounded contexts using a structured canvas approach. Capture business model, ubiquitous language, and integration patterns.',
-    status: 'coming-soon' as const,
+    status: 'coming-later' as const,
     icon: <FileText className="h-6 w-6" />,
   },
   {
@@ -40,7 +40,7 @@ const tools = [
     title: 'Aggregate Design Canvas',
     description:
       'Design and document your aggregates using a structured canvas approach. Define aggregate boundaries, invariants, and behavioral patterns.',
-    status: 'coming-soon' as const,
+    status: 'coming-later' as const,
     icon: <BarChart3 className="h-6 w-6" />,
   },
   {
@@ -48,7 +48,7 @@ const tools = [
     title: 'Domain Message Flow',
     description:
       'Model the flow of messages and events between different parts of your system. Visualize how information moves across bounded contexts.',
-    status: 'coming-soon' as const,
+    status: 'coming-later' as const,
     icon: <ArrowUpDown className="h-6 w-6" />,
   },
 ]
