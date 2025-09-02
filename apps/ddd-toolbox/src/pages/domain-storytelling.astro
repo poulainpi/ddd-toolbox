@@ -1,6 +1,7 @@
 ---
 import { DomainStorytelling as DomainStorytellingComponent } from '@ddd-toolbox/domain-storytelling'
 import Layout from '../Layout.astro'
+import LoadingScreen from '../components/LoadingScreen.astro'
 import { AstroSeo } from '@astrolib/seo'
 ---
 
@@ -8,6 +9,6 @@ import { AstroSeo } from '@astrolib/seo'
 
 <Layout>
   <DomainStorytellingComponent client:only="react">
-    <div slot="fallback">Loading...</div>
+    <LoadingScreen slot="fallback" toolName="Domain Storytelling" />
   </DomainStorytellingComponent>
 </Layout>
