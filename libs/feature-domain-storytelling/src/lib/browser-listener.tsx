@@ -31,7 +31,7 @@ export const BrowserListener = track(function BrowserListener() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [editor])
+  }, [editor, save])
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -44,7 +44,7 @@ export const BrowserListener = track(function BrowserListener() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
-  })
+  }, [latestChangesSaved])
 
   return <></>
 })
