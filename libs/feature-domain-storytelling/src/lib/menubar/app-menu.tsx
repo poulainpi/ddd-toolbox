@@ -16,6 +16,7 @@ import {
 } from '@ddd-toolbox/ui'
 import { getUserPreferences, setUserPreferences, TLUserPreferences, useEditor, useValue } from 'tldraw'
 import {
+  ArrowLeftIcon,
   DownloadIcon,
   ExternalLinkIcon,
   FilePlusIcon,
@@ -67,6 +68,14 @@ export function AppMenu({ newStory }: AppMenuProps) {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <ArrowLeftIcon />
+              <a href="/">Back to toolbox</a>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={checkUnsavedChangesAndOpen}>
               <FolderIcon />
