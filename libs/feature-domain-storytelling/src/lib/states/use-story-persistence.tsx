@@ -10,6 +10,7 @@ export interface UseStoryPersistenceReturn {
   open: () => void
   saveAs: () => void
   save: () => void
+  clear: () => void
   hasBeenSavedAs: boolean
   latestChangesSaved: boolean
 }
@@ -53,10 +54,15 @@ export function useStoryPersistence(): UseStoryPersistenceReturn {
     $persistenceState.update((value) => ({ ...value, latestChangesSaved: true }))
   }
 
+  function clear() {
+    $persistenceState.update(() => ({ fileHandle: undefined, latestChangesSaved: false }))
+  }
+
   return {
     open,
     saveAs,
     save,
+    clear,
     hasBeenSavedAs: fileHandle != null,
     latestChangesSaved,
   }

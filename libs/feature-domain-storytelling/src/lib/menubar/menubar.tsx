@@ -14,7 +14,7 @@ export const Menubar = track(function Menubar() {
   const nameStoryDisclosure = useDisclosure()
   const renameStoryDisclosure = useDisclosure()
   const confirmDiscardChangesDisclosure = useDisclosure()
-  const { latestChangesSaved, save } = useStoryPersistence()
+  const { latestChangesSaved, save, clear: clearPersistence } = useStoryPersistence()
 
   function newStory() {
     if (latestChangesSaved || editor.getCurrentPageShapes().length === 0) {
@@ -30,6 +30,7 @@ export const Menubar = track(function Menubar() {
 
   function discardAllAndCreateNewStory() {
     editor.selectAll().deleteShapes(editor.getSelectedShapeIds())
+    clearPersistence()
     nameStoryDisclosure.open()
   }
 
