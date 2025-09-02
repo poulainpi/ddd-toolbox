@@ -31,37 +31,34 @@ export function DomainStorytelling() {
   useTheme()
 
   return (
-    <div>
-      <h1>Welcome to DomainStorytelling!</h1>
-      <div style={{ position: 'fixed', inset: 0 }}>
-        <Tldraw
-          shapeUtils={[ActorShapeUtil, WorkObjectShapeUtil]}
-          components={components}
-          tools={[ActorToolUtil, WorkObjectToolUtil, ClickedArrowToolUtil]}
-          onMount={(editor) => {
-            setDefaultUserPreferencesWhenNotExisting()
+    <div style={{ position: 'fixed', inset: 0 }}>
+      <Tldraw
+        shapeUtils={[ActorShapeUtil, WorkObjectShapeUtil]}
+        components={components}
+        tools={[ActorToolUtil, WorkObjectToolUtil, ClickedArrowToolUtil]}
+        onMount={(editor) => {
+          setDefaultUserPreferencesWhenNotExisting()
 
-            // @ts-expect-error it's the only way to override the arrow shape util at the moment
-            editor.shapeUtils.arrow = new ArrowShapeUtil(editor)
+          // @ts-expect-error it's the only way to override the arrow shape util at the moment
+          editor.shapeUtils.arrow = new ArrowShapeUtil(editor)
 
-            registerSideEffects(editor)
+          registerSideEffects(editor)
 
-            editor.store.listen(() => changeHappened(), { scope: 'document' })
+          editor.store.listen(() => changeHappened(), { scope: 'document' })
 
-            editor.setStyleForNextShapes(DefaultSizeStyle, 's')
-          }}
-          isShapeHidden={(shape, _editor) => {
-            return $hiddenShapesState.get().has(shape.id)
-          }}
-          persistenceKey={process.env.NODE_ENV === 'development' ? 'domain-storytelling' : undefined}
-        >
-          <BrowserListener />
-          <Menubar />
-          <DomainObjectsPanel />
-          <ToolBar />
-          <ZoomPanel />
-        </Tldraw>
-      </div>
+          editor.setStyleForNextShapes(DefaultSizeStyle, 's')
+        }}
+        isShapeHidden={(shape, _editor) => {
+          return $hiddenShapesState.get().has(shape.id)
+        }}
+        persistenceKey={process.env.NODE_ENV === 'development' ? 'domain-storytelling' : undefined}
+      >
+        <BrowserListener />
+        <Menubar />
+        <DomainObjectsPanel />
+        <ToolBar />
+        <ZoomPanel />
+      </Tldraw>
     </div>
   )
 }
