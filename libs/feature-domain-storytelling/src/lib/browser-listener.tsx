@@ -1,9 +1,9 @@
 import { track, useEditor } from 'tldraw'
 import { useEffect } from 'react'
-import { useStoryPersistance } from './states/use-story-persistance'
+import { useStoryPersistence } from './states/use-story-persistence'
 
 export const BrowserListener = track(function BrowserListener() {
-  const { save, latestChangesSaved } = useStoryPersistance()
+  const { save, latestChangesSaved } = useStoryPersistence()
   const editor = useEditor()
 
   useEffect(() => {

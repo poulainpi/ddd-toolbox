@@ -26,7 +26,7 @@ import {
   SettingsIcon,
   SunMoonIcon,
 } from 'lucide-react'
-import { useStoryPersistance } from '../states/use-story-persistance'
+import { useStoryPersistence } from '../states/use-story-persistence'
 import { useDisclosure } from '@ddd-toolbox/util'
 import { DiscardChangesAlertDialog } from './discard-changes-alert-dialog'
 
@@ -39,7 +39,7 @@ export function AppMenu({ newStory }: AppMenuProps) {
   const gridModeActivated = useValue('grid mode activated', () => editor.getInstanceState().isGridMode, [])
   const userPreferences = useValue('user preferences', getUserPreferences, [])
   const theme = userPreferences.colorScheme ?? 'system'
-  const { latestChangesSaved, open, saveAs } = useStoryPersistance()
+  const { latestChangesSaved, open, saveAs } = useStoryPersistence()
   const confirmDiscardChangesDisclosure = useDisclosure()
 
   function changeUserPreferences(newPreferences: Partial<TLUserPreferences>) {

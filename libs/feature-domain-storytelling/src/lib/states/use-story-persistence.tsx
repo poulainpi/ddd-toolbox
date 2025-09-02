@@ -1,12 +1,12 @@
 import { useStoryName } from './use-story-name'
 import { atom, getSnapshot, loadSnapshot, useEditor, useValue } from 'tldraw'
 
-const $persistanceState = atom<{
+const $persistenceState = atom<{
   fileHandle: FileSystemFileHandle | undefined
   latestChangesSaved: boolean
 }>('story name', { fileHandle: undefined, latestChangesSaved: false })
 
-export interface UseStoryPersistanceReturn {
+export interface UseStoryPersistenceReturn {
   open: () => void
   saveAs: () => void
   save: () => void
@@ -14,10 +14,10 @@ export interface UseStoryPersistanceReturn {
   latestChangesSaved: boolean
 }
 
-export function useStoryPersistance(): UseStoryPersistanceReturn {
+export function useStoryPersistence(): UseStoryPersistenceReturn {
   const editor = useEditor()
   const { storyName } = useStoryName()
-  const { fileHandle, latestChangesSaved } = useValue($persistanceState)
+  const { fileHandle, latestChangesSaved } = useValue($persistenceState)
 
   async function open() {
     const [fileHandle] = await window.showOpenFilePicker()
@@ -26,17 +26,17 @@ export function useStoryPersistance(): UseStoryPersistanceReturn {
     loadSnapshot(editor.store, { document: jsonContent })
 
     // setTimeout else changeHappened are triggered after latestChangesSaved are set to true
-    setTimeout(() => $persistanceState.update((value) => ({ ...value, fileHandle, latestChangesSaved: true })))
+    setTimeout(() => $persistenceState.update((value) => ({ ...value, fileHandle, latestChangesSaved: true })))
   }
 
   async function saveAs() {
     const newFileHandle = await window.showSaveFilePicker({ suggestedName: storyName + '.json' })
-    $persistanceState.update((value) => ({ ...value, fileHandle: newFileHandle }))
+    $persistenceState.update((value) => ({ ...value, fileHandle: newFileHandle }))
     await saveUsingHandle(newFileHandle)
   }
 
   async function save() {
-    const fileHandle = $persistanceState.get().fileHandle
+    const fileHandle = $persistenceState.get().fileHandle
     if (fileHandle == null) {
       await saveAs()
     } else {
@@ -50,7 +50,7 @@ export function useStoryPersistance(): UseStoryPersistanceReturn {
     await writableStream.write(JSON.stringify(document.document))
     await writableStream.close()
 
-    $persistanceState.update((value) => ({ ...value, latestChangesSaved: true }))
+    $persistenceState.update((value) => ({ ...value, latestChangesSaved: true }))
   }
 
   return {
@@ -63,5 +63,5 @@ export function useStoryPersistance(): UseStoryPersistanceReturn {
 }
 
 export function changeHappened() {
-  $persistanceState.update((value) => ({ ...value, latestChangesSaved: false }))
+  $persistenceState.update((value) => ({ ...value, latestChangesSaved: false }))
 }
