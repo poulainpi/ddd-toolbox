@@ -6,7 +6,7 @@ import { Button } from '@ddd-toolbox/ui'
 import { useStoryName } from '../states/use-story-name'
 import { useStoryPersistence } from '../states/use-story-persistence'
 import { SaveIcon } from 'lucide-react'
-import { DiscardChangesAlertDialog } from './discard-changes-alert-dialog'
+import { DiscardChangesAlertDialog } from '@ddd-toolbox/shared-canvas'
 
 export const Menubar = track(function Menubar() {
   const editor = useEditor()

@@ -29,7 +29,7 @@ import {
 } from 'lucide-react'
 import { useStoryPersistence } from '../states/use-story-persistence'
 import { useDisclosure } from '@ddd-toolbox/util'
-import { DiscardChangesAlertDialog } from './discard-changes-alert-dialog'
+import { DiscardChangesAlertDialog } from '@ddd-toolbox/shared-canvas'
 
 export interface AppMenuProps {
   newStory: () => void
