@@ -8,6 +8,12 @@ describe('DomainStorytelling', () => {
     value: () => true,
   })
 
+  // Mock image.decode for tldraw compatibility
+  Object.defineProperty(HTMLImageElement.prototype, 'decode', {
+    writable: true,
+    value: () => Promise.resolve(),
+  })
+
   it('should render successfully', () => {
     const { baseElement } = render(<DomainStorytelling />)
     expect(baseElement).toBeTruthy()
