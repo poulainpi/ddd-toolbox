@@ -1,5 +1,5 @@
 {
-  "name": "feature-event-storming",
+  "name": "event-storming",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/feature-event-storming/src",
   "projectType": "library",
