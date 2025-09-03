@@ -3,18 +3,18 @@ import { AppMenu } from './app-menu'
 import { ChangeStoryNameDialog } from './change-story-name-dialog'
 import { useDisclosure } from '@ddd-toolbox/util'
 import { Button } from '@ddd-toolbox/ui'
-import { useStoryName } from '../states/use-story-name'
-import { useStoryPersistence } from '../states/use-story-persistence'
+import { useDocumentName } from '@ddd-toolbox/shared-canvas'
+import { useDocumentPersistence } from '@ddd-toolbox/shared-canvas'
 import { SaveIcon } from 'lucide-react'
 import { DiscardChangesAlertDialog } from '@ddd-toolbox/shared-canvas'
 
 export const Menubar = track(function Menubar() {
   const editor = useEditor()
-  const { storyName } = useStoryName()
+  const { documentName } = useDocumentName()
   const nameStoryDisclosure = useDisclosure()
   const renameStoryDisclosure = useDisclosure()
   const confirmDiscardChangesDisclosure = useDisclosure()
-  const { latestChangesSaved, save, clear: clearPersistence } = useStoryPersistence()
+  const { latestChangesSaved, save, clear: clearPersistence } = useDocumentPersistence()
 
   function newStory() {
     if (latestChangesSaved || editor.getCurrentPageShapes().length === 0) {
@@ -39,7 +39,7 @@ export const Menubar = track(function Menubar() {
       <div className="bg-muted/50 flex items-center gap-1 p-1">
         <AppMenu newStory={newStory} />
         <Button variant="ghost" size="sm" onClick={renameStoryDisclosure.open}>
-          {storyName}
+          {documentName}
         </Button>
 
         <ChangeStoryNameDialog disclosure={nameStoryDisclosure} isNewStory={true} />

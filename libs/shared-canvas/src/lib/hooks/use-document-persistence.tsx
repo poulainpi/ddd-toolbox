@@ -1,12 +1,12 @@
-import { useStoryName } from './use-story-name'
+import { useDocumentName } from './use-document-name'
 import { atom, getSnapshot, loadSnapshot, useEditor, useValue } from 'tldraw'
 
 const $persistenceState = atom<{
   fileHandle: FileSystemFileHandle | undefined
   latestChangesSaved: boolean
-}>('story name', { fileHandle: undefined, latestChangesSaved: false })
+}>('document persistence', { fileHandle: undefined, latestChangesSaved: false })
 
-export interface UseStoryPersistenceReturn {
+export interface UseDocumentPersistenceReturn {
   open: () => void
   saveAs: () => void
   save: () => void
@@ -15,9 +15,9 @@ export interface UseStoryPersistenceReturn {
   latestChangesSaved: boolean
 }
 
-export function useStoryPersistence(): UseStoryPersistenceReturn {
+export function useDocumentPersistence(): UseDocumentPersistenceReturn {
   const editor = useEditor()
-  const { storyName } = useStoryName()
+  const { documentName } = useDocumentName()
   const { fileHandle, latestChangesSaved } = useValue($persistenceState)
 
   async function open() {
@@ -31,7 +31,7 @@ export function useStoryPersistence(): UseStoryPersistenceReturn {
   }
 
   async function saveAs() {
-    const newFileHandle = await window.showSaveFilePicker({ suggestedName: storyName + '.json' })
+    const newFileHandle = await window.showSaveFilePicker({ suggestedName: documentName + '.json' })
     $persistenceState.update((value) => ({ ...value, fileHandle: newFileHandle }))
     await saveUsingHandle(newFileHandle)
   }

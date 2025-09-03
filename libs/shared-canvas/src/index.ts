@@ -1,2 +1,4 @@
 export * from './lib/dialogs/discard-changes-alert-dialog'
 export * from './lib/panels/zoom-panel'
+export * from './lib/hooks/use-document-name'
+export * from './lib/hooks/use-document-persistence'

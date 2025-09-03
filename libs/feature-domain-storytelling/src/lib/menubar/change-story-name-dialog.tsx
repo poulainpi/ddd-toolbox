@@ -10,7 +10,7 @@ import {
   FormInput,
 } from '@ddd-toolbox/ui'
 import { useForm } from 'react-hook-form'
-import { useStoryName } from '../states/use-story-name'
+import { useDocumentName } from '@ddd-toolbox/shared-canvas'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
 
 export interface StoryNameProps {
@@ -19,10 +19,10 @@ export interface StoryNameProps {
 }
 
 export function ChangeStoryNameDialog({ disclosure, isNewStory }: StoryNameProps) {
-  const { storyName, setStoryName } = useStoryName()
+  const { documentName, setDocumentName } = useDocumentName()
 
   function onSubmit(newName: string) {
-    setStoryName(newName)
+    setDocumentName(newName)
     disclosure.close()
   }
 
@@ -34,7 +34,7 @@ export function ChangeStoryNameDialog({ disclosure, isNewStory }: StoryNameProps
           <DialogDescription>{isNewStory ? 'Create' : 'Change'} the name of your story here.</DialogDescription>
         </DialogHeader>
 
-        <ChangeStoryNameForm initialName={storyName} onSubmit={onSubmit} />
+        <ChangeStoryNameForm initialName={documentName} onSubmit={onSubmit} />
 
         <DialogFooter>
           <Button type="submit" form="story-name">

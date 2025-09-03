@@ -1,9 +1,9 @@
 import { track, useEditor } from 'tldraw'
 import { useEffect } from 'react'
-import { useStoryPersistence } from './states/use-story-persistence'
+import { useDocumentPersistence } from '@ddd-toolbox/shared-canvas'
 
 export const BrowserListener = track(function BrowserListener() {
-  const { save, latestChangesSaved } = useStoryPersistence()
+  const { save, latestChangesSaved } = useDocumentPersistence()
   const editor = useEditor()
 
   useEffect(() => {
