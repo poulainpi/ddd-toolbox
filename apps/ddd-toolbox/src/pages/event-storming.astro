@@ -1,0 +1,14 @@
+---
+import { EventStorming as EventStormingComponent } from '@ddd-toolbox/event-storming'
+import Layout from '../Layout.astro'
+import LoadingScreen from '../components/LoadingScreen.astro'
+import { AstroSeo } from '@astrolib/seo'
+---
+
+<AstroSeo title="Event Storming | DDD Toolbox" description="Our Event Storming tool lets you collaboratively explore complex business domains by mapping domain events and their relationships" />
+
+<Layout>
+  <EventStormingComponent client:only="react">
+    <LoadingScreen slot="fallback" toolName="Event Storming" />
+  </EventStormingComponent>
+</Layout>

@@ -1,1 +1,1 @@
-export * from './lib/feature-event-storming'
+export * from './lib/event-storming'
