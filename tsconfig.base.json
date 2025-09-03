@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@ddd-toolbox/domain-storytelling": ["libs/feature-domain-storytelling/src/index.ts"],
+      "@ddd-toolbox/event-storming": ["libs/feature-event-storming/src/index.ts"],
       "@ddd-toolbox/ui": ["libs/ui/src/index.ts"],
       "@ddd-toolbox/ui-loadable-icon": ["libs/ui/src/loadable-icon-index.ts"],
       "@ddd-toolbox/util": ["libs/util/src/index.ts"]
