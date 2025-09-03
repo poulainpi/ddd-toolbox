@@ -24,7 +24,7 @@ export const ZoomPanel = track(function ZoomPanel() {
   }
 
   return (
-    <div className="absolute bottom-0 left-0 bg-background items-center hidden md:flex">
+    <div className="bg-background absolute bottom-0 left-0 hidden items-center md:flex">
       <div className="bg-muted/50 p-1">
         <Button variant="ghost" size="icon" onClick={zoomOut}>
           <MinusIcon />
