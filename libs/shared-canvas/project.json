@@ -1,0 +1,9 @@
+{
+  "name": "shared-canvas",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-canvas/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project shared-canvas --web",
+  "targets": {}
+}
