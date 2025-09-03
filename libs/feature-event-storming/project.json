@@ -1,0 +1,9 @@
+{
+  "name": "feature-event-storming",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/feature-event-storming/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project feature-event-storming --web",
+  "targets": {}
+}
