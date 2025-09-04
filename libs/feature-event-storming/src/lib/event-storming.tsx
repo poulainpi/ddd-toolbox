@@ -1,16 +1,42 @@
+import { DefaultSizeStyle, TLComponents, Tldraw } from 'tldraw'
+import 'tldraw/tldraw.css'
 import { useTheme } from '@ddd-toolbox/ui'
+import { ToolBar } from '@ddd-toolbox/shared-canvas'
+import { Menubar } from './menubar/menubar'
+import { changeHappened } from '@ddd-toolbox/shared-canvas'
+import { BrowserListener } from '@ddd-toolbox/shared-canvas'
+import { ZoomPanel } from '@ddd-toolbox/shared-canvas'
+import { setDefaultUserPreferencesWhenNotExisting } from '@ddd-toolbox/shared-canvas'
+
+const components: TLComponents = {
+  Toolbar: null,
+  MenuPanel: null,
+  NavigationPanel: null,
+  StylePanel: null,
+  ContextMenu: null,
+}
 
 export function EventStorming() {
   useTheme()
 
   return (
     <div style={{ position: 'fixed', inset: 0 }}>
-      <div className="flex h-full items-center justify-center">
-        <div className="text-center">
-          <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">Event Storming</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">Coming Soon</p>
-        </div>
-      </div>
+      <Tldraw
+        components={components}
+        onMount={(editor) => {
+          setDefaultUserPreferencesWhenNotExisting()
+
+          editor.store.listen(() => changeHappened(), { scope: 'document' })
+
+          editor.setStyleForNextShapes(DefaultSizeStyle, 's')
+        }}
+        persistenceKey={process.env.NODE_ENV === 'development' ? 'event-storming' : undefined}
+      >
+        <BrowserListener />
+        <Menubar />
+        <ToolBar />
+        <ZoomPanel />
+      </Tldraw>
     </div>
   )
 }
