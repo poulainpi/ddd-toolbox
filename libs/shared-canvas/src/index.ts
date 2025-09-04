@@ -1,6 +1,7 @@
 export * from './lib/dialogs/discard-changes-alert-dialog'
 export * from './lib/dialogs/change-document-name-dialog'
 export * from './lib/panels/zoom-panel'
+export * from './lib/panels/shapes-panel'
 export * from './lib/hooks/use-document-name'
 export * from './lib/hooks/use-document-persistence'
 export * from './lib/states/default-user-preferences'

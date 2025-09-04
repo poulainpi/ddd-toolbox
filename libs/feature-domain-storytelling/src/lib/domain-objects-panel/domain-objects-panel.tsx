@@ -1,77 +1,43 @@
-import { StateNode, track, useEditor, useValue } from 'tldraw'
-import { Button } from '@ddd-toolbox/ui'
-import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
-import { cn } from '@ddd-toolbox/util'
-import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
+import { StateNode, track } from 'tldraw'
+import { Shape, ShapesPanel } from '@ddd-toolbox/shared-canvas'
 import { useWorkObjects } from '../states/use-work-objects'
 import { CustomizeDomainObjectsDialog } from './customize-domain-objects-dialog'
 import { useActors } from '../states/use-actors'
-import { IconName } from 'lucide-react/dynamic'
 import { useStoryPlay } from '../states/use-story-play'
+import { ActorToolUtil } from '../tools/actor-tool-util'
+import { WorkObjectToolUtil } from '../tools/work-object-tool-util'
+import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
 
 export const DomainObjectsPanel = track(function DomainObjectsPanel() {
   const { isPlaying: isStoryPlaying } = useStoryPlay()
   const actorsState = useActors()
   const workObjectsState = useWorkObjects()
-  const editor = useEditor()
-  const currentSelectedTool = useValue('current tool', () => editor.getCurrentTool(), [editor])
 
-  if (isStoryPlaying) return null
+  const shapeGroups = [
+    {
+      id: 'actors',
+      shapes: actorsState.actors.map((actor) => ({ icon: actor, toolType: ActorToolUtil.id })),
+    },
+    {
+      id: 'work-objects',
+      shapes: workObjectsState.workObjects.map((workObject) => ({ icon: workObject, toolType: WorkObjectToolUtil.id })),
+    },
+  ]
+
+  const isToolSelected = (shape: Shape, currentSelectedTool: StateNode) => {
+    return (
+      currentSelectedTool instanceof DomainObjectToolUtil &&
+      currentSelectedTool.icon === shape.icon &&
+      currentSelectedTool.id === shape.toolType
+    )
+  }
 
   return (
-    <div className="bg-background absolute top-16 left-4 z-[300] min-h-56 rounded-md shadow-md">
-      <div className="bg-muted/50 p-2 pb-11">
-        <div className="flex h-full flex-col divide-y">
-          <div className="grid grid-cols-2 content-start justify-items-center gap-1 pb-1">
-            {actorsState.actors.map((actor) => (
-              <DomainObjectButton key={actor} type="actor" icon={actor} currentSelectedTool={currentSelectedTool} />
-            ))}
-          </div>
-
-          <div className="grid grid-cols-2 content-start justify-items-center gap-1 pt-1">
-            {workObjectsState.workObjects.map((workObject) => (
-              <DomainObjectButton
-                key={workObject}
-                type="work-object"
-                icon={workObject}
-                currentSelectedTool={currentSelectedTool}
-              />
-            ))}
-          </div>
-
-          <CustomizeDomainObjectsDialog actorsState={actorsState} workObjectsState={workObjectsState} />
-        </div>
-      </div>
-    </div>
+    <ShapesPanel
+      shapeGroups={shapeGroups}
+      isVisible={!isStoryPlaying}
+      isToolSelected={isToolSelected}
+      customization={<CustomizeDomainObjectsDialog actorsState={actorsState} workObjectsState={workObjectsState} />}
+    />
   )
 })
-
-function DomainObjectButton({
-  type,
-  icon,
-  currentSelectedTool,
-}: {
-  type: 'actor' | 'work-object'
-  icon: string
-  currentSelectedTool?: StateNode
-}) {
-  const editor = useEditor()
-  const isToolSelected =
-    currentSelectedTool instanceof DomainObjectToolUtil &&
-    currentSelectedTool.icon === icon &&
-    currentSelectedTool.id === type
-
-  return (
-    <Button
-      variant={isToolSelected ? undefined : 'ghost'}
-      size="icon"
-      className={cn('[&_svg]:size-6', ...(isToolSelected ? [] : ['text-foreground']))}
-      onClick={() => {
-        editor.setCurrentTool('select') // just to make change domain object tool to another domain object tool working
-        editor.setCurrentTool(type, { icon })
-      }}
-    >
-      <LoadableIcon name={icon as IconName} />
-    </Button>
-  )
-}
