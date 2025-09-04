@@ -1,6 +1,6 @@
 import { track, useEditor } from 'tldraw'
 import { useEffect } from 'react'
-import { useDocumentPersistence } from '@ddd-toolbox/shared-canvas'
+import { useDocumentPersistence } from './hooks/use-document-persistence'
 
 export const BrowserListener = track(function BrowserListener() {
   const { save, latestChangesSaved } = useDocumentPersistence()
@@ -46,7 +46,7 @@ export const BrowserListener = track(function BrowserListener() {
     }
   }, [latestChangesSaved])
 
-  return <></>
+  return null
 })
 
 function isControlKeyPressed(e: KeyboardEvent) {
