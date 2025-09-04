@@ -16,7 +16,7 @@ import { ZoomPanel } from '@ddd-toolbox/shared-canvas'
 import { ShapeMenu } from './shape-menu'
 import { ClickedArrowToolUtil } from './tools/clicked-arrow-tool-util'
 import { $hiddenShapesState } from './states/use-story-play'
-import { setDefaultUserPreferencesWhenNotExisting } from './states/default-user-preferences'
+import { setDefaultUserPreferencesWhenNotExisting } from '@ddd-toolbox/shared-canvas'
 
 const components: TLComponents = {
   InFrontOfTheCanvas: ShapeMenu,
