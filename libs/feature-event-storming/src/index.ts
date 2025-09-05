@@ -1,1 +1,4 @@
 export * from './lib/event-storming'
+export * from './lib/sticky-note-panel/sticky-note-panel'
+export * from './lib/tools/sticky-note-tool-util'
+export * from './lib/types/sticky-note-types'
