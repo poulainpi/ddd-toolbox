@@ -1,4 +1,4 @@
-import { StateNode, useEditor, useValue } from 'tldraw'
+import { Editor, StateNode, useEditor, useValue } from 'tldraw'
 import { Button } from '@ddd-toolbox/ui'
 import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
 import { cn } from '@ddd-toolbox/util'
@@ -7,8 +7,8 @@ import { ReactNode } from 'react'
 
 export interface Shape {
   icon: string
-  toolType: string
   color?: string
+  setCurrentTool: (editor: Editor) => void
 }
 
 export interface ShapeGroup {
@@ -37,7 +37,7 @@ export function ShapesPanel({ shapeGroups, isVisible = true, customization, isTo
             <div key={group.id} className="grid grid-cols-2 content-start justify-items-center gap-1 py-1">
               {group.shapes.map((shape) => (
                 <ShapeButton
-                  key={shape.icon}
+                  key={shape.icon + shape.color}
                   shape={shape}
                   currentSelectedTool={currentSelectedTool}
                   isToolSelected={isToolSelected}
@@ -74,7 +74,7 @@ function ShapeButton({
       className={cn('[&_svg]:size-6', ...(selected ? [] : ['text-foreground']))}
       onClick={() => {
         editor.setCurrentTool('select') // just to make change domain object tool to another domain object tool working
-        editor.setCurrentTool(shape.toolType, { icon: shape.icon, color: shape.color })
+        shape.setCurrentTool(editor)
       }}
     >
       <LoadableIcon name={shape.icon as IconName} style={iconStyle} />

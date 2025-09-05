@@ -1,4 +1,4 @@
-import { StateNode, track } from 'tldraw'
+import { Editor, StateNode, track } from 'tldraw'
 import { Shape, ShapesPanel } from '@ddd-toolbox/shared-canvas'
 import { useWorkObjects } from '../states/use-work-objects'
 import { CustomizeDomainObjectsDialog } from './customize-domain-objects-dialog'
@@ -8,6 +8,11 @@ import { ActorToolUtil } from '../tools/actor-tool-util'
 import { WorkObjectToolUtil } from '../tools/work-object-tool-util'
 import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
 
+// Extend Shape interface to include toolId for tool selection logic
+interface DomainObjectShape extends Shape {
+  toolId: string
+}
+
 export const DomainObjectsPanel = track(function DomainObjectsPanel() {
   const { isPlaying: isStoryPlaying } = useStoryPlay()
   const actorsState = useActors()
@@ -16,19 +21,36 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
   const shapeGroups = [
     {
       id: 'actors',
-      shapes: actorsState.actors.map((actor) => ({ icon: actor, toolType: ActorToolUtil.id })),
+      shapes: actorsState.actors.map(
+        (actor): DomainObjectShape => ({
+          icon: actor,
+          toolId: ActorToolUtil.id,
+          setCurrentTool: (editor: Editor) => {
+            editor.setCurrentTool(ActorToolUtil.id, { icon: actor })
+          },
+        }),
+      ),
     },
     {
       id: 'work-objects',
-      shapes: workObjectsState.workObjects.map((workObject) => ({ icon: workObject, toolType: WorkObjectToolUtil.id })),
+      shapes: workObjectsState.workObjects.map(
+        (workObject): DomainObjectShape => ({
+          icon: workObject,
+          toolId: WorkObjectToolUtil.id,
+          setCurrentTool: (editor: Editor) => {
+            editor.setCurrentTool(WorkObjectToolUtil.id, { icon: workObject })
+          },
+        }),
+      ),
     },
   ]
 
   const isToolSelected = (shape: Shape, currentSelectedTool: StateNode) => {
+    const domainObjectShape = shape as DomainObjectShape
     return (
       currentSelectedTool instanceof DomainObjectToolUtil &&
-      currentSelectedTool.icon === shape.icon &&
-      currentSelectedTool.id === shape.toolType
+      currentSelectedTool.icon === domainObjectShape.icon &&
+      currentSelectedTool.id === domainObjectShape.toolId
     )
   }
 
