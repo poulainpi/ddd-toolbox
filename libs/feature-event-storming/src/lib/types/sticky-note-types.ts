@@ -1,8 +1,10 @@
 export enum StickyNoteType {
   EVENT = 'event',
   COMMAND = 'command',
-  AGGREGATE = 'aggregate',
-  EXTERNAL_SYSTEM = 'external-system',
+  CONSTRAINT = 'constraint',
+  SYSTEM = 'system',
   POLICY = 'policy',
-  READ_MODEL = 'read-model',
+  QUERY_MODEL = 'query-model',
+  ACTOR = 'actor',
+  HOTSPOT = 'hotspot',
 }
