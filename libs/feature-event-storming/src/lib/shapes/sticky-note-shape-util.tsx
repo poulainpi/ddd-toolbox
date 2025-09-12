@@ -62,7 +62,7 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
           lineHeight={1.2}
           labelColor="black"
           isSelected={isSelected}
-          textWidth={STICKY_NOTE_SIZE - 32}
+          textWidth={STICKY_NOTE_SIZE - 16}
         />
       </HTMLContainer>
     )
