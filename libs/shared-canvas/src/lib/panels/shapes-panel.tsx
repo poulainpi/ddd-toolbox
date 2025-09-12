@@ -1,5 +1,5 @@
 import { Editor, StateNode, useEditor, useValue } from 'tldraw'
-import { Button } from '@ddd-toolbox/ui'
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@ddd-toolbox/ui'
 import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
 import { cn } from '@ddd-toolbox/util'
 import { IconName } from 'lucide-react/dynamic'
@@ -8,6 +8,7 @@ import { ReactNode } from 'react'
 export interface Shape {
   icon: string
   color?: string
+  tooltip?: string
   setCurrentTool: (editor: Editor) => void
 }
 
@@ -30,26 +31,28 @@ export function ShapesPanel({ shapeGroups, isVisible = true, customization, isTo
   if (!isVisible) return null
 
   return (
-    <div className="bg-background absolute top-16 left-4 z-[300] rounded-md shadow-md">
-      <div className={cn('bg-muted/50 p-2', customization && 'pb-11')}>
-        <div className="flex h-full flex-col divide-y">
-          {shapeGroups.map((group) => (
-            <div key={group.id} className="grid grid-cols-2 content-start justify-items-center gap-1 py-1">
-              {group.shapes.map((shape) => (
-                <ShapeButton
-                  key={shape.icon + shape.color}
-                  shape={shape}
-                  currentSelectedTool={currentSelectedTool}
-                  isToolSelected={isToolSelected}
-                />
-              ))}
-            </div>
-          ))}
+    <TooltipProvider>
+      <div className="bg-background absolute top-16 left-4 z-[300] rounded-md shadow-md">
+        <div className={cn('bg-muted/50 p-2', customization && 'pb-11')}>
+          <div className="flex h-full flex-col divide-y">
+            {shapeGroups.map((group) => (
+              <div key={group.id} className="grid grid-cols-2 content-start justify-items-center gap-1 py-1">
+                {group.shapes.map((shape) => (
+                  <ShapeButton
+                    key={shape.icon + shape.color}
+                    shape={shape}
+                    currentSelectedTool={currentSelectedTool}
+                    isToolSelected={isToolSelected}
+                  />
+                ))}
+              </div>
+            ))}
 
-          {customization}
+            {customization}
+          </div>
         </div>
       </div>
-    </div>
+    </TooltipProvider>
   )
 }
 
@@ -67,7 +70,7 @@ function ShapeButton({
   const selected = currentSelectedTool != null && isToolSelected(shape, currentSelectedTool)
   const textColorClass = shape.color || ''
 
-  return (
+  const button = (
     <Button
       variant={selected ? undefined : 'ghost'}
       size="icon"
@@ -80,4 +83,17 @@ function ShapeButton({
       <LoadableIcon name={shape.icon as IconName} className={textColorClass} />
     </Button>
   )
+
+  if (shape.tooltip) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipContent>
+          <p>{shape.tooltip}</p>
+        </TooltipContent>
+      </Tooltip>
+    )
+  }
+
+  return button
 }

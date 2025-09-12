@@ -1,7 +1,7 @@
 import { Editor, StateNode, track } from 'tldraw'
 import { Shape, ShapesPanel } from '@ddd-toolbox/shared-canvas'
 import { StickyNoteType } from '../types/sticky-note-types'
-import { STICKY_NOTE_TEXT_COLORS } from '../shapes/sticky-note-constants'
+import { STICKY_NOTE_LABELS, STICKY_NOTE_TEXT_COLORS } from '../shapes/sticky-note-constants'
 import { StickyNoteToolUtil } from '../tools/sticky-note-tool-util'
 
 // Extend Shape interface to include stickyNoteType for tool selection logic
@@ -18,6 +18,7 @@ export const StickyNotePanel = track(function StickyNotePanel() {
         (type): StickyNoteShape => ({
           icon: 'sticky-note',
           color: STICKY_NOTE_TEXT_COLORS[type],
+          tooltip: STICKY_NOTE_LABELS[type],
           stickyNoteType: type,
           setCurrentTool: (editor: Editor) => {
             editor.setCurrentTool(StickyNoteToolUtil.id, { stickyNoteType: type })
