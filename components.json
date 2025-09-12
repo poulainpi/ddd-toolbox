@@ -5,14 +5,15 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "../../libs/ui/src/lib/ui/globals.css",
+    "css": "libs/ui/src/lib/ui/index.css",
     "baseColor": "zinc",
     "cssVariables": true
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "src/components",
+    "components": "libs/ui/src/lib/ui",
+    "hooks": "libs/ui/src/lib/ui/hooks",
     "utils": "@ddd-toolbox/util",
-    "ui": "@ddd-toolbox/ui"
+    "ui": "libs/ui/src/lib/ui"
   }
 }
