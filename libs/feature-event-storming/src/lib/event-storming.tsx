@@ -10,6 +10,7 @@ import { setDefaultUserPreferencesWhenNotExisting } from '@ddd-toolbox/shared-ca
 import { StickyNotePanel } from './sticky-note-panel/sticky-note-panel'
 import { StickyNoteToolUtil } from './tools/sticky-note-tool-util'
 import { StickyNoteShapeUtil } from './shapes/sticky-note-shape-util'
+import { ShapeMenu } from './shape-menu'
 
 const components: TLComponents = {
   Toolbar: null,
@@ -17,6 +18,7 @@ const components: TLComponents = {
   NavigationPanel: null,
   StylePanel: null,
   ContextMenu: null,
+  InFrontOfTheCanvas: ShapeMenu,
 }
 
 export function EventStorming() {
