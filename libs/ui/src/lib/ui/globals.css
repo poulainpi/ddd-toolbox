@@ -68,6 +68,9 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
+
+  /* Remove white outline on tldraw text */
+  --tl-text-outline-reference: none !important;
 }
 
 @layer base {
