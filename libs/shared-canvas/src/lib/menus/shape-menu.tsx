@@ -1,7 +1,15 @@
 import { Editor, TLShape, useEditor, useValue } from 'tldraw'
 import { useEffect, useState } from 'react'
 import { MoveUpRightIcon, Trash2Icon } from 'lucide-react'
-import { Button, Popover, PopoverAnchor, PopoverContent } from '@ddd-toolbox/ui'
+import {
+  Button,
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@ddd-toolbox/ui'
 import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
 import { IconName } from 'lucide-react/dynamic'
 
@@ -119,20 +127,34 @@ export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: Shap
           (group) =>
             group.actions.length > 0 && (
               <div key={group.id} className="flex flex-wrap">
-                {group.actions.map((action, actionIndex) => (
-                  <Button
-                    key={`${action.icon}-${actionIndex}`}
-                    variant="ghost"
-                    size="icon"
-                    title={action.tooltip}
-                    onClick={() => {
-                      action.onClick(editor, selectedShape)
-                      giveFocusToEditor()
-                    }}
-                  >
-                    <LoadableIcon name={action.icon as IconName} className={action.color} />
-                  </Button>
-                ))}
+                {group.actions.map((action, actionIndex) => {
+                  const button = (
+                    <Button
+                      key={`${action.icon}-${actionIndex}`}
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        action.onClick(editor, selectedShape)
+                        giveFocusToEditor()
+                      }}
+                    >
+                      <LoadableIcon name={action.icon as IconName} className={action.color} />
+                    </Button>
+                  )
+
+                  if (action.tooltip) {
+                    return (
+                      <Tooltip key={`${action.icon}-${actionIndex}`} delayDuration={300}>
+                        <TooltipTrigger asChild>{button}</TooltipTrigger>
+                        <TooltipContent>
+                          <p>{action.tooltip}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    )
+                  }
+
+                  return button
+                })}
               </div>
             ),
         )}
