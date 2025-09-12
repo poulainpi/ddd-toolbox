@@ -86,7 +86,7 @@ function ShapeButton({
 
   if (shape.tooltip) {
     return (
-      <Tooltip>
+      <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent>
           <p>{shape.tooltip}</p>
