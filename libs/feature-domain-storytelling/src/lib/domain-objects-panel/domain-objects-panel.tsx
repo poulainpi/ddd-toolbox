@@ -8,7 +8,6 @@ import { ActorToolUtil } from '../tools/actor-tool-util'
 import { WorkObjectToolUtil } from '../tools/work-object-tool-util'
 import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
 
-// Extend Shape interface to include toolId for tool selection logic
 interface DomainObjectShape extends Shape {
   toolId: string
 }
