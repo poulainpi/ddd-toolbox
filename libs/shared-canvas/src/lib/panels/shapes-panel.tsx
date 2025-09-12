@@ -30,8 +30,8 @@ export function ShapesPanel({ shapeGroups, isVisible = true, customization, isTo
   if (!isVisible) return null
 
   return (
-    <div className="bg-background absolute top-16 left-4 z-[300] min-h-56 rounded-md shadow-md">
-      <div className="bg-muted/50 p-2 pb-11">
+    <div className="bg-background absolute top-16 left-4 z-[300] rounded-md shadow-md">
+      <div className={cn('bg-muted/50 p-2', customization && 'pb-11')}>
         <div className="flex h-full flex-col divide-y">
           {shapeGroups.map((group) => (
             <div key={group.id} className="grid grid-cols-2 content-start justify-items-center gap-1 py-1">
