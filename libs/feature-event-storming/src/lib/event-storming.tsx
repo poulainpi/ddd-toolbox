@@ -9,6 +9,7 @@ import { ZoomPanel } from '@ddd-toolbox/shared-canvas'
 import { setDefaultUserPreferencesWhenNotExisting } from '@ddd-toolbox/shared-canvas'
 import { StickyNotePanel } from './sticky-note-panel/sticky-note-panel'
 import { StickyNoteToolUtil } from './tools/sticky-note-tool-util'
+import { StickyNoteShapeUtil } from './shapes/sticky-note-shape-util'
 
 const components: TLComponents = {
   Toolbar: null,
@@ -24,6 +25,7 @@ export function EventStorming() {
   return (
     <div style={{ position: 'fixed', inset: 0 }}>
       <Tldraw
+        shapeUtils={[StickyNoteShapeUtil]}
         components={components}
         tools={[StickyNoteToolUtil]}
         onMount={(editor) => {

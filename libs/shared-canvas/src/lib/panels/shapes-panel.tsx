@@ -65,7 +65,7 @@ function ShapeButton({
   const editor = useEditor()
 
   const selected = currentSelectedTool != null && isToolSelected(shape, currentSelectedTool)
-  const iconStyle = shape.color ? { color: shape.color } : {}
+  const textColorClass = shape.color || ''
 
   return (
     <Button
@@ -77,7 +77,7 @@ function ShapeButton({
         shape.setCurrentTool(editor)
       }}
     >
-      <LoadableIcon name={shape.icon as IconName} style={iconStyle} />
+      <LoadableIcon name={shape.icon as IconName} className={textColorClass} />
     </Button>
   )
 }

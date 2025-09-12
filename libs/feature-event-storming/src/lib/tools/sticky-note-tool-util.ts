@@ -1,21 +1,15 @@
-import { createShapeId, StateNode, TLShapeId } from 'tldraw'
+import { createShapeId, StateNode } from 'tldraw'
 import { StickyNoteType } from '../types/sticky-note-types'
+import { STICKY_NOTE_SIZE } from '../shapes/sticky-note-constants'
+import { StickyNoteShapeUtil } from '../shapes/sticky-note-shape-util'
 
 export class StickyNoteToolUtil extends StateNode {
   static override id = 'sticky-note'
 
   public stickyNoteType: StickyNoteType = StickyNoteType.EVENT
-  private initialShapeId: TLShapeId | undefined
 
-  override onEnter({
-    stickyNoteType,
-    initiatorShapeId,
-  }: {
-    stickyNoteType: StickyNoteType
-    initiatorShapeId?: TLShapeId
-  }) {
+  override onEnter({ stickyNoteType }: { stickyNoteType: StickyNoteType }) {
     this.stickyNoteType = stickyNoteType
-    this.initialShapeId = initiatorShapeId
     this.editor.setCursor({ type: 'cross' })
   }
 
@@ -29,10 +23,11 @@ export class StickyNoteToolUtil extends StateNode {
 
     this.editor.createShape({
       id,
-      type: 'note',
-      x: currentPagePoint.x - 100, // Default note width is ~200, so center it
-      y: currentPagePoint.y - 100, // Default note height is ~200, so center it
-      meta: {
+      type: StickyNoteShapeUtil.type,
+      x: currentPagePoint.x - STICKY_NOTE_SIZE / 2,
+      y: currentPagePoint.y - STICKY_NOTE_SIZE / 2,
+      props: {
+        text: '',
         stickyNoteType: this.stickyNoteType,
       },
     })
