@@ -1,5 +1,5 @@
-import { Editor, TLShape } from 'tldraw'
-import { ShapeMenu as SharedShapeMenu, MenuActionGroup } from '@ddd-toolbox/shared-canvas'
+import { Editor, GroupShapeUtil, TLShape } from 'tldraw'
+import { MenuActionGroup, ShapeMenu as SharedShapeMenu } from '@ddd-toolbox/shared-canvas'
 import { StickyNoteShapeUtil } from './shapes/sticky-note-shape-util'
 import { StickyNoteToolUtil } from './tools/sticky-note-tool-util'
 import { StickyNoteType } from './types/sticky-note-types'
@@ -13,13 +13,18 @@ export function ShapeMenu() {
         icon: 'sticky-note',
         color: STICKY_NOTE_TEXT_COLORS[type],
         tooltip: STICKY_NOTE_LABELS[type],
-        onClick: (editor: Editor, _selectedShape: TLShape) => {
+        onClick: (editor: Editor, selectedShape: TLShape) => {
           editor.selectNone()
-          editor.setCurrentTool(StickyNoteToolUtil.id, { stickyNoteType: type })
+          editor.setCurrentTool(StickyNoteToolUtil.id, {
+            stickyNoteType: type,
+            groupWithShapeId: selectedShape.id,
+          })
         },
       })),
     },
   ]
 
-  return <SharedShapeMenu actionGroups={actionGroups} showOnShapeTypes={[StickyNoteShapeUtil.type]} />
+  return (
+    <SharedShapeMenu actionGroups={actionGroups} showOnShapeTypes={[StickyNoteShapeUtil.type, GroupShapeUtil.type]} />
+  )
 }

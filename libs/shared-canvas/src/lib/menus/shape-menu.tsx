@@ -36,6 +36,9 @@ export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: Shap
   const isDragging = editor.inputs.isDragging
   const isEditingShape = editor.getEditingShapeId() !== null
 
+  // Ensure that the menu updates when the selected shape changes
+  useValue('only selected shape', () => editor.getOnlySelectedShape(), [editor])
+
   useMouseDown() // trick because isDragging is not observable
 
   const selectedShapeBounds = useValue(
