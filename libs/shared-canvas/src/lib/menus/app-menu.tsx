@@ -30,6 +30,7 @@ import {
 import { useDocumentPersistence } from '../hooks/use-document-persistence'
 import { useDisclosure } from '@ddd-toolbox/util'
 import { DiscardChangesAlertDialog } from '../dialogs/discard-changes-alert-dialog'
+import { useDocumentName } from '../hooks/use-document-name'
 
 export interface AppMenuProps {
   newDocument: () => void
@@ -43,6 +44,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document' }: AppM
   const theme = userPreferences.colorScheme ?? 'system'
   const { latestChangesSaved, open, saveAs } = useDocumentPersistence()
   const confirmDiscardChangesDisclosure = useDisclosure()
+  const { documentName } = useDocumentName()
 
   function changeUserPreferences(newPreferences: Partial<TLUserPreferences>) {
     setUserPreferences({
@@ -56,6 +58,70 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document' }: AppM
       open()
     } else {
       confirmDiscardChangesDisclosure.open()
+    }
+  }
+
+  function validateCanvasForExport() {
+    const shapeIds = editor.getCurrentPageShapeIds()
+    if (shapeIds.size === 0) {
+      alert('No content to export. Please add some shapes to the canvas first.')
+      return null
+    }
+    return [...shapeIds]
+  }
+
+  function downloadFile(blob: Blob, filename: string): void {
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = filename
+    link.click()
+    URL.revokeObjectURL(link.href)
+  }
+
+  async function exportAsSvg() {
+    try {
+      const shapeIds = validateCanvasForExport()
+      if (!shapeIds) return
+
+      const result = await editor.getSvgString(shapeIds, {
+        background: true,
+        padding: 10,
+        scale: 1,
+      })
+
+      if (!result) {
+        throw new Error('Failed to generate SVG')
+      }
+
+      const blob = new Blob([result.svg], { type: 'image/svg+xml' })
+      downloadFile(blob, `${documentName}-${Date.now()}.svg`)
+    } catch (error) {
+      console.error('Failed to export SVG:', error)
+      alert('Failed to export SVG. Please try again.')
+    }
+  }
+
+  async function exportAsPng() {
+    try {
+      const shapeIds = validateCanvasForExport()
+      if (!shapeIds) return
+
+      const result = await editor.toImage(shapeIds, {
+        format: 'png',
+        background: true,
+        padding: 10,
+        scale: 1,
+        quality: 1,
+      })
+
+      if (!result) {
+        throw new Error('Failed to generate PNG')
+      }
+
+      downloadFile(result.blob, `${documentName}-${Date.now()}.png`)
+    } catch (error) {
+      console.error('Failed to export PNG:', error)
+      alert('Failed to export PNG. Please try again.')
     }
   }
 
@@ -95,10 +161,10 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document' }: AppM
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={exportAsSvg}>
                     <span>SVG</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={exportAsPng}>
                     <span>PNG</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
