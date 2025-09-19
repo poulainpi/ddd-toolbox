@@ -16,7 +16,8 @@ const tools = [
     title: 'Event Storming',
     description:
       'Rapidly discover business processes and identify domain boundaries through collaborative workshop techniques. Map out the flow of domain events across your system.',
-    status: 'coming-soon' as const,
+    status: 'available' as const,
+    href: '/event-storming',
     icon: <Zap className="h-6 w-6" />,
   },
   {
