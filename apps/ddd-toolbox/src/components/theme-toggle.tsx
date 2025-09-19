@@ -1,31 +1,35 @@
-import { Button, useTheme } from '@ddd-toolbox/ui'
+import { useEffect, useState } from 'react'
+import { Button, resolveTheme, useTheme } from '@ddd-toolbox/ui'
 import { Moon, Sun } from 'lucide-react'
 import { getUserPreferences, setUserPreferences } from 'tldraw'
-
-function getSystemTheme(): 'light' | 'dark' {
-  return typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-}
 
 export function ThemeToggle() {
   useTheme()
 
+  const [mounted, setMounted] = useState(false)
+  const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>('light')
+
+  useEffect(() => {
+    setMounted(true)
+    const resolved = resolveTheme()
+    setEffectiveTheme(resolved)
+  }, [])
+
   const toggleTheme = () => {
-    const currentTheme = getUserPreferences().colorScheme ?? 'system'
-    const effectiveTheme = currentTheme === 'system' ? getSystemTheme() : currentTheme
-    const newTheme = effectiveTheme === 'light' ? 'dark' : 'light'
+    const current = resolveTheme()
+    const newTheme = current === 'light' ? 'dark' : 'light'
 
     setUserPreferences({
       ...getUserPreferences(),
       colorScheme: newTheme,
     })
-  }
 
-  const currentTheme = getUserPreferences().colorScheme ?? 'system'
-  const effectiveTheme = currentTheme === 'system' ? getSystemTheme() : currentTheme
+    setEffectiveTheme(newTheme)
+  }
 
   return (
     <Button variant="ghost" size="icon" onClick={toggleTheme}>
-      {effectiveTheme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+      {mounted && effectiveTheme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
       <span className="sr-only">Toggle theme</span>
     </Button>
   )

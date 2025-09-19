@@ -1,20 +1,15 @@
 import { useEffect } from 'react'
 import { getUserPreferences, useValue } from 'tldraw'
+import { resolveTheme } from '../utils/theme'
 
 export function useTheme() {
   const theme = useValue('theme', () => getUserPreferences().colorScheme ?? 'system', [])
 
   useEffect(() => {
     const root = window.document.documentElement
+    const resolvedTheme = resolveTheme(theme)
 
     root.classList.remove('light', 'dark')
-
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      root.classList.add(systemTheme)
-      return
-    }
-
-    root.classList.add(theme)
+    root.classList.add(resolvedTheme)
   }, [theme])
 }

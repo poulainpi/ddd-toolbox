@@ -12,6 +12,36 @@ import './styles.css'
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+  <script>
+    // Apply theme immediately to prevent flash
+    (function() {
+      function getSystemTheme() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      }
+
+      function getUserTheme() {
+        const storage = localStorage.getItem('TLDRAW_USER_DATA_v3')
+        if (storage) {
+          try {
+            const data = JSON.parse(storage)
+            return data.user.colorScheme ?? 'system'
+          } catch (e) {
+            return 'system'
+          }
+        }
+        return 'system'
+      }
+
+      function resolveTheme() {
+        const userTheme = getUserTheme()
+        return userTheme === 'system' ? getSystemTheme() : userTheme
+      }
+
+      const resolvedTheme = resolveTheme()
+      document.documentElement.classList.add(resolvedTheme)
+    })()
+  </script>
 </head>
 <body>
 <slot />

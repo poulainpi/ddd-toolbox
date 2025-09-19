@@ -1,5 +1,6 @@
 export * from './lib/ui/hooks/use-theme'
 export * from './lib/ui/hooks/use-toast'
+export * from './lib/ui/utils/theme'
 export * from './lib/ui/button'
 export * from './lib/ui/dialog'
 export * from './lib/ui/alert-dialog'
