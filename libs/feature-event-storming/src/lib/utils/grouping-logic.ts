@@ -1,4 +1,4 @@
-import { Editor, GroupShapeUtil, TLGroupShape, TLShape, TLShapeId } from 'tldraw'
+import { createShapeId, Editor, GroupShapeUtil, TLGroupShape, TLShape, TLShapeId } from 'tldraw'
 
 export function groupStickyNoteWithANewOne(editor: Editor, existingShape: TLShape, newShapeId: TLShapeId): void {
   const existingGroup = findGroup(editor, existingShape.id)
@@ -33,5 +33,13 @@ function joinExistingGroup(editor: Editor, group: TLGroupShape, newShapeId: TLSh
 }
 
 function createNewGroup(editor: Editor, existingShapeId: TLShapeId, newShapeId: TLShapeId): void {
-  editor.groupShapes([existingShapeId, newShapeId])
+  const groupId = createShapeId()
+
+  editor.createShape({
+    id: groupId,
+    type: 'group',
+  })
+
+  // Avoid editor.groupShapes as it prevents newly created sticky notes from entering editing mode
+  editor.reparentShapes([existingShapeId, newShapeId], groupId)
 }
