@@ -1,6 +1,6 @@
 import { DefaultSizeStyle, TLComponents, Tldraw } from 'tldraw'
 import 'tldraw/tldraw.css'
-import { useTheme } from '@ddd-toolbox/ui'
+import { useThemeSync } from '@ddd-toolbox/ui'
 import { ToolBar } from '@ddd-toolbox/shared-canvas'
 import { Menubar } from './menubar/menubar'
 import { changeHappened } from '@ddd-toolbox/shared-canvas'
@@ -22,7 +22,7 @@ const components: TLComponents = {
 }
 
 export function EventStorming() {
-  useTheme()
+  useThemeSync()
 
   return (
     <div style={{ position: 'fixed', inset: 0 }}>

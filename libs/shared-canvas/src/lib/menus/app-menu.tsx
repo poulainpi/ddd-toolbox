@@ -31,6 +31,7 @@ import { useDocumentPersistence } from '../hooks/use-document-persistence'
 import { useDisclosure } from '@ddd-toolbox/util'
 import { DiscardChangesAlertDialog } from '../dialogs/discard-changes-alert-dialog'
 import { useDocumentName } from '../hooks/use-document-name'
+import { toast } from 'sonner'
 
 export interface AppMenuProps {
   newDocument: () => void
@@ -64,10 +65,16 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document' }: AppM
   function validateCanvasForExport() {
     const shapeIds = editor.getCurrentPageShapeIds()
     if (shapeIds.size === 0) {
-      alert('No content to export. Please add some shapes to the canvas first.')
+      showEmptyCanvasToast()
       return null
     }
     return [...shapeIds]
+  }
+
+  function showEmptyCanvasToast() {
+    toast.error('Cannot export empty canvas', {
+      description: 'Please add some shapes to the canvas before exporting.',
+    })
   }
 
   function downloadFile(blob: Blob, filename: string): void {
@@ -97,7 +104,9 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document' }: AppM
       downloadFile(blob, `${documentName}-${Date.now()}.svg`)
     } catch (error) {
       console.error('Failed to export SVG:', error)
-      alert('Failed to export SVG. Please try again.')
+      toast.error('Export failed', {
+        description: 'Failed to export SVG. Please try again.',
+      })
     }
   }
 
@@ -121,7 +130,9 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document' }: AppM
       downloadFile(result.blob, `${documentName}-${Date.now()}.png`)
     } catch (error) {
       console.error('Failed to export PNG:', error)
-      alert('Failed to export PNG. Please try again.')
+      toast.error('Export failed', {
+        description: 'Failed to export PNG. Please try again.',
+      })
     }
   }
 

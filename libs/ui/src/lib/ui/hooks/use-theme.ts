@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { getUserPreferences, useValue } from 'tldraw'
 import { resolveTheme } from '../utils/theme'
 
-export function useTheme() {
+export function useThemeSync() {
   const theme = useValue('theme', () => getUserPreferences().colorScheme ?? 'system', [])
 
   useEffect(() => {
@@ -12,4 +12,9 @@ export function useTheme() {
     root.classList.remove('light', 'dark')
     root.classList.add(resolvedTheme)
   }, [theme])
+}
+
+export function useTheme(): 'light' | 'dark' {
+  const theme = useValue('theme', () => getUserPreferences().colorScheme ?? 'system', [])
+  return resolveTheme(theme)
 }

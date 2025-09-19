@@ -9,9 +9,8 @@ import {
   Form,
   FormInput,
   Separator,
-  toast,
-  ToastAction,
 } from '@ddd-toolbox/ui'
+import { toast } from 'sonner'
 import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
 import { PlusIcon, SettingsIcon } from 'lucide-react'
 import { cn } from '@ddd-toolbox/util'
@@ -69,13 +68,11 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
                 icon={actor}
                 onClick={() => {
                   const oldActors = [...actors]
-                  toast({
-                    title: `Actor "${actor}" deleted`,
-                    action: (
-                      <ToastAction altText="Undo the actor deletion" onClick={() => actorsState.setActors(oldActors)}>
-                        Undo
-                      </ToastAction>
-                    ),
+                  toast(`Actor "${actor}" deleted`, {
+                    action: {
+                      label: 'Undo',
+                      onClick: () => actorsState.setActors(oldActors),
+                    },
                   })
                   actorsState.deleteActor(actor)
                 }}
@@ -100,16 +97,11 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
                 icon={workObject}
                 onClick={() => {
                   const oldWorkObjects = [...workObjects]
-                  toast({
-                    title: `Work Object "${workObject}" deleted`,
-                    action: (
-                      <ToastAction
-                        altText="Undo the work object deletion"
-                        onClick={() => workObjectsState.setWorkObjects(oldWorkObjects)}
-                      >
-                        Undo
-                      </ToastAction>
-                    ),
+                  toast(`Work Object "${workObject}" deleted`, {
+                    action: {
+                      label: 'Undo',
+                      onClick: () => workObjectsState.setWorkObjects(oldWorkObjects),
+                    },
                   })
                   workObjectsState.deleteWorkObject(workObject)
                 }}

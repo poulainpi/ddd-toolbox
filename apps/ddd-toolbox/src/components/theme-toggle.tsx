@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Button, resolveTheme, useTheme } from '@ddd-toolbox/ui'
+import { Button, resolveTheme, useThemeSync } from '@ddd-toolbox/ui'
 import { Moon, Sun } from 'lucide-react'
 import { getUserPreferences, setUserPreferences } from 'tldraw'
 
 export function ThemeToggle() {
-  useTheme()
+  useThemeSync()
 
   const [mounted, setMounted] = useState(false)
   const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>('light')

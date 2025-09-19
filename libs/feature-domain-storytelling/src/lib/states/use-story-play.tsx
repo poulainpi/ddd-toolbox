@@ -11,7 +11,7 @@ import {
 } from 'tldraw'
 import { getActivitiesArrows } from '../shapes/activities-arrows'
 import { ActorShapeUtil } from '../shapes/actor-shape-util'
-import { toast } from '@ddd-toolbox/ui'
+import { toast } from 'sonner'
 
 export const $hiddenShapesState = atom<Set<TLShapeId>>('hidden shapes', new Set())
 
@@ -68,9 +68,7 @@ export function useStoryPlay(): UseStoryPlayReturn {
     const activitiesNumbers = activitiesArrows.map((arrow) => arrow.meta.activityNumber as number)
     const missingActivityNumbers = findMissingActivityNumbers(activitiesNumbers)
     if (missingActivityNumbers.length > 0) {
-      toast({
-        title: 'Domain Story is incomplete',
-        variant: 'destructive',
+      toast.error('Domain Story is incomplete', {
         description: `The following activity numbers are missing: ${missingActivityNumbers.join(', ')}`,
       })
       return false

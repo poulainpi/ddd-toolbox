@@ -7,16 +7,18 @@ import { registerSideEffects } from './shapes/side-effects'
 import { ArrowShapeUtil } from './shapes/arrow-shape-util'
 import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
 import { WorkObjectToolUtil } from './tools/work-object-tool-util'
-import { useTheme } from '@ddd-toolbox/ui'
+import { useThemeSync } from '@ddd-toolbox/ui'
 import { ToolBar } from './tool-bar'
 import { Menubar } from './menubar/menubar'
-import { changeHappened } from '@ddd-toolbox/shared-canvas'
-import { BrowserListener } from '@ddd-toolbox/shared-canvas'
-import { ZoomPanel } from '@ddd-toolbox/shared-canvas'
+import {
+  BrowserListener,
+  changeHappened,
+  setDefaultUserPreferencesWhenNotExisting,
+  ZoomPanel,
+} from '@ddd-toolbox/shared-canvas'
 import { ShapeMenu } from './shape-menu'
 import { ClickedArrowToolUtil } from './tools/clicked-arrow-tool-util'
 import { $hiddenShapesState } from './states/use-story-play'
-import { setDefaultUserPreferencesWhenNotExisting } from '@ddd-toolbox/shared-canvas'
 
 const components: TLComponents = {
   InFrontOfTheCanvas: ShapeMenu,
@@ -28,7 +30,7 @@ const components: TLComponents = {
 }
 
 export function DomainStorytelling() {
-  useTheme()
+  useThemeSync()
 
   return (
     <div style={{ position: 'fixed', inset: 0 }}>
