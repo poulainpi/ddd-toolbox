@@ -24,8 +24,9 @@ DDD Toolbox is a modern web application that provides strategic design tools for
 ### 🎯 Currently Available
 
 - **[Domain Storytelling](https://dddtoolbox.com/domain-storytelling)** - Visualize and communicate domain knowledge through collaborative storytelling. Create pictorial domain models that bridge the gap between domain experts and development teams.
-
+  ![Demo](https://i.imgur.com/OgES8P8.gif)
 - **[Event Storming](https://dddtoolbox.com/event-storming)** - Rapidly discover business processes and identify domain boundaries through collaborative workshop techniques. Map out the flow of domain events across your system.
+  ![Demo](https://i.imgur.com/P3yrtU9.png)
 
 ### 📋 Planned
 
