@@ -4,9 +4,14 @@ import {
   ChangeDocumentNameDialog,
 } from '@ddd-toolbox/shared-canvas'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
+import { EVENT_STORMING_EXAMPLE_URL } from '../constants'
 
 const EventAppMenu = ({ newDocument }: { newDocument: () => void }) => (
-  <SharedAppMenu newDocument={newDocument} newDocumentLabel="New event storming" />
+  <SharedAppMenu
+    newDocument={newDocument}
+    newDocumentLabel="New event storming"
+    exampleHref={EVENT_STORMING_EXAMPLE_URL}
+  />
 )
 
 const EventNameDialog = ({ disclosure, isNew }: { disclosure: UseDisclosureReturn; isNew: boolean }) => (

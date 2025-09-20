@@ -1,12 +1,13 @@
 import {
-  Menubar as SharedMenubar,
   AppMenu as SharedAppMenu,
   ChangeDocumentNameDialog,
+  Menubar as SharedMenubar,
 } from '@ddd-toolbox/shared-canvas'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
+import { DOMAIN_STORYTELLING_EXAMPLE_URL } from '../constants'
 
 const StoryAppMenu = ({ newDocument }: { newDocument: () => void }) => (
-  <SharedAppMenu newDocument={newDocument} newDocumentLabel="New story" />
+  <SharedAppMenu newDocument={newDocument} newDocumentLabel="New story" exampleHref={DOMAIN_STORYTELLING_EXAMPLE_URL} />
 )
 
 const StoryNameDialog = ({ disclosure, isNew }: { disclosure: UseDisclosureReturn; isNew: boolean }) => (
