@@ -7,9 +7,12 @@ import { useStoryPlay } from '../states/use-story-play'
 import { ActorToolUtil } from '../tools/actor-tool-util'
 import { WorkObjectToolUtil } from '../tools/work-object-tool-util'
 import { DomainObjectToolUtil } from '../tools/domain-object-tool-util'
+import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
+import { IconName } from 'lucide-react/dynamic'
 
 interface DomainObjectShape extends Shape {
   toolId: string
+  icon: string
 }
 
 export const DomainObjectsPanel = track(function DomainObjectsPanel() {
@@ -22,6 +25,7 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
       id: 'actors',
       shapes: actorsState.actors.map(
         (actor): DomainObjectShape => ({
+          component: <LoadableIcon name={actor as IconName} className="[&_svg]:size-6" />,
           icon: actor,
           toolId: ActorToolUtil.id,
           setCurrentTool: (editor: Editor) => {
@@ -34,6 +38,7 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
       id: 'work-objects',
       shapes: workObjectsState.workObjects.map(
         (workObject): DomainObjectShape => ({
+          component: <LoadableIcon name={workObject as IconName} className="[&_svg]:size-6" />,
           icon: workObject,
           toolId: WorkObjectToolUtil.id,
           setCurrentTool: (editor: Editor) => {

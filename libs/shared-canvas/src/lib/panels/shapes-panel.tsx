@@ -1,13 +1,10 @@
 import { Editor, StateNode, useEditor, useValue } from 'tldraw'
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@ddd-toolbox/ui'
-import { LoadableIcon } from '@ddd-toolbox/ui-loadable-icon'
 import { cn } from '@ddd-toolbox/util'
-import { IconName } from 'lucide-react/dynamic'
 import { ReactNode } from 'react'
 
 export interface Shape {
-  icon: string
-  color?: string
+  component: ReactNode
   tooltip?: string
   setCurrentTool: (editor: Editor) => void
 }
@@ -37,9 +34,9 @@ export function ShapesPanel({ shapeGroups, isVisible = true, bottomComponent, is
           <div className="flex h-full flex-col divide-y">
             {shapeGroups.map((group) => (
               <div key={group.id} className="grid grid-cols-2 content-start justify-items-center gap-1 py-1">
-                {group.shapes.map((shape) => (
+                {group.shapes.map((shape, index) => (
                   <ShapeButton
-                    key={shape.icon + shape.color}
+                    key={`${group.id}-${index}`}
                     shape={shape}
                     currentSelectedTool={currentSelectedTool}
                     isToolSelected={isToolSelected}
@@ -68,7 +65,6 @@ function ShapeButton({
   const editor = useEditor()
 
   const selected = currentSelectedTool != null && isToolSelected(shape, currentSelectedTool)
-  const textColorClass = shape.color || ''
 
   const button = (
     <Button
@@ -80,7 +76,7 @@ function ShapeButton({
         shape.setCurrentTool(editor)
       }}
     >
-      <LoadableIcon name={shape.icon as IconName} className={textColorClass} />
+      {shape.component}
     </Button>
   )
 
