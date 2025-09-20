@@ -36,3 +36,24 @@ DDD Toolbox is a modern web application that provides strategic design tools for
 - **Aggregate Design Canvas** - Design and document your aggregates using a structured canvas approach. Define aggregate boundaries, invariants, and behavioral patterns.
 
 - **Domain Message Flow** - Model the flow of messages and events between different parts of your system. Visualize how information moves across bounded contexts.
+
+## Why this project?
+
+### The Challenge of Modern DDD Workshops
+
+Organizing effective Domain-Driven Design workshops in today's work environment has become increasingly difficult:
+
+- **Remote and hybrid work** makes collaborative modeling sessions harder to coordinate
+- **Paper-based workshops** are difficult to review, iterate on, and share with distributed teams
+- **Generic whiteboard tools** lack the specific semantics and constraints needed for DDD strategic design
+
+### The Need for Purpose-Built Tools
+
+Although collaboration tools and paid whiteboard templates are available, there's a clear lack of purpose-built solutions for DDD strategic design. We need:
+
+- **Semantically-aware tools** that understand DDD concepts and patterns
+- **Guided workflows** that follow established DDD practices and methodologies
+- **Iteration-friendly interfaces** that make it easy to refine and evolve domain models
+- **Accessible, open-source solutions** that don't require expensive licenses
+
+DDD Toolbox aims to address this lack by providing purpose-built, free tools that understand the nuances of Domain-Driven Design and facilitate effective strategic design sessions.
