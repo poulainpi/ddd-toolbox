@@ -1,20 +1,21 @@
 import { Badge, Button } from '@ddd-toolbox/ui'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ExternalLink } from 'lucide-react'
 
 interface ToolCardProps {
   title: string
   description: string
   status: 'available' | 'coming-soon' | 'coming-later'
   href?: string
+  exampleHref?: string
   icon: React.ReactNode
 }
 
-export function ToolCard({ title, description, status, href, icon }: ToolCardProps) {
+export function ToolCard({ title, description, status, href, exampleHref, icon }: ToolCardProps) {
   const isAvailable = status === 'available'
 
   const cardContent = (
     <div
-      className={`group bg-card relative rounded-lg border p-6 shadow-sm transition-all duration-200 ${
+      className={`group bg-card relative h-full rounded-lg border p-6 shadow-sm transition-all duration-200 ${
         isAvailable ? 'cursor-pointer hover:border-blue-200 hover:shadow-md' : 'cursor-not-allowed opacity-75'
       }`}
     >
@@ -52,6 +53,20 @@ export function ToolCard({ title, description, status, href, icon }: ToolCardPro
               <ArrowRight className="ml-1 h-4 w-4" />
             </span>
           </Button>
+          {exampleHref && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="mt-2 w-full"
+              onClick={(e) => {
+                e.preventDefault()
+                window.open(exampleHref, '_blank', 'noopener,noreferrer')
+              }}
+            >
+              View Example
+              <ExternalLink className="ml-1 h-4 w-4" />
+            </Button>
+          )}
         </div>
       )}
 
