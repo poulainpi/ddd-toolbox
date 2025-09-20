@@ -87,6 +87,8 @@ export function loadFromUrlIfNeeded(editor: Editor): boolean {
     const document = JSON.parse(documentData)
     loadSnapshot(editor.store, { document })
 
+    goToContent(editor)
+
     return true
   } catch (error) {
     console.error('Failed to load document from URL:', error)
@@ -98,4 +100,12 @@ export function loadFromUrlIfNeeded(editor: Editor): boolean {
     // Clear the hash to prevent reloading on refresh
     window.history.replaceState(null, '', window.location.pathname + window.location.search)
   }
+}
+
+function goToContent(editor: Editor) {
+  const bounds = editor.getSelectionPageBounds() ?? editor.getCurrentPageBounds()
+  if (!bounds) return
+  editor.zoomToBounds(bounds, {
+    targetZoom: Math.min(1, editor.getZoomLevel()),
+  })
 }
