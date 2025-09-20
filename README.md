@@ -10,6 +10,8 @@
     </h3>
     <p>
         <a href="https://dddtoolbox.com/domain-storytelling">Try Domain Storytelling →</a>
+        <br>
+        <a href="https://dddtoolbox.com/event-storming">Try Event Storming →</a>
     </p>
 </div>
 
@@ -23,9 +25,7 @@ DDD Toolbox is a modern web application that provides strategic design tools for
 
 - **[Domain Storytelling](https://dddtoolbox.com/domain-storytelling)** - Visualize and communicate domain knowledge through collaborative storytelling. Create pictorial domain models that bridge the gap between domain experts and development teams.
 
-### 🚀 Coming Soon
-
-- **Event Storming** - Rapidly discover business processes and identify domain boundaries through collaborative workshop techniques. Map out the flow of domain events across your system.
+- **[Event Storming](https://dddtoolbox.com/event-storming)** - Rapidly discover business processes and identify domain boundaries through collaborative workshop techniques. Map out the flow of domain events across your system.
 
 ### 📋 Planned
 
