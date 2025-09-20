@@ -7,6 +7,7 @@ import { changeHappened } from '@ddd-toolbox/shared-canvas'
 import { BrowserListener } from '@ddd-toolbox/shared-canvas'
 import { ZoomPanel } from '@ddd-toolbox/shared-canvas'
 import { setDefaultUserPreferencesWhenNotExisting } from '@ddd-toolbox/shared-canvas'
+import { loadFromUrlIfNeeded } from '@ddd-toolbox/shared-canvas'
 import { StickyNotePanel } from './sticky-note-panel/sticky-note-panel'
 import { StickyNoteToolUtil } from './tools/sticky-note-tool-util'
 import { StickyNoteShapeUtil } from './shapes/sticky-note-shape-util'
@@ -36,6 +37,8 @@ export function EventStorming() {
           editor.store.listen(() => changeHappened(), { scope: 'document' })
 
           editor.setStyleForNextShapes(DefaultSizeStyle, 's')
+
+          loadFromUrlIfNeeded(editor)
         }}
         persistenceKey={process.env.NODE_ENV === 'development' ? 'event-storming' : undefined}
       >

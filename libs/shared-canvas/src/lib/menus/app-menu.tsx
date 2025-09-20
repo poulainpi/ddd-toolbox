@@ -14,15 +14,17 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@ddd-toolbox/ui'
-import { getUserPreferences, setUserPreferences, TLUserPreferences, useEditor, useValue } from 'tldraw'
+import { getUserPreferences, setUserPreferences, TLUserPreferences, useEditor, useValue, getSnapshot } from 'tldraw'
 import {
   ArrowLeftIcon,
   DownloadIcon,
   ExternalLinkIcon,
+  FileDownIcon,
   FilePlusIcon,
   FolderIcon,
   GithubIcon,
   ImageDownIcon,
+  LinkIcon,
   MenuIcon,
   SettingsIcon,
   SunMoonIcon,
@@ -136,6 +138,31 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document' }: AppM
     }
   }
 
+  async function exportAsLink() {
+    try {
+      const shapeIds = validateCanvasForExport()
+      if (!shapeIds) return
+
+      const snapshot = getSnapshot(editor.store)
+      const documentData = JSON.stringify(snapshot.document)
+      const base64Data = btoa(documentData)
+
+      const currentUrl = new URL(window.location.href)
+      currentUrl.hash = `initialDocument=${base64Data}`
+
+      await navigator.clipboard.writeText(currentUrl.toString())
+
+      toast.success('Link copied to clipboard', {
+        description: 'Share this link to let others view your document.',
+      })
+    } catch (error) {
+      console.error('Failed to export as link:', error)
+      toast.error('Export failed', {
+        description: 'Failed to create shareable link. Please try again.',
+      })
+    }
+  }
+
   return (
     <>
       <DropdownMenu>
@@ -161,22 +188,28 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document' }: AppM
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={saveAs}>
-              <DownloadIcon />
+              <FileDownIcon />
               <span>Save to...</span>
             </DropdownMenuItem>
 
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                <ImageDownIcon />
-                <span>Export image</span>
+                <DownloadIcon />
+                <span>Export</span>
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
                   <DropdownMenuItem onClick={exportAsSvg}>
+                    <ImageDownIcon />
                     <span>SVG</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={exportAsPng}>
+                    <ImageDownIcon />
                     <span>PNG</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={exportAsLink}>
+                    <LinkIcon />
+                    <span>Link to share</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>

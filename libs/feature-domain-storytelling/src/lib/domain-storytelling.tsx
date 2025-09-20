@@ -15,6 +15,7 @@ import {
   changeHappened,
   setDefaultUserPreferencesWhenNotExisting,
   ZoomPanel,
+  loadFromUrlIfNeeded,
 } from '@ddd-toolbox/shared-canvas'
 import { ShapeMenu } from './shape-menu'
 import { ClickedArrowToolUtil } from './tools/clicked-arrow-tool-util'
@@ -49,6 +50,8 @@ export function DomainStorytelling() {
           editor.store.listen(() => changeHappened(), { scope: 'document' })
 
           editor.setStyleForNextShapes(DefaultSizeStyle, 's')
+
+          loadFromUrlIfNeeded(editor)
         }}
         isShapeHidden={(shape, _editor) => {
           return $hiddenShapesState.get().has(shape.id)

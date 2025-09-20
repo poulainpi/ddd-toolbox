@@ -1,5 +1,6 @@
 import { useDocumentName } from './use-document-name'
-import { atom, getSnapshot, loadSnapshot, useEditor, useValue } from 'tldraw'
+import { atom, Editor, getSnapshot, loadSnapshot, useEditor, useValue } from 'tldraw'
+import { toast } from 'sonner'
 
 const $persistenceState = atom<{
   fileHandle: FileSystemFileHandle | undefined
@@ -70,4 +71,29 @@ export function useDocumentPersistence(): UseDocumentPersistenceReturn {
 
 export function changeHappened() {
   $persistenceState.update((value) => ({ ...value, latestChangesSaved: false }))
+}
+
+export function loadFromUrlIfNeeded(editor: Editor): boolean {
+  try {
+    const hash = window.location.hash
+    if (!hash.startsWith('#initialDocument=')) {
+      return false
+    }
+
+    const base64Data = hash.substring('#initialDocument='.length)
+    const documentData = JSON.parse(atob(base64Data))
+
+    loadSnapshot(editor.store, { document: documentData })
+
+    return true
+  } catch (error) {
+    console.error('Failed to load document from URL:', error)
+    toast.error('Failed to load document', {
+      description: 'The shared link appears to be invalid or corrupted.',
+    })
+    return false
+  } finally {
+    // Clear the hash to prevent reloading on refresh
+    window.history.replaceState(null, '', window.location.pathname + window.location.search)
+  }
 }
