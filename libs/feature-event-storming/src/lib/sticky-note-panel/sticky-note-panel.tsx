@@ -3,6 +3,7 @@ import { Shape, ShapesPanel } from '@ddd-toolbox/shared-canvas'
 import { StickyNoteType } from '../types/sticky-note-types'
 import { STICKY_NOTE_LABELS, STICKY_NOTE_TEXT_COLORS } from '../shapes/sticky-note-constants'
 import { StickyNoteToolUtil } from '../tools/sticky-note-tool-util'
+import { StickyNoteHelpDialog } from './sticky-note-help-dialog'
 
 interface StickyNoteShape extends Shape {
   stickyNoteType: StickyNoteType
@@ -34,5 +35,12 @@ export const StickyNotePanel = track(function StickyNotePanel() {
     )
   }
 
-  return <ShapesPanel shapeGroups={shapeGroups} isVisible={true} isToolSelected={isToolSelected} />
+  return (
+    <ShapesPanel
+      shapeGroups={shapeGroups}
+      isVisible={true}
+      isToolSelected={isToolSelected}
+      bottomComponent={<StickyNoteHelpDialog />}
+    />
+  )
 })

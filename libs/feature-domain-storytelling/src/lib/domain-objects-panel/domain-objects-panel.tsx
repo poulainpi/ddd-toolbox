@@ -58,7 +58,7 @@ export const DomainObjectsPanel = track(function DomainObjectsPanel() {
       shapeGroups={shapeGroups}
       isVisible={!isStoryPlaying}
       isToolSelected={isToolSelected}
-      customization={<CustomizeDomainObjectsDialog actorsState={actorsState} workObjectsState={workObjectsState} />}
+      bottomComponent={<CustomizeDomainObjectsDialog actorsState={actorsState} workObjectsState={workObjectsState} />}
     />
   )
 })

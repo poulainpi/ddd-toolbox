@@ -20,11 +20,11 @@ export interface ShapeGroup {
 export interface ShapesPanelProps {
   shapeGroups: ShapeGroup[]
   isVisible?: boolean
-  customization?: ReactNode
+  bottomComponent?: ReactNode
   isToolSelected: (shape: Shape, currentSelectedTool: StateNode) => boolean
 }
 
-export function ShapesPanel({ shapeGroups, isVisible = true, customization, isToolSelected }: ShapesPanelProps) {
+export function ShapesPanel({ shapeGroups, isVisible = true, bottomComponent, isToolSelected }: ShapesPanelProps) {
   const editor = useEditor()
   const currentSelectedTool = useValue('current tool', () => editor.getCurrentTool(), [editor])
 
@@ -33,7 +33,7 @@ export function ShapesPanel({ shapeGroups, isVisible = true, customization, isTo
   return (
     <TooltipProvider>
       <div className="bg-background absolute top-16 left-4 z-[300] rounded-md shadow-md">
-        <div className={cn('bg-muted/50 p-2', customization && 'pb-11')}>
+        <div className={cn('bg-muted/50 p-2', bottomComponent && 'pb-11')}>
           <div className="flex h-full flex-col divide-y">
             {shapeGroups.map((group) => (
               <div key={group.id} className="grid grid-cols-2 content-start justify-items-center gap-1 py-1">
@@ -48,7 +48,7 @@ export function ShapesPanel({ shapeGroups, isVisible = true, customization, isTo
               </div>
             ))}
 
-            {customization}
+            {bottomComponent}
           </div>
         </div>
       </div>
