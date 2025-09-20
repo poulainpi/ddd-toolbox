@@ -1,6 +1,7 @@
 import { useDocumentName } from './use-document-name'
 import { atom, Editor, getSnapshot, loadSnapshot, useEditor, useValue } from 'tldraw'
 import { toast } from 'sonner'
+import { decompressFromEncodedURIComponent } from 'lz-string'
 
 const $persistenceState = atom<{
   fileHandle: FileSystemFileHandle | undefined
@@ -80,10 +81,11 @@ export function loadFromUrlIfNeeded(editor: Editor): boolean {
       return false
     }
 
-    const base64Data = hash.substring('#initialDocument='.length)
-    const documentData = JSON.parse(atob(base64Data))
+    const encodedData = hash.substring('#initialDocument='.length)
+    const documentData = decompressFromEncodedURIComponent(encodedData)
 
-    loadSnapshot(editor.store, { document: documentData })
+    const document = JSON.parse(documentData)
+    loadSnapshot(editor.store, { document })
 
     return true
   } catch (error) {

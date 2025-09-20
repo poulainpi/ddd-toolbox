@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@ddd-toolbox/ui'
 import { getUserPreferences, setUserPreferences, TLUserPreferences, useEditor, useValue, getSnapshot } from 'tldraw'
+import { compressToEncodedURIComponent } from 'lz-string'
 import {
   ArrowLeftIcon,
   DownloadIcon,
@@ -145,10 +146,10 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document' }: AppM
 
       const snapshot = getSnapshot(editor.store)
       const documentData = JSON.stringify(snapshot.document)
-      const base64Data = btoa(documentData)
+      const compressedData = compressToEncodedURIComponent(documentData)
 
       const currentUrl = new URL(window.location.href)
-      currentUrl.hash = `initialDocument=${base64Data}`
+      currentUrl.hash = `initialDocument=${compressedData}`
 
       await navigator.clipboard.writeText(currentUrl.toString())
 
