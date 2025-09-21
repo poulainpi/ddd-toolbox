@@ -45,7 +45,7 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
           <DialogDescription>
             You can find the list of available icons{' '}
             <Button variant="link" asChild className="p-0">
-              <a href="https://lucide.dev/icons" target="_blank" rel="noreferrer">
+              <a href="https://lucide.dev/icons" target="_blank" rel="noopener noreferrer">
                 here
               </a>
             </Button>

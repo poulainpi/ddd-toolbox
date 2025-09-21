@@ -288,7 +288,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
             )}
             <DropdownMenuItem>
               <GithubIcon />
-              <a href="https://github.com/poulainpi/ddd-toolbox" target="_blank" rel="noreferrer">
+              <a href="https://github.com/poulainpi/ddd-toolbox" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
               <ExternalLinkIcon className="ml-auto" />
