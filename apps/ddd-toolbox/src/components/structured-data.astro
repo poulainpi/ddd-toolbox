@@ -1,0 +1,39 @@
+---
+import { SITE_URL, SITE_NAME } from '../constants/seo'
+
+export interface Props {
+  type: 'website' | 'software'
+  title?: string
+  description: string
+}
+
+const { type, title, description } = Astro.props
+const structuredUrl = new URL(Astro.url.pathname, SITE_URL).href
+
+const baseData = {
+  "@context": "https://schema.org",
+  "@type": type === 'website' ? 'WebSite' : 'SoftwareApplication',
+}
+
+let structuredData = {}
+
+if (type === 'website') {
+  structuredData = {
+    ...baseData,
+    name: title || SITE_NAME,
+    description: description,
+    url: structuredUrl
+  }
+} else {
+  structuredData = {
+    ...baseData,
+    name: title || SITE_NAME,
+    description: description,
+    url: structuredUrl,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Web Browser"
+  }
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

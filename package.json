@@ -9,6 +9,7 @@
   "type": "module",
   "dependencies": {
     "@astrojs/react": "4.3.0",
+    "@astrojs/sitemap": "3.6.0",
     "@astrolib/seo": "1.0.0-beta.8",
     "@radix-ui/react-alert-dialog": "1.1.15",
     "@radix-ui/react-dialog": "1.1.15",

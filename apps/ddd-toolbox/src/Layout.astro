@@ -1,17 +1,24 @@
 ---
 import { Toaster } from '@ddd-toolbox/ui'
+import { SITE_URL } from './constants/seo'
 import './styles.css'
+
+const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).href
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>dddtoolbox</title>
   <base href="/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/favicon.ico" />
 
   <script>
     // Apply theme immediately to prevent flash

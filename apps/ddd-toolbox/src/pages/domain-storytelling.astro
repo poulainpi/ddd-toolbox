@@ -2,12 +2,23 @@
 import { DomainStorytelling as DomainStorytellingComponent } from '@ddd-toolbox/domain-storytelling'
 import Layout from '../Layout.astro'
 import LoadingScreen from '../components/LoadingScreen.astro'
+import StructuredData from '../components/structured-data.astro'
 import { AstroSeo } from '@astrolib/seo'
+
+const pageDescription = "Our Domain Storytelling tool lets you collaboratively sketch domain stories that make complex business processes easy to understand and improve"
 ---
 
-<AstroSeo title="Domain Storytelling | DDD Toolbox" description="Our Domain Storytelling tool lets you collaboratively sketch domain stories that make complex business processes easy to understand and improve" />
+<AstroSeo
+  title="Domain Storytelling | DDD Toolbox"
+  description={pageDescription}
+/>
 
 <Layout>
+  <StructuredData
+    type="software"
+    title="Domain Storytelling Tool"
+    description={pageDescription}
+  />
   <DomainStorytellingComponent client:only="react">
     <LoadingScreen slot="fallback" toolName="Domain Storytelling" />
   </DomainStorytellingComponent>

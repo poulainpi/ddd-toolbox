@@ -2,12 +2,17 @@
 import { EventStorming as EventStormingComponent } from '@ddd-toolbox/event-storming'
 import Layout from '../Layout.astro'
 import LoadingScreen from '../components/LoadingScreen.astro'
+import StructuredData from '../components/structured-data.astro'
 import { AstroSeo } from '@astrolib/seo'
+
+const pageDescription =
+  'Our Event Storming tool lets you collaboratively explore complex business domains by mapping domain events and their relationships'
 ---
 
-<AstroSeo title="Event Storming | DDD Toolbox" description="Our Event Storming tool lets you collaboratively explore complex business domains by mapping domain events and their relationships" />
+<AstroSeo title="Event Storming | DDD Toolbox" description={pageDescription} />
 
 <Layout>
+  <StructuredData type="software" title="Event Storming Tool" description={pageDescription} />
   <EventStormingComponent client:only="react">
     <LoadingScreen slot="fallback" toolName="Event Storming" />
   </EventStormingComponent>
