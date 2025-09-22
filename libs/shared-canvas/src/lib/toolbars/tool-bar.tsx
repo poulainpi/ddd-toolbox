@@ -25,7 +25,7 @@ export const ToolBar = track(function ToolBar({ additionalTools = [] }: ToolBarP
   return (
     <div className="bg-background absolute bottom-2 left-1/2 z-[300] -translate-x-1/2 rounded-md shadow-md">
       <div className="bg-muted/50 flex divide-x p-2">
-        <div className="flex gap-1 pr-2">
+        <div className={cn('flex gap-1', additionalTools.length > 0 && 'pr-2')}>
           {tools
             .filter((tool) => !isReadonlyMode || tool.usableInReadOnly)
             .map((tool, index) => {
