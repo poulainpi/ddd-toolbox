@@ -34,6 +34,10 @@ export const BrowserListener = track(function BrowserListener() {
   }, [editor, save])
 
   useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      return
+    }
+
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (!latestChangesSaved) {
         e.preventDefault()
