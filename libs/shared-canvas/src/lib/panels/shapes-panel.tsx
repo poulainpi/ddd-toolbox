@@ -1,4 +1,4 @@
-import { Editor, StateNode, useEditor, useValue } from 'tldraw'
+import { Editor, StateNode, useEditor, useReadonly, useValue } from 'tldraw'
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@ddd-toolbox/ui'
 import { cn } from '@ddd-toolbox/util'
 import { ReactNode } from 'react'
@@ -16,16 +16,16 @@ export interface ShapeGroup {
 
 export interface ShapesPanelProps {
   shapeGroups: ShapeGroup[]
-  isVisible?: boolean
   bottomComponent?: ReactNode
   isToolSelected: (shape: Shape, currentSelectedTool: StateNode) => boolean
 }
 
-export function ShapesPanel({ shapeGroups, isVisible = true, bottomComponent, isToolSelected }: ShapesPanelProps) {
+export function ShapesPanel({ shapeGroups, bottomComponent, isToolSelected }: ShapesPanelProps) {
   const editor = useEditor()
   const currentSelectedTool = useValue('current tool', () => editor.getCurrentTool(), [editor])
+  const isReadOnlyMode = useReadonly()
 
-  if (!isVisible) return null
+  if (isReadOnlyMode) return null
 
   return (
     <TooltipProvider>
