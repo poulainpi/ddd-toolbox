@@ -177,9 +177,11 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
 
         <DropdownMenuContent>
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <ArrowLeftIcon />
-              <a href="/">Back to toolbox</a>
+            <DropdownMenuItem asChild>
+              <a href="/">
+                <ArrowLeftIcon />
+                Back to toolbox
+              </a>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
@@ -278,20 +280,20 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
 
           <DropdownMenuGroup>
             {exampleHref && (
-              <DropdownMenuItem>
-                <LightbulbIcon />
+              <DropdownMenuItem asChild>
                 <a href={exampleHref} target="_blank" rel="noreferrer">
+                  <LightbulbIcon />
                   View Example
+                  <ExternalLinkIcon className="ml-auto" />
                 </a>
-                <ExternalLinkIcon className="ml-auto" />
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem>
-              <GithubIcon />
+            <DropdownMenuItem asChild>
               <a href="https://github.com/poulainpi/ddd-toolbox" target="_blank" rel="noopener noreferrer">
+                <GithubIcon />
                 GitHub
+                <ExternalLinkIcon className="ml-auto" />
               </a>
-              <ExternalLinkIcon className="ml-auto" />
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
