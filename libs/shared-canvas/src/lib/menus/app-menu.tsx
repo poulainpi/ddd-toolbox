@@ -14,7 +14,15 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@ddd-toolbox/ui'
-import { getUserPreferences, setUserPreferences, TLUserPreferences, useEditor, useValue, getSnapshot } from 'tldraw'
+import {
+  getUserPreferences,
+  setUserPreferences,
+  TLUserPreferences,
+  useEditor,
+  useValue,
+  getSnapshot,
+  useReadonly,
+} from 'tldraw'
 import { compressToEncodedURIComponent } from 'lz-string'
 import {
   ArrowLeftIcon,
@@ -28,6 +36,7 @@ import {
   LightbulbIcon,
   LinkIcon,
   MenuIcon,
+  MonitorSpeakerIcon,
   SettingsIcon,
   SunMoonIcon,
 } from 'lucide-react'
@@ -46,6 +55,7 @@ export interface AppMenuProps {
 export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampleHref }: AppMenuProps) {
   const editor = useEditor()
   const gridModeActivated = useValue('grid mode activated', () => editor.getInstanceState().isGridMode, [])
+  const isReadonlyMode = useReadonly()
   const userPreferences = useValue('user preferences', getUserPreferences, [])
   const theme = userPreferences.colorScheme ?? 'system'
   const { latestChangesSaved, open, saveAs } = useDocumentPersistence()
@@ -57,6 +67,10 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
       ...getUserPreferences(),
       ...newPreferences,
     })
+  }
+
+  function togglePresentationMode() {
+    editor.updateInstanceState({ isReadonly: !isReadonlyMode })
   }
 
   function checkUnsavedChangesAndOpen() {
@@ -275,6 +289,11 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
+
+            <DropdownMenuItem onClick={togglePresentationMode}>
+              <MonitorSpeakerIcon />
+              <span>{isReadonlyMode ? 'Exit' : 'Enter'} Presentation Mode</span>
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
 

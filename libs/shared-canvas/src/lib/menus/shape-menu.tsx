@@ -1,4 +1,4 @@
-import { Editor, TLShape, useEditor, useValue } from 'tldraw'
+import { Editor, TLShape, useEditor, useValue, useReadonly } from 'tldraw'
 import { useEffect, useState } from 'react'
 import { MoveUpRightIcon, Trash2Icon } from 'lucide-react'
 import {
@@ -35,6 +35,7 @@ export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: Shap
   const editor = useEditor()
   const isDragging = editor.inputs.isDragging
   const isEditingShape = editor.getEditingShapeId() !== null
+  const isReadonlyMode = useReadonly()
 
   // Ensure that the menu updates when the selected shape changes
   useValue('only selected shape', () => editor.getOnlySelectedShape(), [editor])
@@ -64,6 +65,7 @@ export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: Shap
 
   if (
     !selectedShapeBounds ||
+    isReadonlyMode ||
     (showOnShapeTypes && !showOnShapeTypes.includes(selectedShapeBounds.selectedShape.type))
   ) {
     return null
