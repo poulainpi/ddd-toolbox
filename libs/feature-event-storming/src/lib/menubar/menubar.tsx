@@ -9,13 +9,13 @@ import { EVENT_STORMING_EXAMPLE_URL } from '../constants'
 const EventAppMenu = ({ newDocument }: { newDocument: () => void }) => (
   <SharedAppMenu
     newDocument={newDocument}
-    newDocumentLabel="New event storming"
+    newDocumentLabel="New Event Storming"
     exampleHref={EVENT_STORMING_EXAMPLE_URL}
   />
 )
 
 const EventNameDialog = ({ disclosure, isNew }: { disclosure: UseDisclosureReturn; isNew: boolean }) => (
-  <ChangeDocumentNameDialog disclosure={disclosure} isNew={isNew} documentType="event storming" />
+  <ChangeDocumentNameDialog disclosure={disclosure} isNew={isNew} documentType="Event Storming" />
 )
 
 export function Menubar() {
