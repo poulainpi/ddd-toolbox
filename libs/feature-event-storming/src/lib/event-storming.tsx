@@ -36,8 +36,6 @@ export function EventStorming() {
 
           editor.store.listen(() => changeHappened(), { scope: 'document' })
 
-          editor.setStyleForNextShapes(DefaultSizeStyle, 's')
-
           loadFromUrlIfNeeded(editor)
         }}
         persistenceKey={process.env.NODE_ENV === 'development' ? 'event-storming' : undefined}
