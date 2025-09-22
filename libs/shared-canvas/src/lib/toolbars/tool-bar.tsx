@@ -1,12 +1,21 @@
 import { track, useEditor, useReadonly } from 'tldraw'
 import { cn } from '@ddd-toolbox/util'
 import { Button } from '@ddd-toolbox/ui'
-import { EraserIcon, HandIcon, MousePointerClickIcon, MousePointerIcon, PenIcon, TypeIcon } from 'lucide-react'
+import {
+  EraserIcon,
+  HandIcon,
+  MousePointerClickIcon,
+  MousePointerIcon,
+  MoveUpRightIcon,
+  PenIcon,
+  TypeIcon,
+} from 'lucide-react'
 import { ReactNode } from 'react'
 
 const tools = [
   { id: 'select', icon: <MousePointerIcon />, usableInReadOnly: true },
   { id: 'hand', icon: <HandIcon />, usableInReadOnly: true },
+  { id: 'arrow', icon: <MoveUpRightIcon />, usableInReadOnly: false },
   { id: 'draw', icon: <PenIcon />, usableInReadOnly: false },
   { id: 'eraser', icon: <EraserIcon />, usableInReadOnly: false },
   { id: 'text', icon: <TypeIcon />, usableInReadOnly: false },
@@ -15,9 +24,10 @@ const tools = [
 
 export interface ToolBarProps {
   additionalTools?: ReactNode[]
+  hiddenTools?: string[]
 }
 
-export const ToolBar = track(function ToolBar({ additionalTools = [] }: ToolBarProps) {
+export const ToolBar = track(function ToolBar({ additionalTools = [], hiddenTools = [] }: ToolBarProps) {
   const editor = useEditor()
   const currentTool = editor.getCurrentTool()
   const isReadonlyMode = useReadonly()
@@ -27,7 +37,7 @@ export const ToolBar = track(function ToolBar({ additionalTools = [] }: ToolBarP
       <div className="bg-muted/50 flex divide-x p-2">
         <div className={cn('flex gap-1', additionalTools.length > 0 && 'pr-2')}>
           {tools
-            .filter((tool) => !isReadonlyMode || tool.usableInReadOnly)
+            .filter((tool) => (!isReadonlyMode || tool.usableInReadOnly) && !hiddenTools.includes(tool.id))
             .map((tool, index) => {
               const isToolSelected = currentTool.id === tool.id
 

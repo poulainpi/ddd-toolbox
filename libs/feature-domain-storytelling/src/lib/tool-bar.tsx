@@ -32,5 +32,5 @@ function StoryButton({ Icon, onClick }: { Icon: ReactElement; onClick: () => voi
 }
 
 export function ToolBar() {
-  return <SharedToolBar additionalTools={[<StoryPlaybackTools />]} />
+  return <SharedToolBar additionalTools={[<StoryPlaybackTools />]} hiddenTools={['arrow']} />
 }
