@@ -9,7 +9,7 @@ import {
   Form,
   FormInput,
 } from '@ddd-toolbox/ui'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormReturn } from 'react-hook-form'
 import { useDocumentName } from '../hooks/use-document-name'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
 
@@ -17,12 +17,14 @@ export interface ChangeDocumentNameDialogProps {
   disclosure: UseDisclosureReturn
   isNew: boolean
   documentType?: string
+  helperComponent?: React.ComponentType<{ form: UseFormReturn<{ name: string }> }>
 }
 
 export function ChangeDocumentNameDialog({
   disclosure,
   isNew,
   documentType = 'document',
+  helperComponent: HelperComponent,
 }: ChangeDocumentNameDialogProps) {
   const { documentName, setDocumentName } = useDocumentName()
 
@@ -43,7 +45,7 @@ export function ChangeDocumentNameDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <ChangeDocumentNameForm initialName={documentName} onSubmit={onSubmit} />
+        <ChangeDocumentNameForm initialName={documentName} onSubmit={onSubmit} helperComponent={HelperComponent} />
 
         <DialogFooter>
           <Button type="submit" form="document-name">
@@ -58,15 +60,18 @@ export function ChangeDocumentNameDialog({
 export function ChangeDocumentNameForm({
   initialName,
   onSubmit,
+  helperComponent: HelperComponent,
 }: {
   initialName: string
   onSubmit: (newName: string) => void
+  helperComponent?: React.ComponentType<{ form: UseFormReturn<{ name: string }> }>
 }) {
   const form = useForm({ defaultValues: { name: initialName } })
 
   return (
     <Form form={form} onSubmit={(data) => onSubmit(data.name)} id="document-name">
       <FormInput name="name" label="Name" />
+      {HelperComponent && <HelperComponent form={form} />}
     </Form>
   )
 }
