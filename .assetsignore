@@ -1,0 +1,13 @@
+# Exclude Cloudflare Pages specific files
+_worker.js
+_redirects
+_headers
+
+# Exclude build artifacts
+*.map
+*.log
+
+# Exclude development files
+.env*
+.DS_Store
+node_modules/

@@ -7,10 +7,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   site: 'https://dddtoolbox.com',
+  output: 'static',
   integrations: [react(), sitemap()],
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',
+    format: 'file',
   },
   vite: {
     plugins: [tailwindcss()],
