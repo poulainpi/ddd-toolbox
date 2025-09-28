@@ -30,9 +30,9 @@ export function StoryNameScopeHelper({ form }: StoryNameScopeHelperProps) {
       setGranularity(null)
     }
 
-    if (lastThreeParts.includes('asis') || lastThreeParts.includes('as-is')) {
+    if (lastThreeParts.includes('asis')) {
       setPointInTime('asis')
-    } else if (lastThreeParts.includes('tobe') || lastThreeParts.includes('to-be')) {
+    } else if (lastThreeParts.includes('tobe')) {
       setPointInTime('tobe')
     } else {
       setPointInTime(null)
@@ -51,7 +51,7 @@ export function StoryNameScopeHelper({ form }: StoryNameScopeHelperProps) {
     const currentName = form.getValues('name')
     const parts = currentName.split('-')
 
-    const scopeKeywords = ['coarse', 'fine', 'pure', 'digitalized', 'asis', 'as-is', 'tobe', 'to-be']
+    const scopeKeywords = ['coarse', 'fine', 'pure', 'digitalized', 'asis', 'tobe']
 
     const titleParts = [...parts]
 
@@ -181,14 +181,14 @@ export function StoryNameScopeHelper({ form }: StoryNameScopeHelperProps) {
             onPressedChange={() => handlePointInTimeToggle('asis')}
             variant="outline"
           >
-            As-is
+            As is
           </Toggle>
           <Toggle
             pressed={pointInTime === 'tobe'}
             onPressedChange={() => handlePointInTimeToggle('tobe')}
             variant="outline"
           >
-            To-be
+            To be
           </Toggle>
         </div>
       </div>
