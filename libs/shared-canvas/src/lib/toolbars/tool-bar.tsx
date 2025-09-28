@@ -33,8 +33,8 @@ export const ToolBar = track(function ToolBar({ additionalTools = [], hiddenTool
   const isReadonlyMode = useReadonly()
 
   return (
-    <div className="bg-background absolute bottom-2 left-1/2 z-[300] -translate-x-1/2 rounded-md shadow-md">
-      <div className="bg-muted/50 flex divide-x p-2">
+    <div className="bg-background absolute bottom-2 left-1/2 z-[300] -translate-x-1/2">
+      <div className="bg-muted/50 flex divide-x rounded-md p-2 shadow-md">
         <div className={cn('flex gap-1', additionalTools.length > 0 && 'pr-2')}>
           {tools
             .filter((tool) => (!isReadonlyMode || tool.usableInReadOnly) && !hiddenTools.includes(tool.id))

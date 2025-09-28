@@ -29,8 +29,8 @@ export function ShapesPanel({ shapeGroups, bottomComponent, isToolSelected }: Sh
 
   return (
     <TooltipProvider>
-      <div className="bg-background absolute top-16 left-4 z-[300] rounded-md shadow-md">
-        <div className={cn('bg-muted/50 p-2', bottomComponent && 'pb-11')}>
+      <div className="bg-background absolute top-16 left-4 z-[300]">
+        <div className={cn('bg-muted/50 rounded-md p-2 shadow-md', bottomComponent && 'pb-11')}>
           <div className="flex h-full flex-col divide-y">
             {shapeGroups.map((group) => (
               <div key={group.id} className="grid grid-cols-2 content-start justify-items-center gap-1 py-1">
