@@ -102,9 +102,9 @@ export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: Shap
         onOpenAutoFocus={(event) => {
           event.preventDefault() // prevent focus to let the shape input focused
         }}
-        className="flex w-fit max-w-[170px] flex-col gap-1 divide-y p-1"
+        className="flex w-fit max-w-[170px] flex-col gap-1 divide-y p-1 [&>*:not(:last-child)]:pb-1"
       >
-        <div className="flex pb-1">
+        <div className="flex">
           {onArrowClick && (
             <Button
               variant="ghost"
