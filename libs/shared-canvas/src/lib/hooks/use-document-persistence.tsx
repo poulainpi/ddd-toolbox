@@ -1,7 +1,13 @@
 import { useDocumentName } from './use-document-name'
-import { atom, Editor, getSnapshot, loadSnapshot, useEditor, useValue } from 'tldraw'
+import { atom, Editor, getSnapshot, loadSnapshot, RecordsDiff, TLRecord, useEditor, useValue } from 'tldraw'
 import { toast } from 'sonner'
 import { decompressFromEncodedURIComponent } from 'lz-string'
+import { resetTrackedChanges } from './use-change-tracking'
+
+function isPlainObjectEmpty(obj: object) {
+  for (const _key in obj) return false
+  return true
+}
 
 const $persistenceState = atom<{
   fileHandle: FileSystemFileHandle | undefined
@@ -29,7 +35,10 @@ export function useDocumentPersistence(): UseDocumentPersistenceReturn {
     loadSnapshot(editor.store, { document: jsonContent })
 
     // setTimeout else changeHappened are triggered after latestChangesSaved are set to true
-    setTimeout(() => $persistenceState.update((value) => ({ ...value, fileHandle, latestChangesSaved: true })))
+    setTimeout(() => {
+      resetTrackedChanges()
+      $persistenceState.update((value) => ({ ...value, fileHandle, latestChangesSaved: true }))
+    })
   }
 
   async function saveAs() {
@@ -53,6 +62,7 @@ export function useDocumentPersistence(): UseDocumentPersistenceReturn {
     await writableStream.write(JSON.stringify(document.document))
     await writableStream.close()
 
+    resetTrackedChanges()
     $persistenceState.update((value) => ({ ...value, latestChangesSaved: true }))
   }
 
@@ -70,8 +80,11 @@ export function useDocumentPersistence(): UseDocumentPersistenceReturn {
   }
 }
 
-export function changeHappened() {
-  $persistenceState.update((value) => ({ ...value, latestChangesSaved: false }))
+export function changeHappened(diff: RecordsDiff<TLRecord>) {
+  const hasChanges =
+    !isPlainObjectEmpty(diff.added) || !isPlainObjectEmpty(diff.removed) || !isPlainObjectEmpty(diff.updated)
+
+  $persistenceState.update((value) => ({ ...value, latestChangesSaved: !hasChanges }))
 }
 
 export function loadFromUrlIfNeeded(editor: Editor): boolean {

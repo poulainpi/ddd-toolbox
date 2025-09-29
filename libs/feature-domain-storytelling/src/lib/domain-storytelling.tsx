@@ -12,10 +12,10 @@ import { ToolBar } from './tool-bar'
 import { Menubar } from './menubar/menubar'
 import {
   BrowserListener,
-  changeHappened,
   setDefaultUserPreferencesWhenNotExisting,
   ZoomPanel,
   loadFromUrlIfNeeded,
+  OnMountListener,
 } from '@ddd-toolbox/shared-canvas'
 import { ShapeMenu } from './shape-menu'
 import { ClickedArrowToolUtil } from './tools/clicked-arrow-tool-util'
@@ -47,8 +47,6 @@ export function DomainStorytelling() {
 
           registerSideEffects(editor)
 
-          editor.store.listen(() => changeHappened(), { scope: 'document' })
-
           editor.setStyleForNextShapes(DefaultSizeStyle, 's')
 
           loadFromUrlIfNeeded(editor)
@@ -58,6 +56,7 @@ export function DomainStorytelling() {
         }}
         persistenceKey={process.env.NODE_ENV === 'development' ? 'domain-storytelling' : undefined}
       >
+        <OnMountListener />
         <BrowserListener />
         <Menubar />
         <DomainObjectsPanel />
