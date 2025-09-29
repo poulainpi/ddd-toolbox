@@ -5,6 +5,8 @@ import { useDocumentName } from '../hooks/use-document-name'
 import { useDocumentPersistence } from '../hooks/use-document-persistence'
 import { SaveIcon } from 'lucide-react'
 import { DiscardChangesAlertDialog } from '../dialogs/discard-changes-alert-dialog'
+import { events, NEW_DOCUMENT_CREATED } from '../states/events'
+import { PagesMenu } from './pages-menu'
 
 export interface MenubarProps {
   AppMenuComponent: React.ComponentType<{ newDocument: () => void }>
@@ -12,9 +14,19 @@ export interface MenubarProps {
     disclosure: UseDisclosureReturn
     isNew: boolean
   }>
+  ChangePageNameDialogComponent: React.ComponentType<{
+    disclosure: UseDisclosureReturn
+    isNew: boolean
+  }>
+  pagesMenuLabel?: string
 }
 
-export const Menubar = track(function Menubar({ AppMenuComponent, ChangeDocumentNameDialogComponent }: MenubarProps) {
+export const Menubar = track(function Menubar({
+  AppMenuComponent,
+  ChangeDocumentNameDialogComponent,
+  ChangePageNameDialogComponent,
+  pagesMenuLabel,
+}: MenubarProps) {
   const editor = useEditor()
   const { documentName } = useDocumentName()
   const nameDocumentDisclosure = useDisclosure()
@@ -35,7 +47,8 @@ export const Menubar = track(function Menubar({ AppMenuComponent, ChangeDocument
   }
 
   function discardAllAndCreateNewDocument() {
-    editor.selectAll().deleteShapes(editor.getSelectedShapeIds())
+    editor.loadSnapshot({ schema: editor.store.schema.serialize(), store: {} })
+    void events.emit(NEW_DOCUMENT_CREATED)
     clearPersistence()
     nameDocumentDisclosure.open()
   }
@@ -47,6 +60,8 @@ export const Menubar = track(function Menubar({ AppMenuComponent, ChangeDocument
         <Button variant="ghost" size="sm" onClick={renameDocumentDisclosure.open}>
           {documentName}
         </Button>
+        <span className="text-muted-foreground">/</span>
+        <PagesMenu ChangePageNameDialogComponent={ChangePageNameDialogComponent} label={pagesMenuLabel} />
 
         <ChangeDocumentNameDialogComponent disclosure={nameDocumentDisclosure} isNew={true} />
         <ChangeDocumentNameDialogComponent disclosure={renameDocumentDisclosure} isNew={false} />

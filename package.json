@@ -24,6 +24,7 @@
     "astro": "5.13.5",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
+    "emittery": "1.2.0",
     "lucide-react": "0.542.0",
     "lz-string": "1.5.0",
     "react": "19.1.1",

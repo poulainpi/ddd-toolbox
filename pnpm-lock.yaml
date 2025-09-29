@@ -56,6 +56,9 @@ importers:
       clsx:
         specifier: 2.1.1
         version: 2.1.1
+      emittery:
+        specifier: 1.2.0
+        version: 1.2.0
       lucide-react:
         specifier: 0.542.0
         version: 0.542.0(react@19.1.1)
@@ -4686,6 +4689,10 @@ packages:
 
   electron-to-chromium@1.5.213:
     resolution: {integrity: sha512-xr9eRzSLNa4neDO0xVFrkXu3vyIzG4Ay08dApecw42Z1NbmCt+keEpXdvlYGVe0wtvY5dhW0Ay0lY0IOfsCg0Q==}
+
+  emittery@1.2.0:
+    resolution: {integrity: sha512-KxdRyyFcS85pH3dnU8Y5yFUm2YJdaHwcBZWrfG8o89ZY9a13/f9itbN+YG3ELbBo9Pg5zvIozstmuV8bX13q6g==}
+    engines: {node: '>=14.16'}
 
   emoji-regex@10.5.0:
     resolution: {integrity: sha512-lb49vf1Xzfx080OKA0o6l8DQQpV+6Vg95zyCJX9VB/BqKYlhG7N4wgROUUHRA+ZPUefLnteQOad7z1kT2bV7bg==}
@@ -13560,6 +13567,8 @@ snapshots:
       jake: 10.9.4
 
   electron-to-chromium@1.5.213: {}
+
+  emittery@1.2.0: {}
 
   emoji-regex@10.5.0: {}
 

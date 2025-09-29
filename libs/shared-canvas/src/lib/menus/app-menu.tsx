@@ -157,9 +157,6 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
 
   async function exportAsLink() {
     try {
-      const shapeIds = validateCanvasForExport()
-      if (!shapeIds) return
-
       const snapshot = getSnapshot(editor.store)
       const documentData = JSON.stringify(snapshot.document)
       const compressedData = compressToEncodedURIComponent(documentData)

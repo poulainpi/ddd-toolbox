@@ -1,8 +1,4 @@
-import {
-  Menubar as SharedMenubar,
-  AppMenu as SharedAppMenu,
-  ChangeDocumentNameDialog,
-} from '@ddd-toolbox/shared-canvas'
+import { Menubar as SharedMenubar, AppMenu as SharedAppMenu, ChangeNameDialog } from '@ddd-toolbox/shared-canvas'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
 import { EVENT_STORMING_EXAMPLE_URL } from '../constants'
 
@@ -14,10 +10,26 @@ const EventAppMenu = ({ newDocument }: { newDocument: () => void }) => (
   />
 )
 
-const EventNameDialog = ({ disclosure, isNew }: { disclosure: UseDisclosureReturn; isNew: boolean }) => (
-  <ChangeDocumentNameDialog disclosure={disclosure} isNew={isNew} documentType="Event Storming" />
+const EventStormingDialog = ({ disclosure, isNew }: { disclosure: UseDisclosureReturn; isNew: boolean }) => (
+  <ChangeNameDialog mode="document" disclosure={disclosure} isNew={isNew} type="Event Storming" />
 )
 
+const PageDialog = ({
+  disclosure,
+  isNew,
+  onConfirm,
+}: {
+  disclosure: UseDisclosureReturn
+  isNew: boolean
+  onConfirm?: (name: string) => void
+}) => <ChangeNameDialog mode="page" type="Page" disclosure={disclosure} isNew={isNew} onConfirm={onConfirm} />
+
 export function Menubar() {
-  return <SharedMenubar AppMenuComponent={EventAppMenu} ChangeDocumentNameDialogComponent={EventNameDialog} />
+  return (
+    <SharedMenubar
+      AppMenuComponent={EventAppMenu}
+      ChangeDocumentNameDialogComponent={EventStormingDialog}
+      ChangePageNameDialogComponent={PageDialog}
+    />
+  )
 }

@@ -1,13 +1,12 @@
-import { DefaultSizeStyle, TLComponents, Tldraw } from 'tldraw'
+import { TLComponents, Tldraw } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { useThemeSync } from '@ddd-toolbox/ui'
 import {
-  ToolBar,
   BrowserListener,
-  ZoomPanel,
-  setDefaultUserPreferencesWhenNotExisting,
-  loadFromUrlIfNeeded,
   OnMountListener,
+  setDefaultUserPreferencesWhenNotExisting,
+  ToolBar,
+  ZoomPanel,
 } from '@ddd-toolbox/shared-canvas'
 import { Menubar } from './menubar/menubar'
 import { StickyNotePanel } from './sticky-note-panel/sticky-note-panel'
@@ -35,8 +34,6 @@ export function EventStorming() {
         tools={[StickyNoteToolUtil]}
         onMount={(editor) => {
           setDefaultUserPreferencesWhenNotExisting()
-
-          loadFromUrlIfNeeded(editor)
         }}
         persistenceKey={process.env.NODE_ENV === 'development' ? 'event-storming' : undefined}
       >

@@ -36,11 +36,6 @@ export const StickyNotePanel = track(function StickyNotePanel() {
   }
 
   return (
-    <ShapesPanel
-      shapeGroups={shapeGroups}
-      isVisible={true}
-      isToolSelected={isToolSelected}
-      bottomComponent={<StickyNoteHelpDialog />}
-    />
+    <ShapesPanel shapeGroups={shapeGroups} isToolSelected={isToolSelected} bottomComponent={<StickyNoteHelpDialog />} />
   )
 })

@@ -11,25 +11,42 @@ import {
 } from '@ddd-toolbox/ui'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { useDocumentName } from '../hooks/use-document-name'
+import { usePageName } from '../hooks/use-page-name'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
 
-export interface ChangeDocumentNameDialogProps {
+export interface ChangeNameDialogProps {
+  mode: 'document' | 'page'
+  type: string
   disclosure: UseDisclosureReturn
   isNew: boolean
-  documentType?: string
   helperComponent?: React.ComponentType<{ form: UseFormReturn<{ name: string }> }>
+  onConfirm?: (name: string) => void
 }
 
-export function ChangeDocumentNameDialog({
+export function ChangeNameDialog({
+  mode,
+  type,
   disclosure,
   isNew,
-  documentType = 'document',
   helperComponent: HelperComponent,
-}: ChangeDocumentNameDialogProps) {
-  const { documentName, setDocumentName } = useDocumentName()
+  onConfirm,
+}: ChangeNameDialogProps) {
+  const documentNameHook = useDocumentName()
+  const pageNameHook = usePageName()
+
+  const { name, setName } =
+    mode === 'document'
+      ? { name: documentNameHook.documentName, setName: documentNameHook.setDocumentName }
+      : { name: pageNameHook.pageName, setName: pageNameHook.setPageName }
+
+  const formId = `${mode}-name`
 
   function onSubmit(newName: string) {
-    setDocumentName(newName)
+    if (onConfirm) {
+      onConfirm(newName)
+    } else {
+      setName(newName)
+    }
     disclosure.close()
   }
 
@@ -38,17 +55,17 @@ export function ChangeDocumentNameDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {isNew ? 'New' : 'Edit'} {documentType} name
+            {isNew ? 'New' : 'Edit'} {type} name
           </DialogTitle>
           <DialogDescription>
-            {isNew ? 'Create' : 'Change'} the name of your {documentType} here.
+            {isNew ? 'Create' : 'Change'} the name of your {type} here.
           </DialogDescription>
         </DialogHeader>
 
-        <ChangeDocumentNameForm initialName={documentName} onSubmit={onSubmit} helperComponent={HelperComponent} />
+        <ChangeNameForm initialName={name} onSubmit={onSubmit} formId={formId} helperComponent={HelperComponent} />
 
         <DialogFooter>
-          <Button type="submit" form="document-name">
+          <Button type="submit" form={formId}>
             {isNew ? 'Create' : 'Save'}
           </Button>
         </DialogFooter>
@@ -57,19 +74,21 @@ export function ChangeDocumentNameDialog({
   )
 }
 
-export function ChangeDocumentNameForm({
+export function ChangeNameForm({
   initialName,
   onSubmit,
+  formId,
   helperComponent: HelperComponent,
 }: {
   initialName: string
   onSubmit: (newName: string) => void
+  formId: string
   helperComponent?: React.ComponentType<{ form: UseFormReturn<{ name: string }> }>
 }) {
   const form = useForm({ defaultValues: { name: initialName } })
 
   return (
-    <Form form={form} onSubmit={(data) => onSubmit(data.name)} id="document-name">
+    <Form form={form} onSubmit={(data) => onSubmit(data.name)} id={formId}>
       <FormInput name="name" label="Name" />
       {HelperComponent && <HelperComponent form={form} />}
     </Form>
