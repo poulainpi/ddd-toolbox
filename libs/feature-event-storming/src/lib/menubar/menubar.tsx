@@ -11,7 +11,7 @@ const EventAppMenu = ({ newDocument }: { newDocument: () => void }) => (
 )
 
 const EventStormingDialog = ({ disclosure, isNew }: { disclosure: UseDisclosureReturn; isNew: boolean }) => (
-  <ChangeNameDialog mode="document" disclosure={disclosure} isNew={isNew} type="Event Storming" />
+  <ChangeNameDialog mode="document" disclosure={disclosure} isNew={isNew} type="Event Storming Collection" />
 )
 
 const PageDialog = ({

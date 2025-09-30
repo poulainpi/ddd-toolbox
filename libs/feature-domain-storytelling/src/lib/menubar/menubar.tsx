@@ -8,7 +8,7 @@ const StoryAppMenu = ({ newDocument }: { newDocument: () => void }) => (
 )
 
 const StoryGroupDialog = ({ disclosure, isNew }: { disclosure: UseDisclosureReturn; isNew: boolean }) => (
-  <ChangeNameDialog mode="document" disclosure={disclosure} isNew={isNew} type="Story Group" />
+  <ChangeNameDialog mode="document" disclosure={disclosure} isNew={isNew} type="Story Collection" />
 )
 
 const StoryDialog = ({
