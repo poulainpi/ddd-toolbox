@@ -48,6 +48,7 @@ export const Menubar = track(function Menubar({
 
   function discardAllAndCreateNewDocument() {
     editor.loadSnapshot({ schema: editor.store.schema.serialize(), store: {} })
+    editor.clearHistory()
     void events.emit(NEW_DOCUMENT_CREATED)
     clearPersistence()
     nameDocumentDisclosure.open()

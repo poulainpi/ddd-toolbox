@@ -33,6 +33,7 @@ export function useDocumentPersistence(): UseDocumentPersistenceReturn {
     const file = await fileHandle.getFile()
     const jsonContent = JSON.parse(await file.text())
     loadSnapshot(editor.store, { document: jsonContent })
+    editor.clearHistory()
     goToContent(editor)
 
     // setTimeout else changeHappened are triggered after latestChangesSaved are set to true
@@ -100,6 +101,7 @@ export function loadFromUrlIfNeeded(editor: Editor): boolean {
 
     const document = JSON.parse(documentData)
     loadSnapshot(editor.store, { document })
+    editor.clearHistory()
 
     goToContent(editor)
 
