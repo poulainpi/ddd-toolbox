@@ -1,6 +1,6 @@
 import { StickyNoteType } from '../types/sticky-note-types'
 
-export const STICKY_NOTE_SIZE = 120
+export const STICKY_NOTE_SIZE = 140
 
 export const STICKY_NOTE_LABELS: Record<StickyNoteType, string> = {
   [StickyNoteType.EVENT]: 'Domain Events',
