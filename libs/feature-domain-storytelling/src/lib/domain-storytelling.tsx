@@ -6,7 +6,9 @@ import { ActorToolUtil } from './tools/actor-tool-util'
 import { registerSideEffects } from './shapes/side-effects'
 import { ArrowShapeUtil } from './shapes/arrow-shape-util'
 import { WorkObjectShapeUtil } from './shapes/work-object-shape-util'
+import { CommentShapeUtil } from './shapes/comment-shape-util'
 import { WorkObjectToolUtil } from './tools/work-object-tool-util'
+import { CommentToolUtil } from './tools/comment-tool-util'
 import { useThemeSync } from '@ddd-toolbox/ui'
 import { ToolBar } from './tool-bar'
 import { Menubar } from './menubar/menubar'
@@ -35,9 +37,9 @@ export function DomainStorytelling() {
   return (
     <div style={{ position: 'fixed', inset: 0 }}>
       <Tldraw
-        shapeUtils={[ActorShapeUtil, WorkObjectShapeUtil]}
+        shapeUtils={[ActorShapeUtil, WorkObjectShapeUtil, CommentShapeUtil]}
         components={components}
-        tools={[ActorToolUtil, WorkObjectToolUtil, ClickedArrowToolUtil]}
+        tools={[ActorToolUtil, WorkObjectToolUtil, CommentToolUtil, ClickedArrowToolUtil]}
         onMount={(editor) => {
           setDefaultUserPreferencesWhenNotExisting()
 

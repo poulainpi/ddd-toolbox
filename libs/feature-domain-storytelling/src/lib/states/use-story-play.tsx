@@ -11,6 +11,8 @@ import {
 } from 'tldraw'
 import { getActivitiesArrows } from '../shapes/activities-arrows'
 import { ActorShapeUtil } from '../shapes/actor-shape-util'
+import { WorkObjectShapeUtil } from '../shapes/work-object-shape-util'
+import { CommentShapeUtil } from '../shapes/comment-shape-util'
 import { toast } from 'sonner'
 
 export const $hiddenShapesState = atom<Set<TLShapeId>>('hidden shapes', new Set())
@@ -148,16 +150,18 @@ export function useStoryPlay(): UseStoryPlayReturn {
 }
 
 function getLinkedShapeIdsOf(shape: TLShape, editor: Editor): TLShapeId[] {
-  if (shape.type === ActorShapeUtil.type) {
-    return [shape.id]
-  }
-
   const shapeIds = new Set<TLShapeId>([shape.id])
 
   if (shape.type === 'arrow') {
     const { start: startBinding, end: endBinding } = getArrowBindings(editor, shape as TLArrowShape)
     if (startBinding != null) {
-      shapeIds.add(startBinding.toId)
+      const startShape = editor.getShape(startBinding.toId)
+      if (startShape != null) {
+        shapeIds.add(startShape.id)
+        if (startShape.type === ActorShapeUtil.type) {
+          getCommentShapeIdsLinkedTo(startShape, editor).forEach((id) => shapeIds.add(id))
+        }
+      }
     }
 
     if (endBinding != null) {
@@ -166,7 +170,9 @@ function getLinkedShapeIdsOf(shape: TLShape, editor: Editor): TLShapeId[] {
         getLinkedShapeIdsOf(endShape, editor).forEach((id) => shapeIds.add(id))
       }
     }
-  } else {
+  } else if (shape.type === ActorShapeUtil.type) {
+    getCommentShapeIdsLinkedTo(shape, editor).forEach((id) => shapeIds.add(id))
+  } else if (shape.type === WorkObjectShapeUtil.type) {
     const bindings = editor
       .getBindingsToShape(shape, 'arrow')
       .filter((binding) => (binding.props as TLArrowBindingProps).terminal === 'start')
@@ -180,4 +186,27 @@ function getLinkedShapeIdsOf(shape: TLShape, editor: Editor): TLShapeId[] {
   }
 
   return Array.from(shapeIds)
+}
+
+function getCommentShapeIdsLinkedTo(shape: TLShape, editor: Editor): TLShapeId[] {
+  const commentIds: TLShapeId[] = []
+  const bindings = editor
+    .getBindingsToShape(shape, 'arrow')
+    .filter((binding) => (binding.props as TLArrowBindingProps).terminal === 'start')
+
+  bindings.forEach((binding) => {
+    const arrow = editor.getShape(binding.fromId)
+    if (arrow) {
+      const endBinding = editor
+        .getBindingsFromShape(arrow, 'arrow')
+        .find((b) => (b.props as TLArrowBindingProps).terminal === 'end')
+      if (endBinding) {
+        const endShape = editor.getShape(endBinding.toId)
+        if (endShape?.type === CommentShapeUtil.type) {
+          commentIds.push(arrow.id, endShape.id)
+        }
+      }
+    }
+  })
+  return commentIds
 }

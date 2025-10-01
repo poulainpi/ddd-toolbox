@@ -6,6 +6,7 @@ import { useActors } from './states/use-actors'
 import { useWorkObjects } from './states/use-work-objects'
 import { WorkObjectToolUtil } from './tools/work-object-tool-util'
 import { ActorToolUtil } from './tools/actor-tool-util'
+import { CommentToolUtil } from './tools/comment-tool-util'
 
 export function ShapeMenu() {
   const editor = useEditor()
@@ -46,6 +47,19 @@ export function ShapeMenu() {
           })
         },
       })),
+    },
+    {
+      id: 'comments',
+      actions: [
+        {
+          icon: 'message-square',
+          tooltip: 'Add comment',
+          onClick: (editor: Editor, selectedShape: TLShape) => {
+            editor.selectNone()
+            editor.setCurrentTool(CommentToolUtil.id, { initiatorShapeId: selectedShape.id })
+          },
+        },
+      ],
     },
   ]
 

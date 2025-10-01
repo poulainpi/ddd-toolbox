@@ -1,13 +1,15 @@
-import { Editor, TLArrowShape, TLShape, Vec } from 'tldraw'
+import { Editor, TLArrowShape, TLShape, TLShapeId, Vec } from 'tldraw'
 import { ACTOR_SHAPE_SIZE, WORK_OBJECT_SHAPE_SIZE } from './shapes-constants'
 import { ActorShapeUtil } from './actor-shape-util'
 import { WorkObjectShapeUtil } from './work-object-shape-util'
+import { CommentShapeUtil } from './comment-shape-util'
 
 export function registerSideEffects(editor: Editor) {
   disablePreciseBindings(editor)
   fixArrowPositioning(editor)
   deleteArrowsWithoutStartAndEndBindingsOrStartEditing(editor)
   deleteOrphanArrowsWhenDeletingShape(editor)
+  deleteCommentsWithoutArrows(editor)
 }
 
 function disablePreciseBindings(editor: Editor) {
@@ -78,6 +80,37 @@ function deleteOrphanArrowsWhenDeletingShape(editor: Editor) {
         }
       }
     })
+  })
+}
+
+function deleteCommentsWithoutArrows(editor: Editor) {
+  const commentsToCheck = new Set<TLShapeId>()
+
+  editor.sideEffects.registerBeforeDeleteHandler('binding', (binding) => {
+    if (binding.type === 'arrow') {
+      const fromShape = editor.getShape(binding.fromId)
+      const toShape = editor.getShape(binding.toId)
+
+      if (toShape?.type === CommentShapeUtil.type) {
+        commentsToCheck.add(toShape.id)
+      }
+      if (fromShape?.type === CommentShapeUtil.type) {
+        commentsToCheck.add(fromShape.id)
+      }
+    }
+  })
+
+  editor.sideEffects.registerAfterDeleteHandler('binding', () => {
+    commentsToCheck.forEach((shapeId) => {
+      const shape = editor.getShape(shapeId)
+      if (shape) {
+        const bindings = editor.getBindingsFromShape(shape, 'arrow')
+        if (bindings.length === 0) {
+          editor.deleteShape(shape)
+        }
+      }
+    })
+    commentsToCheck.clear()
   })
 }
 
