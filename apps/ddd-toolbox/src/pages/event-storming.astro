@@ -7,13 +7,14 @@ import { AstroSeo } from '@astrolib/seo'
 
 const pageDescription =
   'Our Event Storming tool lets you collaboratively explore complex business domains by mapping domain events and their relationships'
+const licenseKey = import.meta.env.TLDRAW_LICENSE_KEY
 ---
 
 <AstroSeo title="Event Storming | DDD Toolbox" description={pageDescription} />
 
 <Layout>
   <StructuredData type="software" title="Event Storming Tool" description={pageDescription} />
-  <EventStormingComponent client:only="react">
+  <EventStormingComponent client:only="react" licenseKey={licenseKey}>
     <LoadingScreen slot="fallback" toolName="Event Storming" />
   </EventStormingComponent>
 </Layout>

@@ -6,6 +6,7 @@ import StructuredData from '../components/structured-data.astro'
 import { AstroSeo } from '@astrolib/seo'
 
 const pageDescription = "Our Domain Storytelling tool lets you collaboratively sketch domain stories that make complex business processes easy to understand and improve"
+const licenseKey = import.meta.env.TLDRAW_LICENSE_KEY
 ---
 
 <AstroSeo
@@ -19,7 +20,7 @@ const pageDescription = "Our Domain Storytelling tool lets you collaboratively s
     title="Domain Storytelling Tool"
     description={pageDescription}
   />
-  <DomainStorytellingComponent client:only="react">
+  <DomainStorytellingComponent client:only="react" licenseKey={licenseKey}>
     <LoadingScreen slot="fallback" toolName="Domain Storytelling" />
   </DomainStorytellingComponent>
 </Layout>

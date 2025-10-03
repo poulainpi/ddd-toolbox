@@ -31,12 +31,13 @@ const components: TLComponents = {
   ContextMenu: null,
 }
 
-export function DomainStorytelling() {
+export function DomainStorytelling({ licenseKey }: { licenseKey?: string }) {
   useThemeSync()
 
   return (
     <div style={{ position: 'fixed', inset: 0 }}>
       <Tldraw
+        licenseKey={licenseKey}
         shapeUtils={[ActorShapeUtil, WorkObjectShapeUtil, CommentShapeUtil]}
         components={components}
         tools={[ActorToolUtil, WorkObjectToolUtil, CommentToolUtil, ClickedArrowToolUtil]}

@@ -23,12 +23,13 @@ const components: TLComponents = {
   InFrontOfTheCanvas: ShapeMenu,
 }
 
-export function EventStorming() {
+export function EventStorming({ licenseKey }: { licenseKey?: string }) {
   useThemeSync()
 
   return (
     <div style={{ position: 'fixed', inset: 0 }}>
       <Tldraw
+        licenseKey={licenseKey}
         shapeUtils={[StickyNoteShapeUtil]}
         components={components}
         tools={[StickyNoteToolUtil]}
