@@ -22,7 +22,7 @@ export default defineConfig({
     },
     ssr: {
       // https://docs.astro.build/en/guides/troubleshooting/#adding-dependencies-to-astro-in-a-monorepo
-      noExternal: ['@astrojs/react', '@astrolib/seo'],
+      noExternal: ['@astrojs/react', '@astrolib/seo', 'tldraw'],
     },
   },
 })

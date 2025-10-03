@@ -27,7 +27,7 @@ export abstract class DomainObjectToolUtil extends StateNode {
     })
 
     if (this.initialShapeId != null) {
-      const arrowId = createArrowBetweenShapes(this.editor, this.initialShapeId, id)
+      const arrowId = createArrowBetweenShapes(this.editor, this.initialShapeId, id, { arrowProps: { size: 's' } })
       if (arrowId != null) {
         this.editor.select(arrowId)
         this.editor.setEditingShape(arrowId)

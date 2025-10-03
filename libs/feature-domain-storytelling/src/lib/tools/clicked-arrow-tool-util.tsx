@@ -14,6 +14,9 @@ export class ClickedArrowToolUtil extends StateNode {
       type: 'arrow',
       x: startShape.x,
       y: startShape.y,
+      props: {
+        size: 's',
+      },
     })
 
     this.arrow = this.editor.getShape(arrowId) as TLArrowShape
@@ -26,6 +29,7 @@ export class ClickedArrowToolUtil extends StateNode {
       handle: { ...startHandle, x: 0, y: 0 },
       isPrecise: false,
       initial: this.arrow,
+      isCreatingShape: true,
     })
 
     if (change) {
@@ -47,6 +51,7 @@ export class ClickedArrowToolUtil extends StateNode {
       handle: { ...endHandle, x: point.x, y: point.y },
       isPrecise: false,
       initial: this.arrow,
+      isCreatingShape: true,
     })
 
     if (change) {

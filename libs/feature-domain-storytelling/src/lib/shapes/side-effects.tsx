@@ -3,6 +3,7 @@ import { ACTOR_SHAPE_SIZE, WORK_OBJECT_SHAPE_SIZE } from './shapes-constants'
 import { ActorShapeUtil } from './actor-shape-util'
 import { WorkObjectShapeUtil } from './work-object-shape-util'
 import { CommentShapeUtil } from './comment-shape-util'
+import { toPlainText } from '@ddd-toolbox/shared-canvas'
 
 export function registerSideEffects(editor: Editor) {
   disablePreciseBindings(editor)
@@ -54,7 +55,7 @@ function deleteArrowsWithoutStartAndEndBindingsOrStartEditing(editor: Editor) {
         const hasStartAndEndBindings = bindings.length >= 2 && bindings[0].toId != bindings[1].toId
         if (!hasStartAndEndBindings) {
           editor.deleteShape(selectedShape)
-        } else if ((selectedShape as TLArrowShape).props.text.trim() === '') {
+        } else if (toPlainText(editor, (selectedShape as TLArrowShape).props.richText).trim() === '') {
           setTimeout(() => {
             editor.setEditingShape(selectedShape)
             editor.setCurrentTool('select.editing_shape', {

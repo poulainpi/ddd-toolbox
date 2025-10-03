@@ -50,8 +50,8 @@ export function DomainStorytelling() {
 
           editor.setStyleForNextShapes(DefaultSizeStyle, 's')
         }}
-        isShapeHidden={(shape, _editor) => {
-          return $hiddenShapesState.get().has(shape.id)
+        getShapeVisibility={(shape) => {
+          return $hiddenShapesState.get().has(shape.id) ? 'hidden' : 'inherit'
         }}
         persistenceKey={process.env.NODE_ENV === 'development' ? 'domain-storytelling' : undefined}
       >

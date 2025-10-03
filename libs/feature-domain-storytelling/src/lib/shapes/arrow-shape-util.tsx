@@ -1,6 +1,7 @@
-import { ArrowShapeUtil as DefaultArrowShapeUtil, TLArrowBindingProps, TLArrowShape } from 'tldraw'
+import { ArrowShapeUtil as DefaultArrowShapeUtil, TLArrowBindingProps, TLArrowShape, toRichText } from 'tldraw'
 import { ActorShapeUtil } from './actor-shape-util'
 import { getActivitiesArrows } from './activities-arrows'
+import { toPlainText } from '@ddd-toolbox/shared-canvas'
 
 export class ArrowShapeUtil extends DefaultArrowShapeUtil {
   override onEditEnd(arrow: TLArrowShape) {
@@ -13,7 +14,7 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
       return
     }
 
-    const newActivityNumber = this.parseActivityNumber(arrow.props.text)
+    const newActivityNumber = this.parseActivityNumber(toPlainText(this.editor, arrow.props.richText))
     if (!Number.isInteger(newActivityNumber)) {
       if (arrow.meta.activityNumber == null) {
         this.initializeActivityNumberOf(arrow)
@@ -63,7 +64,7 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
         id: shape.id,
         type: shape.type,
         props: {
-          text: `${activityNumber}. ${shape.props.text.trimEnd()}`,
+          richText: toRichText(`${activityNumber}. ${toPlainText(this.editor, shape.props.richText).trimEnd()}`),
         },
         meta: {
           activityNumber: activityNumber,
@@ -74,7 +75,7 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
 
   private updateArrowsActivityNumberBasedOnChangedArrow(arrow: TLArrowShape) {
     const activitiesArrows = getActivitiesArrows(this.editor)
-    const newActivityNumber = this.parseActivityNumber(arrow.props.text)
+    const newActivityNumber = this.parseActivityNumber(toPlainText(this.editor, arrow.props.richText))
     const arrowWithSameActivityNumber = activitiesArrows.find(
       (currentArrow) => currentArrow.meta.activityNumber === newActivityNumber && currentArrow.id !== arrow.id,
     )
@@ -96,13 +97,14 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
             const updatedActivityNumber =
               currentArrow.id === arrow.id ? newActivityNumber : (currentArrow.meta.activityNumber as number) + 1
 
+            const currentText = toPlainText(this.editor, currentArrow.props.richText)
+            const textWithoutNumber = currentText.substring(currentText.indexOf('.') + 2)
+
             return {
               id: currentArrow.id,
               type: currentArrow.type,
               props: {
-                text: `${updatedActivityNumber}. ${currentArrow.props.text.substring(
-                  currentArrow.props.text.indexOf('.') + 2,
-                )}`,
+                richText: toRichText(`${updatedActivityNumber}. ${textWithoutNumber}`),
               },
               meta: {
                 activityNumber: updatedActivityNumber,
@@ -122,13 +124,14 @@ export class ArrowShapeUtil extends DefaultArrowShapeUtil {
   }
 
   private trimEndOfTextOf(arrow: TLArrowShape) {
-    if (arrow.props.text.trimEnd() !== arrow.props.text) {
+    const currentText = toPlainText(this.editor, arrow.props.richText)
+    if (currentText.trimEnd() !== currentText) {
       this.editor.updateShapes<TLArrowShape>([
         {
           id: arrow.id,
           type: arrow.type,
           props: {
-            text: arrow.props.text.trimEnd(),
+            richText: toRichText(currentText.trimEnd()),
           },
         },
       ])
