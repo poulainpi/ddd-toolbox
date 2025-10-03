@@ -10,7 +10,7 @@ export const BrowserListener = track(function BrowserListener() {
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement
 
-      if (target.role?.toLowerCase() === 'textbox') {
+      if (target.tagName?.toLowerCase() === 'textarea' || target.role?.toLowerCase() === 'textbox') {
         if (e.key === 'Enter' && !e.shiftKey) {
           editor.complete()
         }
