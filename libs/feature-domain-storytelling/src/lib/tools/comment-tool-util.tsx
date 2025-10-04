@@ -1,35 +1,32 @@
-import { createShapeId, StateNode, TLShapeId } from 'tldraw'
-import { createArrowBetweenShapes } from '@ddd-toolbox/shared-canvas'
-import { COMMENT_MIN_HEIGHT, COMMENT_WIDTH } from '../shapes/comment-shape-util'
+import { TLShapeId } from 'tldraw'
+import { PreviewPlacementOnCreateToolUtil, createArrowBetweenShapes } from '@ddd-toolbox/shared-canvas'
+import { CommentShapeUtil, COMMENT_MIN_HEIGHT, COMMENT_WIDTH } from '../shapes/comment-shape-util'
 
-export class CommentToolUtil extends StateNode {
+export class CommentToolUtil extends PreviewPlacementOnCreateToolUtil {
   static override id = 'comment'
 
   private initialShapeId: TLShapeId | undefined
 
-  override onEnter({ initiatorShapeId }: { initiatorShapeId: TLShapeId | undefined }) {
+  protected override handleEnter(info: Record<string, unknown>): void {
+    const { initiatorShapeId } = info as { initiatorShapeId: TLShapeId | undefined }
     this.initialShapeId = initiatorShapeId
-    this.editor.setCursor({ type: 'cross' })
   }
 
-  override onCancel() {
-    this.editor.setCurrentTool('select')
+  protected override getShapeType(): string {
+    return CommentShapeUtil.type
   }
 
-  override onPointerUp() {
-    const { currentPagePoint } = this.editor.inputs
-    const id = createShapeId()
+  protected override getShapeSize(): { width: number; height: number } {
+    return { width: COMMENT_WIDTH, height: COMMENT_MIN_HEIGHT }
+  }
 
-    this.editor.createShape({
-      id,
-      type: 'comment',
-      x: currentPagePoint.x - COMMENT_WIDTH / 2,
-      y: currentPagePoint.y - COMMENT_MIN_HEIGHT / 2,
-      props: { text: '', growY: 0 },
-    })
+  protected override getShapeProps(_info: Record<string, unknown>): Record<string, unknown> {
+    return { text: '', growY: 0 }
+  }
 
+  protected override onShapePlaced(shapeId: TLShapeId): void {
     if (this.initialShapeId != null) {
-      const arrowId = createArrowBetweenShapes(this.editor, this.initialShapeId, id, {
+      createArrowBetweenShapes(this.editor, this.initialShapeId, shapeId, {
         arrowProps: {
           dash: 'dashed',
           arrowheadStart: 'none',
@@ -37,15 +34,11 @@ export class CommentToolUtil extends StateNode {
           size: 's',
         },
       })
-      if (arrowId != null) {
-        this.editor.select(id)
-        this.editor.setEditingShape(id)
-      }
-    } else {
-      this.editor.select(id)
-      this.editor.setEditingShape(id)
     }
 
-    this.editor.setCurrentTool('select')
+    setTimeout(() => {
+      this.editor.select(shapeId)
+      this.editor.setEditingShape(shapeId)
+    })
   }
 }

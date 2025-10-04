@@ -1,44 +1,44 @@
-import { createShapeId, StateNode, TLShapeId } from 'tldraw'
-import { createArrowBetweenShapes } from '@ddd-toolbox/shared-canvas'
+import { TLShapeId } from 'tldraw'
+import { PreviewPlacementOnCreateToolUtil, createArrowBetweenShapes } from '@ddd-toolbox/shared-canvas'
 
-export abstract class DomainObjectToolUtil extends StateNode {
+export abstract class DomainObjectToolUtil extends PreviewPlacementOnCreateToolUtil {
   public icon = ''
   private initialShapeId: TLShapeId | undefined
 
-  override onEnter({ icon, initiatorShapeId }: { icon: string; initiatorShapeId: TLShapeId | undefined }) {
+  protected override handleEnter(info: Record<string, unknown>): void {
+    const { icon, initiatorShapeId } = info as { icon: string; initiatorShapeId: TLShapeId | undefined }
     this.icon = icon
     this.initialShapeId = initiatorShapeId
-    this.editor.setCursor({ type: 'cross' })
   }
 
-  override onCancel() {
-    this.editor.setCurrentTool('select')
+  protected override getShapeSize(): { width: number; height: number } {
+    const size = this.getSize()
+    return { width: size, height: size }
   }
 
-  override onPointerUp() {
-    const { currentPagePoint } = this.editor.inputs
-    const id = createShapeId()
-    this.editor.createShape({
-      id,
-      type: this.getShapeType(),
-      x: currentPagePoint.x - this.getSize() / 2,
-      y: currentPagePoint.y - this.getSize() / 2,
-      props: { icon: this.icon },
-    })
+  protected override getShapeProps(_info: Record<string, unknown>): Record<string, unknown> {
+    return { icon: this.icon }
+  }
 
+  protected override onShapePlaced(shapeId: TLShapeId): void {
     if (this.initialShapeId != null) {
-      const arrowId = createArrowBetweenShapes(this.editor, this.initialShapeId, id, { arrowProps: { size: 's' } })
+      const arrowId = createArrowBetweenShapes(this.editor, this.initialShapeId, shapeId, {
+        arrowProps: { size: 's' },
+      })
       if (arrowId != null) {
-        this.editor.select(arrowId)
-        this.editor.setEditingShape(arrowId)
+        setTimeout(() => {
+          this.editor.select(arrowId)
+          this.editor.setEditingShape(arrowId)
+        })
+        return
       }
-    } else {
-      this.editor.select(id)
-      this.editor.setEditingShape(id)
     }
+
+    setTimeout(() => {
+      this.editor.select(shapeId)
+      this.editor.setEditingShape(shapeId)
+    })
   }
 
-  abstract getShapeType(): string
-
-  abstract getSize(): number
+  protected abstract getSize(): number
 }

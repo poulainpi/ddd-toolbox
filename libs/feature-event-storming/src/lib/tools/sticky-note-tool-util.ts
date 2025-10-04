@@ -1,57 +1,54 @@
-import { createShapeId, StateNode, TLShapeId } from 'tldraw'
+import { TLShapeId } from 'tldraw'
+import { PreviewPlacementOnCreateToolUtil } from '@ddd-toolbox/shared-canvas'
 import { StickyNoteType } from '../types/sticky-note-types'
 import { STICKY_NOTE_SIZE } from '../shapes/sticky-note-constants'
 import { StickyNoteShapeUtil, TLStickyNoteShape } from '../shapes/sticky-note-shape-util'
 import { groupStickyNoteWithANewOne } from '../utils/grouping-logic'
 
-export class StickyNoteToolUtil extends StateNode {
+export class StickyNoteToolUtil extends PreviewPlacementOnCreateToolUtil {
   static override id = 'sticky-note'
 
   public stickyNoteType: StickyNoteType = StickyNoteType.EVENT
-  public groupWithShapeId?: TLShapeId
+  private groupWithShapeId?: TLShapeId
 
-  override onEnter({
-    stickyNoteType,
-    groupWithShapeId,
-  }: {
-    stickyNoteType: StickyNoteType
-    groupWithShapeId?: TLShapeId
-  }) {
+  protected override handleEnter(info: Record<string, unknown>): void {
+    const { stickyNoteType, groupWithShapeId } = info as {
+      stickyNoteType: StickyNoteType
+      groupWithShapeId?: TLShapeId
+    }
     this.stickyNoteType = stickyNoteType
     this.groupWithShapeId = groupWithShapeId
-    this.editor.setCursor({ type: 'cross' })
   }
 
-  override onCancel() {
-    this.editor.setCurrentTool('select')
+  protected override getShapeType(): string {
+    return StickyNoteShapeUtil.type
   }
 
-  override onPointerUp() {
-    const { currentPagePoint } = this.editor.inputs
-    const id = createShapeId()
+  protected override getShapeSize(): { width: number; height: number } {
+    return { width: STICKY_NOTE_SIZE, height: STICKY_NOTE_SIZE }
+  }
 
-    this.editor.createShape({
-      id,
-      type: StickyNoteShapeUtil.type,
-      x: currentPagePoint.x - STICKY_NOTE_SIZE / 2,
-      y: currentPagePoint.y - STICKY_NOTE_SIZE / 2,
-      props: {
-        text: '',
-        stickyNoteType: this.stickyNoteType,
-      },
-    })
+  protected override getShapeProps(_info: Record<string, unknown>): Record<string, unknown> {
+    return {
+      text: '',
+      stickyNoteType: this.stickyNoteType,
+    }
+  }
 
+  protected override onShapePlaced(shapeId: TLShapeId): void {
     if (this.groupWithShapeId) {
       const selectedShape = this.editor.getShape(this.groupWithShapeId) as TLStickyNoteShape
       if (selectedShape) {
         // Use timeout to ensure shape creation is fully committed before grouping
         setTimeout(() => {
-          groupStickyNoteWithANewOne(this.editor, selectedShape, id)
+          groupStickyNoteWithANewOne(this.editor, selectedShape, shapeId)
         })
       }
     }
 
-    this.editor.select(id)
-    this.editor.setEditingShape(id)
+    setTimeout(() => {
+      this.editor.select(shapeId)
+      this.editor.setEditingShape(shapeId)
+    })
   }
 }

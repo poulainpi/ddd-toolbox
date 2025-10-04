@@ -63,9 +63,12 @@ export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: Shap
     [editor],
   )
 
+  const currentToolId = editor.getCurrentToolId()
+
   if (
     !selectedShapeBounds ||
     isReadonlyMode ||
+    currentToolId !== 'select' ||
     (showOnShapeTypes && !showOnShapeTypes.includes(selectedShapeBounds.selectedShape.type))
   ) {
     return null
