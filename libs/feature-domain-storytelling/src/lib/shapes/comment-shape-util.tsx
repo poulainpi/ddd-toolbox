@@ -50,7 +50,7 @@ export class CommentShapeUtil extends ShapeUtil<TLCommentShape> {
     const bracketWidth = 20
 
     return (
-      <HTMLContainer className="relative" style={{ pointerEvents: 'all' }}>
+      <HTMLContainer className="relative [&_*]:!cursor-[inherit]" style={{ pointerEvents: 'all' }}>
         <div
           className="relative"
           style={{

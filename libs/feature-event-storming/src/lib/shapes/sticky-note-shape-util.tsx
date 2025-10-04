@@ -44,7 +44,7 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
 
     return (
       <HTMLContainer
-        className={`relative flex items-center justify-center rounded-lg p-4 shadow-md ${bgColorClass}`}
+        className={`relative flex items-center justify-center rounded-lg p-4 shadow-md ${bgColorClass} [&_*]:!cursor-[inherit]`}
         style={{
           pointerEvents: 'all',
           width: STICKY_NOTE_SIZE,
