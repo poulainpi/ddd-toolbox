@@ -1,6 +1,11 @@
 import { StickyNoteType } from '../types/sticky-note-types'
 
 export const STICKY_NOTE_SIZE = 140
+export const ACTOR_STICKY_NOTE_SIZE = 110
+
+export function getStickyNoteSize(type: StickyNoteType): number {
+  return type === StickyNoteType.ACTOR ? ACTOR_STICKY_NOTE_SIZE : STICKY_NOTE_SIZE
+}
 
 export const STICKY_NOTE_LABELS: Record<StickyNoteType, string> = {
   [StickyNoteType.EVENT]: 'Domain Events',

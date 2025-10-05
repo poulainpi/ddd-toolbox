@@ -1,6 +1,6 @@
 import { Geometry2d, HTMLContainer, PlainTextLabel, Rectangle2d, RecordProps, ShapeUtil, T, TLBaseShape } from 'tldraw'
 import { StickyNoteType } from '../types/sticky-note-types'
-import { STICKY_NOTE_SIZE, STICKY_NOTE_BG_COLORS } from './sticky-note-constants'
+import { getStickyNoteSize, STICKY_NOTE_BG_COLORS } from './sticky-note-constants'
 
 export type TLStickyNoteShape = TLBaseShape<
   'sticky-note',
@@ -25,10 +25,11 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
     }
   }
 
-  override getGeometry(): Geometry2d {
+  override getGeometry(shape: TLStickyNoteShape): Geometry2d {
+    const size = getStickyNoteSize(shape.props.stickyNoteType)
     return new Rectangle2d({
-      width: STICKY_NOTE_SIZE,
-      height: STICKY_NOTE_SIZE,
+      width: size,
+      height: size,
       isFilled: true,
       isLabel: false,
     })
@@ -41,14 +42,15 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
   override component(shape: TLStickyNoteShape) {
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id
     const bgColorClass = STICKY_NOTE_BG_COLORS[shape.props.stickyNoteType]
+    const size = getStickyNoteSize(shape.props.stickyNoteType)
 
     return (
       <HTMLContainer
         className={`relative flex items-center justify-center rounded-lg p-4 shadow-md ${bgColorClass} [&_*]:!cursor-[inherit]`}
         style={{
           pointerEvents: 'all',
-          width: STICKY_NOTE_SIZE,
-          height: STICKY_NOTE_SIZE,
+          width: size,
+          height: size,
         }}
       >
         <PlainTextLabel
@@ -62,7 +64,7 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
           lineHeight={1.2}
           labelColor="black"
           isSelected={isSelected}
-          textWidth={STICKY_NOTE_SIZE - 16}
+          textWidth={size - 16}
         />
       </HTMLContainer>
     )
@@ -72,8 +74,9 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
     return shape.props.text
   }
 
-  override indicator(_shape: TLStickyNoteShape) {
-    return <rect width={STICKY_NOTE_SIZE} height={STICKY_NOTE_SIZE} rx={8} />
+  override indicator(shape: TLStickyNoteShape) {
+    const size = getStickyNoteSize(shape.props.stickyNoteType)
+    return <rect width={size} height={size} rx={8} />
   }
 
   override canResize(_shape: TLStickyNoteShape): boolean {

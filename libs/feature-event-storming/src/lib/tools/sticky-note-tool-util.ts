@@ -1,7 +1,7 @@
 import { TLShapeId } from 'tldraw'
 import { PreviewPlacementOnCreateToolUtil } from '@ddd-toolbox/shared-canvas'
 import { StickyNoteType } from '../types/sticky-note-types'
-import { STICKY_NOTE_SIZE } from '../shapes/sticky-note-constants'
+import { getStickyNoteSize } from '../shapes/sticky-note-constants'
 import { StickyNoteShapeUtil, TLStickyNoteShape } from '../shapes/sticky-note-shape-util'
 import { groupStickyNoteWithANewOne } from '../utils/grouping-logic'
 
@@ -25,7 +25,8 @@ export class StickyNoteToolUtil extends PreviewPlacementOnCreateToolUtil {
   }
 
   protected override getShapeSize(): { width: number; height: number } {
-    return { width: STICKY_NOTE_SIZE, height: STICKY_NOTE_SIZE }
+    const size = getStickyNoteSize(this.stickyNoteType)
+    return { width: size, height: size }
   }
 
   protected override getShapeProps(_info: Record<string, unknown>): Record<string, unknown> {
