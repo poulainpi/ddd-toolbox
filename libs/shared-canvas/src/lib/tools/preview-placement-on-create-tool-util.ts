@@ -5,36 +5,31 @@ export abstract class PreviewPlacementOnCreateToolUtil extends StateNode {
   protected initialPageBounds: Box | undefined
   protected initialSnapPoints: BoundsSnapPoint[] = []
   protected originPagePoint: Vec | undefined
+  protected entryInfo: Record<string, unknown> = {}
 
   override onEnter(info: Record<string, unknown>) {
     this.handleEnter(info)
+    this.entryInfo = info
     this.editor.setCursor({ type: 'cross' })
 
-    // Create shape immediately at cursor position
-    const { currentPagePoint } = this.editor.inputs
-    this.shapeId = createShapeId()
-    this.originPagePoint = currentPagePoint.clone()
+    if (!isTouchDevice()) {
+      // Create shape immediately at cursor position
+      const { currentPagePoint } = this.editor.inputs
+      this.shapeId = createShapeId()
+      this.originPagePoint = currentPagePoint.clone()
 
-    const size = this.getShapeSize()
-    const props = this.getShapeProps(info)
+      this.createShape(this.shapeId, currentPagePoint, this.getShapeProps(info))
 
-    this.editor.createShape({
-      id: this.shapeId,
-      type: this.getShapeType(),
-      x: currentPagePoint.x - size.width / 2,
-      y: currentPagePoint.y - size.height / 2,
-      props,
-    })
+      // Capture initial snap state for snap calculations
+      const shape = this.editor.getShape(this.shapeId)
+      if (shape) {
+        this.initialPageBounds = this.editor.getShapePageBounds(shape.id)
+        this.initialSnapPoints = this.editor.snaps.shapeBounds.getSnapPoints(shape.id)
+      }
 
-    // Capture initial snap state for snap calculations
-    const shape = this.editor.getShape(this.shapeId)
-    if (shape) {
-      this.initialPageBounds = this.editor.getShapePageBounds(shape.id)
-      this.initialSnapPoints = this.editor.snaps.shapeBounds.getSnapPoints(shape.id)
+      // Select the shape to exclude it from snap targets
+      this.editor.setSelectedShapes([this.shapeId])
     }
-
-    // Select the shape to exclude it from snap targets
-    this.editor.setSelectedShapes([this.shapeId])
   }
 
   override onPointerMove() {
@@ -80,6 +75,16 @@ export abstract class PreviewPlacementOnCreateToolUtil extends StateNode {
   }
 
   override onPointerDown() {
+    if (isTouchDevice() && !this.shapeId) {
+      const { currentPagePoint } = this.editor.inputs
+      const id = createShapeId()
+
+      this.createShape(id, currentPagePoint, this.getShapeProps(this.entryInfo))
+
+      this.onShapePlaced(id)
+      return
+    }
+
     if (!this.shapeId) return
 
     // Finalize placement and run custom post-placement logic
@@ -104,6 +109,18 @@ export abstract class PreviewPlacementOnCreateToolUtil extends StateNode {
     }
     this.editor.snaps.clearIndicators()
     this.editor.setCurrentTool('select')
+  }
+
+  private createShape(id: TLShapeId, position: Vec, props: Record<string, unknown>): void {
+    const size = this.getShapeSize()
+
+    this.editor.createShape({
+      id,
+      type: this.getShapeType(),
+      x: position.x - size.width / 2,
+      y: position.y - size.height / 2,
+      props,
+    })
   }
 
   /**
@@ -136,4 +153,8 @@ export abstract class PreviewPlacementOnCreateToolUtil extends StateNode {
    * - Shape selection/editing
    */
   protected abstract onShapePlaced(shapeId: TLShapeId): void
+}
+
+function isTouchDevice(): boolean {
+  return window.matchMedia('(pointer: coarse)').matches
 }
