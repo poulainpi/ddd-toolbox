@@ -14,7 +14,7 @@ import {
 
 export type TLCommentShape = TLBaseShape<'comment', { text: string; color: TLDefaultColorStyle; growY: number }>
 
-export const COMMENT_WIDTH = 140
+export const COMMENT_WIDTH = 160
 const COMMENT_PADDING = 8
 const COMMENT_FONT_SIZE = 16
 const COMMENT_LINE_HEIGHT = 1.3
