@@ -1,4 +1,4 @@
-import { Geometry2d, HTMLContainer, PlainTextLabel, Rectangle2d, RecordProps, ShapeUtil, T, TLBaseShape } from 'tldraw'
+import { Geometry2d, HTMLContainer, PlainTextLabel, RecordProps, Rectangle2d, ShapeUtil, T, TLBaseShape } from 'tldraw'
 import { StickyNoteType } from '../types/sticky-note-types'
 import { getStickyNoteSize, STICKY_NOTE_BG_COLORS } from './sticky-note-constants'
 
@@ -46,7 +46,7 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
 
     return (
       <HTMLContainer
-        className={`relative flex items-center justify-center rounded-lg p-4 shadow-md ${bgColorClass} [&_*]:!cursor-[inherit]`}
+        className={`relative flex items-center justify-center rounded-lg p-4 shadow-md ${bgColorClass} [&_*]:!cursor-[inherit] [&_*]:!caret-black`}
         style={{
           pointerEvents: 'all',
           width: size,
