@@ -24,5 +24,6 @@ export default defineConfig(() => ({
       reportsDirectory: '../../coverage/libs/feature-event-storming',
       provider: 'v8' as const,
     },
+    passWithNoTests: true,
   },
 }))
