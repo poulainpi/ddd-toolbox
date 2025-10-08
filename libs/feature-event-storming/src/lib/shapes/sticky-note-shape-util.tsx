@@ -2,6 +2,10 @@ import { Geometry2d, HTMLContainer, PlainTextLabel, RecordProps, Rectangle2d, Sh
 import { StickyNoteType } from '../types/sticky-note-types'
 import { getStickyNoteSize, STICKY_NOTE_BG_COLORS } from './sticky-note-constants'
 
+const MIN_FONT_SIZE = 10
+const MAX_FONT_SIZE = 16
+const LINE_HEIGHT = 1.2
+
 export type TLStickyNoteShape = TLBaseShape<
   'sticky-note',
   {
@@ -44,6 +48,12 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
     const bgColorClass = STICKY_NOTE_BG_COLORS[shape.props.stickyNoteType]
     const size = getStickyNoteSize(shape.props.stickyNoteType)
 
+    const paddingX = 8
+    const paddingY = 16
+    const availableWidth = size - paddingX * 2
+    const availableHeight = size - paddingY * 2
+    const dynamicFontSize = calculateFontSize(shape.props.text, availableWidth, availableHeight)
+
     return (
       <HTMLContainer
         className={`relative flex items-center justify-center rounded-lg p-4 shadow-md ${bgColorClass} [&_*]:!cursor-[inherit] [&_*]:!caret-black`}
@@ -60,11 +70,11 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
           align="middle"
           verticalAlign="middle"
           font="draw"
-          fontSize={16}
-          lineHeight={1.2}
+          fontSize={dynamicFontSize}
+          lineHeight={LINE_HEIGHT}
           labelColor="black"
           isSelected={isSelected}
-          textWidth={size - 16}
+          textWidth={availableWidth}
         />
       </HTMLContainer>
     )
@@ -86,4 +96,35 @@ export class StickyNoteShapeUtil extends ShapeUtil<TLStickyNoteShape> {
   override canEdit(_shape: TLStickyNoteShape): boolean {
     return true
   }
+}
+
+/**
+ * Calculate optimal font size based on text length and available space
+ * Returns a font size between MIN_FONT_SIZE and MAX_FONT_SIZE that fits the text
+ */
+function calculateFontSize(text: string, availableWidth: number, availableHeight: number): number {
+  if (!text || text.length === 0) {
+    return MAX_FONT_SIZE
+  }
+
+  // Estimate average character width as 0.5 * fontSize for the 'draw' font
+  const CHAR_WIDTH_RATIO = 0.5
+
+  // Try each font size from max to min
+  for (let fontSize = MAX_FONT_SIZE; fontSize >= MIN_FONT_SIZE; fontSize--) {
+    const charWidth = fontSize * CHAR_WIDTH_RATIO
+    const charsPerLine = Math.floor(availableWidth / charWidth)
+
+    if (charsPerLine <= 0) continue
+
+    const estimatedLines = Math.ceil(text.length / charsPerLine)
+    const lineHeightPx = fontSize * LINE_HEIGHT
+    const totalHeight = estimatedLines * lineHeightPx
+
+    if (totalHeight <= availableHeight) {
+      return fontSize
+    }
+  }
+
+  return MIN_FONT_SIZE
 }
