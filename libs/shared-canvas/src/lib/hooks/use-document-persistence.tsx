@@ -3,6 +3,7 @@ import { atom, Editor, getSnapshot, loadSnapshot, RecordsDiff, TLRecord, useEdit
 import { toast } from 'sonner'
 import { decompressFromEncodedURIComponent } from 'lz-string'
 import { resetTrackedChanges } from './use-change-tracking'
+import { fileOpen, fileSave } from 'browser-fs-access'
 
 function isPlainObjectEmpty(obj: object) {
   for (const _key in obj) return false
@@ -29,9 +30,12 @@ export function useDocumentPersistence(): UseDocumentPersistenceReturn {
   const { fileHandle, latestChangesSaved } = useValue($persistenceState)
 
   async function open() {
-    const [fileHandle] = await window.showOpenFilePicker()
-    const file = await fileHandle.getFile()
-    const jsonContent = JSON.parse(await file.text())
+    const fileWithHandle = await fileOpen({
+      mimeTypes: ['application/json'],
+      extensions: ['.json'],
+    })
+
+    const jsonContent = JSON.parse(await fileWithHandle.text())
     loadSnapshot(editor.store, { document: jsonContent })
     editor.clearHistory()
     goToContent(editor)
@@ -39,33 +43,42 @@ export function useDocumentPersistence(): UseDocumentPersistenceReturn {
     // setTimeout else changeHappened are triggered after latestChangesSaved are set to true
     setTimeout(() => {
       resetTrackedChanges()
-      $persistenceState.update((value) => ({ ...value, fileHandle, latestChangesSaved: true }))
+      $persistenceState.update((value) => ({
+        ...value,
+        fileHandle: fileWithHandle.handle,
+        latestChangesSaved: true,
+      }))
     })
   }
 
   async function saveAs() {
-    const newFileHandle = await window.showSaveFilePicker({ suggestedName: documentName + '.json' })
-    $persistenceState.update((value) => ({ ...value, fileHandle: newFileHandle }))
-    await saveUsingHandle(newFileHandle)
+    await saveToFile()
   }
 
   async function save() {
     const fileHandle = $persistenceState.get().fileHandle
-    if (fileHandle == null) {
-      await saveAs()
-    } else {
-      await saveUsingHandle(fileHandle)
-    }
+    await saveToFile(fileHandle)
   }
 
-  async function saveUsingHandle(handle: FileSystemFileHandle) {
+  async function saveToFile(fileHandle?: FileSystemFileHandle) {
     const document = getSnapshot(editor.store)
-    const writableStream = await handle.createWritable()
-    await writableStream.write(JSON.stringify(document.document))
-    await writableStream.close()
+    const blob = new Blob([JSON.stringify(document.document)], { type: 'application/json' })
+
+    const handle = await fileSave(
+      blob,
+      {
+        fileName: `${documentName}.json`,
+        extensions: ['.json'],
+      },
+      fileHandle,
+    )
 
     resetTrackedChanges()
-    $persistenceState.update((value) => ({ ...value, latestChangesSaved: true }))
+    $persistenceState.update((value) => ({
+      ...value,
+      fileHandle: handle ?? undefined,
+      latestChangesSaved: true,
+    }))
   }
 
   function clear() {

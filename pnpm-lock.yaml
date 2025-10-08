@@ -50,6 +50,9 @@ importers:
       astro:
         specifier: 5.14.1
         version: 5.14.1(@types/node@22.18.0)(encoding@0.1.13)(jiti@2.6.1)(less@4.1.3)(lightningcss@1.30.1)(rollup@4.50.0)(sass@1.83.1)(stylus@0.64.0)(terser@5.44.0)(tsx@4.19.3)(typescript@5.9.3)(yaml@2.8.1)
+      browser-fs-access:
+        specifier: 0.38.0
+        version: 0.38.0
       class-variance-authority:
         specifier: 0.7.1
         version: 0.7.1
@@ -4321,6 +4324,9 @@ packages:
 
   brotli@1.3.3:
     resolution: {integrity: sha512-oTKjJdShmDuGW94SyyaoQvAjf30dZaHnjJ8uAF+u2/vGJkJbJPJAT1gDiOJP5v1Zb6f9KEyW/1HpuaWIXtGHPg==}
+
+  browser-fs-access@0.38.0:
+    resolution: {integrity: sha512-JveqW2w6pEZqFEEfMgCszXzYpE89dG+nPsmOdcs741mFFAROeL+iqjGEpR07RI+s0YY0EFr+4KnOoACprJTpOw==}
 
   browserslist@4.25.4:
     resolution: {integrity: sha512-4jYpcjabC606xJ3kw2QwGEZKX0Aw7sgQdZCvIK9dhVSPh76BKo+C+btT1RRofH7B+8iNpEbgGNVWiLki5q93yg==}
@@ -13441,6 +13447,8 @@ snapshots:
   brotli@1.3.3:
     dependencies:
       base64-js: 1.5.1
+
+  browser-fs-access@0.38.0: {}
 
   browserslist@4.25.4:
     dependencies:
