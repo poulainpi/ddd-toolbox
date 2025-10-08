@@ -35,4 +35,4 @@ jobs:
           node-version: 22
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec nx affected -t lint test build
+      - run: pnpm exec nx affected -t lint test build --base=origin/main
