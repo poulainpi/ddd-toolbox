@@ -12,6 +12,8 @@ export const BrowserListener = track(function BrowserListener() {
 
       if (target.tagName?.toLowerCase() === 'textarea' || target.role?.toLowerCase() === 'textbox') {
         if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault()
+          e.stopPropagation()
           editor.complete()
         }
       }
@@ -27,9 +29,9 @@ export const BrowserListener = track(function BrowserListener() {
       }
     }
 
-    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('keydown', handleKeyDown, { capture: true })
     return () => {
-      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('keydown', handleKeyDown, { capture: true })
     }
   }, [editor, save])
 
