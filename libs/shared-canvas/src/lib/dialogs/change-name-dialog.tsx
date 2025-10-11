@@ -89,7 +89,7 @@ export function ChangeNameForm({
 
   return (
     <Form form={form} onSubmit={(data) => onSubmit(data.name)} id={formId}>
-      <FormInput name="name" label="Name" />
+      <FormInput name="name" label="Name" autoComplete="off" />
       {HelperComponent && <HelperComponent form={form} />}
     </Form>
   )

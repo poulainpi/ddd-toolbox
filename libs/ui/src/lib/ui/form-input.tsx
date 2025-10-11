@@ -8,9 +8,10 @@ interface FormInputProps {
   label?: string
   description?: string
   placeholder?: string
+  autoComplete?: string
 }
 
-export function FormInput({ name, label, description, placeholder }: FormInputProps) {
+export function FormInput({ name, label, description, placeholder, autoComplete }: FormInputProps) {
   const { control } = useFormContext()
 
   return (
@@ -21,7 +22,7 @@ export function FormInput({ name, label, description, placeholder }: FormInputPr
         <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input {...field} placeholder={placeholder} />
+            <Input {...field} placeholder={placeholder} autoComplete={autoComplete} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
