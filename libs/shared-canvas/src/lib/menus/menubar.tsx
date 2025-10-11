@@ -56,7 +56,7 @@ export const Menubar = track(function Menubar({
 
   return (
     <div className="bg-background absolute top-0 left-0">
-      <div className="bg-muted/50 flex items-center gap-1 p-1">
+      <div className="bg-muted/50 flex items-center gap-1 rounded-br-md p-1">
         <AppMenuComponent newDocument={newDocument} />
         <Button variant="ghost" size="sm" onClick={renameDocumentDisclosure.open}>
           {documentName}
