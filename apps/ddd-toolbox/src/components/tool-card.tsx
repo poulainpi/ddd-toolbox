@@ -57,7 +57,7 @@ export function ToolCard({ title, description, status, href, exampleHref, icon }
             <Button
               size="sm"
               variant="outline"
-              className="mt-2 w-full"
+              className="mt-2 w-full cursor-pointer"
               onClick={(e) => {
                 e.preventDefault()
                 window.open(exampleHref, '_blank', 'noopener,noreferrer')
