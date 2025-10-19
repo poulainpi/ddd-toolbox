@@ -149,7 +149,7 @@ function AddDomainObjectForm({
 
   return (
     <Form form={form} onSubmit={onSubmit} className="flex gap-2">
-      <FormInput name="icon" placeholder="Icon name" />
+      <FormInput name="icon" placeholder="Icon name" autoComplete="off" />
       <Button type="submit" variant="outline">
         <PlusIcon />
       </Button>
