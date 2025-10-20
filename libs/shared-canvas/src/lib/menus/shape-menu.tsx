@@ -27,11 +27,12 @@ export interface MenuAction {
 
 export interface ShapeMenuProps {
   onArrowClick?: (editor: Editor, selectedShape: TLShape) => void
+  firstLineActions?: MenuAction[]
   actionGroups: MenuActionGroup[]
   showOnShapeTypes?: string[]
 }
 
-export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: ShapeMenuProps) {
+export function ShapeMenu({ onArrowClick, firstLineActions, actionGroups, showOnShapeTypes }: ShapeMenuProps) {
   const editor = useEditor()
   const isDragging = editor.inputs.isDragging
   const isEditingShape = editor.getEditingShapeId() !== null
@@ -82,6 +83,35 @@ export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: Shap
     editor.focus()
   }
 
+  function renderActionButton(action: MenuAction, actionIndex: number) {
+    const button = (
+      <Button
+        key={`${action.icon}-${actionIndex}`}
+        variant="ghost"
+        size="icon"
+        onClick={() => {
+          action.onClick(editor, selectedShape)
+          giveFocusToEditor()
+        }}
+      >
+        <LoadableIcon name={action.icon as IconName} className={action.color} />
+      </Button>
+    )
+
+    if (action.tooltip) {
+      return (
+        <Tooltip key={`${action.icon}-${actionIndex}`} delayDuration={300}>
+          <TooltipTrigger asChild>{button}</TooltipTrigger>
+          <TooltipContent>
+            <p>{action.tooltip}</p>
+          </TooltipContent>
+        </Tooltip>
+      )
+    }
+
+    return button
+  }
+
   return (
     <Popover open={!isDragging && !isEditingShape}>
       <PopoverAnchor asChild={true}>
@@ -120,6 +150,7 @@ export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: Shap
               <MoveUpRightIcon />
             </Button>
           )}
+          {firstLineActions?.map((action, actionIndex) => renderActionButton(action, actionIndex))}
           <Button
             variant="ghost"
             size="icon"
@@ -135,34 +166,7 @@ export function ShapeMenu({ onArrowClick, actionGroups, showOnShapeTypes }: Shap
           (group) =>
             group.actions.length > 0 && (
               <div key={group.id} className="flex flex-wrap">
-                {group.actions.map((action, actionIndex) => {
-                  const button = (
-                    <Button
-                      key={`${action.icon}-${actionIndex}`}
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        action.onClick(editor, selectedShape)
-                        giveFocusToEditor()
-                      }}
-                    >
-                      <LoadableIcon name={action.icon as IconName} className={action.color} />
-                    </Button>
-                  )
-
-                  if (action.tooltip) {
-                    return (
-                      <Tooltip key={`${action.icon}-${actionIndex}`} delayDuration={300}>
-                        <TooltipTrigger asChild>{button}</TooltipTrigger>
-                        <TooltipContent>
-                          <p>{action.tooltip}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    )
-                  }
-
-                  return button
-                })}
+                {group.actions.map((action, actionIndex) => renderActionButton(action, actionIndex))}
               </div>
             ),
         )}
