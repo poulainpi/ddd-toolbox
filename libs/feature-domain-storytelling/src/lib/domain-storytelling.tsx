@@ -21,6 +21,7 @@ import {
 import { ShapeMenu } from './shape-menu'
 import { ClickedArrowToolUtil } from './tools/clicked-arrow-tool-util'
 import { $hiddenShapesState } from './states/use-story-play'
+import { StoryStepHighlightStyles } from './step-highlight-styles'
 
 const components: TLComponents = {
   InFrontOfTheCanvas: ShapeMenu,
@@ -56,6 +57,7 @@ export function DomainStorytelling({ licenseKey }: { licenseKey?: string }) {
         }}
         persistenceKey={process.env.NODE_ENV === 'development' ? 'domain-storytelling' : undefined}
       >
+        <StoryStepHighlightStyles />
         <OnMountListener defaultPageName="untitled" />
         <BrowserListener />
         <Menubar />

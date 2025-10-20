@@ -16,6 +16,7 @@ import { CommentShapeUtil } from '../shapes/comment-shape-util'
 import { toast } from 'sonner'
 
 export const $hiddenShapesState = atom<Set<TLShapeId>>('hidden shapes', new Set())
+export const $currentStepShapesState = atom<Set<TLShapeId>>('current step shapes', new Set())
 
 type StoryPlayStateProps = {
   isPlaying: boolean
@@ -96,17 +97,23 @@ export function useStoryPlay(): UseStoryPlayReturn {
     editor.updateInstanceState({ isReadonly: false })
     updateState(defaultState)
     updateHiddenShapes(new Set())
+    $currentStepShapesState.update(() => new Set())
   }
 
   const stepBackward = () => {
     if ($storyPlayState.get().currentStep === 1) return
+
     const shapeIdsToHide =
       $storyPlayState.get().appearedShapeIdsPerStep[$storyPlayState.get().appearedShapeIdsPerStep.length - 1] ?? []
     updateHiddenShapes(new Set([...$hiddenShapesState.get(), ...shapeIdsToHide]))
+
+    const newAppearedShapeIdsPerStep = $storyPlayState.get().appearedShapeIdsPerStep.slice(0, -1)
+    const newCurrentStep = $storyPlayState.get().currentStep - 1
     updateState({
-      currentStep: $storyPlayState.get().currentStep - 1,
-      appearedShapeIdsPerStep: $storyPlayState.get().appearedShapeIdsPerStep.slice(0, -1),
+      currentStep: newCurrentStep,
+      appearedShapeIdsPerStep: newAppearedShapeIdsPerStep,
     })
+    $currentStepShapesState.update(() => new Set(getShapeIdsAtStep(newCurrentStep)))
   }
 
   const stepForward = () => {
@@ -124,6 +131,7 @@ export function useStoryPlay(): UseStoryPlayReturn {
       currentStep: nextStep,
       appearedShapeIdsPerStep: [...$storyPlayState.get().appearedShapeIdsPerStep, shapeIdsToShow],
     })
+    $currentStepShapesState.update(() => new Set(getShapeIdsAtStep(nextStep)))
   }
 
   const getStepsCount = (): number => {
