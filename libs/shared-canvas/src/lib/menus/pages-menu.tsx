@@ -1,4 +1,4 @@
-import { PageRecordType, TLPageId, useEditor } from 'tldraw'
+import { PageRecordType, TLPageId, useEditor, sortByIndex, getIndexBetween } from 'tldraw'
 import {
   Button,
   DropdownMenu,
@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@ddd-toolbox/ui'
-import { Check, Copy, MoreVertical, Pencil, Plus, Trash2 } from 'lucide-react'
+import { Check, Copy, MoreVertical, Pencil, Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react'
 import { useDisclosure, UseDisclosureReturn } from '@ddd-toolbox/util'
 import { useState } from 'react'
 
@@ -68,6 +68,32 @@ export function PagesMenu({ ChangePageNameDialogComponent, label = 'Pages' }: Pa
     editor.deletePage(pageId)
   }
 
+  function movePageUp(pageId: TLPageId) {
+    const sortedPages = [...pages].sort(sortByIndex)
+    const currentIndex = sortedPages.findIndex((p) => p.id === pageId)
+
+    if (currentIndex <= 0) return
+
+    // Get the index between the page 2 positions up and the page directly above
+    const below = sortedPages[currentIndex - 2]?.index ?? null
+    const above = sortedPages[currentIndex - 1].index
+
+    editor.updatePage({ id: pageId, index: getIndexBetween(below, above) })
+  }
+
+  function movePageDown(pageId: TLPageId) {
+    const sortedPages = [...pages].sort(sortByIndex)
+    const currentIndex = sortedPages.findIndex((p) => p.id === pageId)
+
+    if (currentIndex >= sortedPages.length - 1) return
+
+    // Get the index between the page directly below and the page 2 positions down
+    const below = sortedPages[currentIndex + 1].index
+    const above = sortedPages[currentIndex + 2]?.index ?? null
+
+    editor.updatePage({ id: pageId, index: getIndexBetween(below, above) })
+  }
+
   return (
     <>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -89,51 +115,67 @@ export function PagesMenu({ ChangePageNameDialogComponent, label = 'Pages' }: Pa
 
           <DropdownMenuSeparator />
 
-          {pages.map((page) => (
-            <div key={page.id} className="group relative flex items-center">
-              <DropdownMenuItem className="flex-1 pr-8" onClick={() => switchToPage(page.id)}>
-                {page.id === currentPage.id && <Check className="mr-2 h-4 w-4" />}
-                {page.id !== currentPage.id && <span className="mr-6" />}
-                <span>{page.name}</span>
-              </DropdownMenuItem>
+          {pages.map((page) => {
+            const sortedPages = [...pages].sort(sortByIndex)
+            const pageIndex = sortedPages.findIndex((p) => p.id === page.id)
+            const isFirst = pageIndex === 0
+            const isLast = pageIndex === sortedPages.length - 1
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-1 h-6 w-6 opacity-0 group-hover:opacity-100"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                    }}
-                  >
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
+            return (
+              <div key={page.id} className="group relative flex items-center">
+                <DropdownMenuItem className="flex-1 pr-8" onClick={() => switchToPage(page.id)}>
+                  {page.id === currentPage.id && <Check className="mr-2 h-4 w-4" />}
+                  {page.id !== currentPage.id && <span className="mr-6" />}
+                  <span>{page.name}</span>
+                </DropdownMenuItem>
 
-                <DropdownMenuContent side="right" align="start">
-                  <DropdownMenuItem onClick={() => openRenamePage(page.id)}>
-                    <Pencil className="mr-2 h-4 w-4" />
-                    <span>Rename</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => openDuplicatePage(page.id)}>
-                    <Copy className="mr-2 h-4 w-4" />
-                    <span>Duplicate</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => deletePage(page.id)}
-                    disabled={pages.length === 1}
-                    className="text-destructive focus:text-destructive"
-                  >
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    <span>Delete</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          ))}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-1 h-6 w-6 opacity-0 group-hover:opacity-100"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                      }}
+                    >
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent side="right" align="start">
+                    <DropdownMenuItem onClick={() => openRenamePage(page.id)}>
+                      <Pencil className="mr-2 h-4 w-4" />
+                      <span>Rename</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => openDuplicatePage(page.id)}>
+                      <Copy className="mr-2 h-4 w-4" />
+                      <span>Duplicate</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => movePageUp(page.id)} disabled={isFirst}>
+                      <ArrowUp className="mr-2 h-4 w-4" />
+                      <span>Move Up</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => movePageDown(page.id)} disabled={isLast}>
+                      <ArrowDown className="mr-2 h-4 w-4" />
+                      <span>Move Down</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => deletePage(page.id)}
+                      disabled={pages.length === 1}
+                      className="text-destructive focus:text-destructive"
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      <span>Delete</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )
+          })}
         </DropdownMenuContent>
       </DropdownMenu>
 
