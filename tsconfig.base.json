@@ -15,6 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ddd-toolbox/bounded-context-canvas": ["libs/feature-bounded-context-canvas/src/index.ts"],
+      "@ddd-toolbox/bounded-context-canvas-constants": ["libs/feature-bounded-context-canvas/src/constants-index.ts"],
       "@ddd-toolbox/domain-storytelling": ["libs/feature-domain-storytelling/src/index.ts"],
       "@ddd-toolbox/domain-storytelling-constants": ["libs/feature-domain-storytelling/src/constants-index.ts"],
       "@ddd-toolbox/event-storming": ["libs/feature-event-storming/src/index.ts"],

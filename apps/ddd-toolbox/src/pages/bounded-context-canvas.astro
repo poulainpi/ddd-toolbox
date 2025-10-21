@@ -1,0 +1,20 @@
+---
+import { BoundedContextCanvas as BoundedContextCanvasComponent } from '@ddd-toolbox/bounded-context-canvas'
+import Layout from '../Layout.astro'
+import LoadingScreen from '../components/LoadingScreen.astro'
+import StructuredData from '../components/structured-data.astro'
+import { AstroSeo } from '@astrolib/seo'
+
+const pageDescription =
+  'Design and document your bounded contexts using a structured canvas approach. Capture business model, ubiquitous language, and integration patterns.'
+const licenseKey = import.meta.env.TLDRAW_LICENSE_KEY
+---
+
+<AstroSeo title="Bounded Context Canvas | DDD Toolbox" description={pageDescription} />
+
+<Layout>
+  <StructuredData type="software" title="Bounded Context Canvas Tool" description={pageDescription} />
+  <BoundedContextCanvasComponent client:only="react" licenseKey={licenseKey}>
+    <LoadingScreen slot="fallback" toolName="Bounded Context Canvas" />
+  </BoundedContextCanvasComponent>
+</Layout>

@@ -27,6 +27,9 @@
       "path": "../../libs/feature-domain-storytelling"
     },
     {
+      "path": "../../libs/feature-bounded-context-canvas"
+    },
+    {
       "path": "../../libs/ui"
     }
   ]

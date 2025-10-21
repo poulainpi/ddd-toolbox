@@ -1,0 +1,9 @@
+{
+  "name": "feature-bounded-context-canvas",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/feature-bounded-context-canvas/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project feature-bounded-context-canvas --web",
+  "targets": {}
+}

@@ -25,20 +25,20 @@ const tools = [
     icon: <Zap className="h-6 w-6" />,
   },
   {
+    id: 'bounded-context-canvas',
+    title: 'Bounded Context Canvas',
+    description:
+      'Document and design your bounded contexts using a structured canvas approach. Capture business model, ubiquitous language, and integration patterns.',
+    status: 'coming-soon' as const,
+    icon: <FileText className="h-6 w-6" />,
+  },
+  {
     id: 'context-mapping',
     title: 'Context Mapping',
     description:
       'Define and visualize relationships between bounded contexts. Understand integration patterns and team interactions across different parts of your domain.',
     status: 'coming-later' as const,
     icon: <Network className="h-6 w-6" />,
-  },
-  {
-    id: 'bounded-context-canvas',
-    title: 'Bounded Context Canvas',
-    description:
-      'Document and design your bounded contexts using a structured canvas approach. Capture business model, ubiquitous language, and integration patterns.',
-    status: 'coming-later' as const,
-    icon: <FileText className="h-6 w-6" />,
   },
   {
     id: 'aggregate-design-canvas',
