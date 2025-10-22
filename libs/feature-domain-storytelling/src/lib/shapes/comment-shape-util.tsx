@@ -46,7 +46,7 @@ export class CommentShapeUtil extends ShapeUtil<TLCommentShape> {
     const theme = getDefaultColorTheme({ isDarkMode: this.editor.user.getIsDarkMode() })
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id
     const height = COMMENT_MIN_HEIGHT + shape.props.growY
-    const borderColor = theme[shape.props.color].solid
+    const color = theme[shape.props.color].solid
     const bracketWidth = 20
 
     return (
@@ -65,7 +65,7 @@ export class CommentShapeUtil extends ShapeUtil<TLCommentShape> {
               top: 0,
               width: 1,
               height: height,
-              backgroundColor: borderColor,
+              backgroundColor: color,
             }}
           />
           <div
@@ -75,7 +75,7 @@ export class CommentShapeUtil extends ShapeUtil<TLCommentShape> {
               top: 0,
               width: bracketWidth,
               height: 1,
-              backgroundColor: borderColor,
+              backgroundColor: color,
             }}
           />
           <div
@@ -85,7 +85,7 @@ export class CommentShapeUtil extends ShapeUtil<TLCommentShape> {
               bottom: 0,
               width: bracketWidth,
               height: 1,
-              backgroundColor: borderColor,
+              backgroundColor: color,
             }}
           />
           <div
@@ -104,7 +104,7 @@ export class CommentShapeUtil extends ShapeUtil<TLCommentShape> {
               verticalAlign="start"
               font="draw"
               fontSize={COMMENT_FONT_SIZE}
-              labelColor={borderColor}
+              labelColor={color}
               lineHeight={COMMENT_LINE_HEIGHT}
               isSelected={isSelected}
               textWidth={COMMENT_WIDTH - COMMENT_PADDING * 2}
