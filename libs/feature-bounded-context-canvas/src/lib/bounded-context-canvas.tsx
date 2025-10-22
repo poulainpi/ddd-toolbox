@@ -12,6 +12,8 @@ import {
 import { Menubar } from './menubar/menubar'
 import { NameSectionShapeUtil } from './shapes/name-section-shape-util'
 import { PurposeSectionShapeUtil } from './shapes/purpose-section-shape-util'
+import { StrategicClassificationShapeUtil } from './shapes/strategic-classification-section-shape-util'
+import { DomainRolesShapeUtil } from './shapes/domain-roles-section-shape-util'
 
 const components: TLComponents = {
   Toolbar: null,
@@ -28,7 +30,12 @@ interface BoundedContextCanvasProps {
 
 function preventSectionDeletion(editor: Editor) {
   editor.sideEffects.registerBeforeDeleteHandler('shape', (shape) => {
-    if (shape.type === NameSectionShapeUtil.type || shape.type === PurposeSectionShapeUtil.type) {
+    if (
+      shape.type === NameSectionShapeUtil.type ||
+      shape.type === PurposeSectionShapeUtil.type ||
+      shape.type === StrategicClassificationShapeUtil.type ||
+      shape.type === DomainRolesShapeUtil.type
+    ) {
       return false
     }
   })
@@ -63,6 +70,25 @@ function initializeTemplate(editor: Editor) {
       text: '',
     },
   })
+
+  editor.createShape({
+    type: StrategicClassificationShapeUtil.type,
+    x: startX,
+    y: startY + NameSectionShapeUtil.HEIGHT + PurposeSectionShapeUtil.HEIGHT + spacing,
+    props: {},
+  })
+
+  editor.createShape({
+    type: DomainRolesShapeUtil.type,
+    x: startX,
+    y:
+      startY +
+      NameSectionShapeUtil.HEIGHT +
+      PurposeSectionShapeUtil.HEIGHT +
+      StrategicClassificationShapeUtil.HEIGHT +
+      spacing,
+    props: {},
+  })
 }
 
 export function BoundedContextCanvas({ licenseKey }: BoundedContextCanvasProps) {
@@ -73,7 +99,12 @@ export function BoundedContextCanvas({ licenseKey }: BoundedContextCanvasProps) 
       <Tldraw
         licenseKey={licenseKey}
         components={components}
-        shapeUtils={[NameSectionShapeUtil, PurposeSectionShapeUtil]}
+        shapeUtils={[
+          NameSectionShapeUtil,
+          PurposeSectionShapeUtil,
+          StrategicClassificationShapeUtil,
+          DomainRolesShapeUtil,
+        ]}
         onMount={(editor) => {
           setDefaultUserPreferencesWhenNotExisting()
           preventSectionDeletion(editor)
