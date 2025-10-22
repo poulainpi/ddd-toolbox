@@ -2,4 +2,5 @@
 @import '../../../libs/ui/src/lib/ui/globals.css';
 @import '../../../libs/feature-domain-storytelling/src/lib/index.css';
 @import '../../../libs/feature-event-storming/src/lib/index.css';
+@import '../../../libs/feature-bounded-context-canvas/src/lib/index.css';
 @import '../../../libs/shared-canvas/src/lib/index.css';
