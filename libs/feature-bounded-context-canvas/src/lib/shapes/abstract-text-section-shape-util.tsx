@@ -1,4 +1,5 @@
-import { Geometry2d, HTMLContainer, PlainTextLabel, RecordProps, Rectangle2d, ShapeUtil, T, TLBaseShape } from 'tldraw'
+import { HTMLContainer, PlainTextLabel, RecordProps, T, TLBaseShape } from 'tldraw'
+import { AbstractSectionShapeUtil } from './abstract-section-shape-util'
 
 export type TLTextSectionShape<Type extends string> = TLBaseShape<
   Type,
@@ -7,18 +8,16 @@ export type TLTextSectionShape<Type extends string> = TLBaseShape<
   }
 >
 
-export abstract class AbstractTextSectionShapeUtil<Type extends string> extends ShapeUtil<TLTextSectionShape<Type>> {
+export abstract class AbstractTextSectionShapeUtil<Type extends string> extends AbstractSectionShapeUtil<
+  Type,
+  { text: string }
+> {
   static override props: RecordProps<TLTextSectionShape<string>> = {
     text: T.string,
   }
 
   abstract getLabel(): string
-  abstract getWidth(): number
-  abstract getHeight(): number
   abstract getFontSize(): number
-  abstract getBorderClasses(): string
-  abstract getRoundedClasses(): string
-  abstract getIndicatorRadius(): number
 
   override getDefaultProps(): TLTextSectionShape<Type>['props'] {
     return {
@@ -26,23 +25,8 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
     }
   }
 
-  override getGeometry(_shape: TLTextSectionShape<Type>): Geometry2d {
-    return new Rectangle2d({
-      width: this.getWidth(),
-      height: this.getHeight(),
-      isFilled: true,
-      isLabel: false,
-    })
-  }
-
-  override hideSelectionBoundsFg(_shape: TLTextSectionShape<Type>): boolean {
-    return true
-  }
-
   override component(shape: TLTextSectionShape<Type>) {
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id
-    const isDarkMode = this.editor.user.getIsDarkMode()
-    const labelColor = isDarkMode ? 'white' : 'black'
     const width = this.getWidth()
     const height = this.getHeight()
     const fontSize = this.getFontSize()
@@ -70,7 +54,7 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
               font="draw"
               fontSize={fontSize}
               lineHeight={1.5}
-              labelColor={labelColor}
+              labelColor=""
               isSelected={isSelected}
               textWidth={width - 32}
             />
@@ -82,29 +66,5 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
 
   override getText(shape: TLTextSectionShape<Type>) {
     return shape.props.text
-  }
-
-  override indicator(_shape: TLTextSectionShape<Type>) {
-    const rx = this.getIndicatorRadius()
-    return <rect width={this.getWidth()} height={this.getHeight()} rx={rx} />
-  }
-
-  override canResize(_shape: TLTextSectionShape<Type>): boolean {
-    return false
-  }
-
-  override canEdit(_shape: TLTextSectionShape<Type>): boolean {
-    return true
-  }
-
-  override onBeforeUpdate(prev: TLTextSectionShape<Type>, next: TLTextSectionShape<Type>) {
-    if (prev.x !== next.x || prev.y !== next.y) {
-      return {
-        ...next,
-        x: prev.x,
-        y: prev.y,
-      }
-    }
-    return next
   }
 }
