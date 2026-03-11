@@ -15,6 +15,7 @@ import {
   AbstractClassificationSectionShapeUtil,
   ClassificationDialogProps,
 } from './abstract-classification-section-shape-util'
+import { STRATEGIC_CLASSIFICATION_WIDTH } from '../constants'
 
 export type TLStrategicClassificationShape = TLBaseShape<
   'strategic-classification',
@@ -28,8 +29,8 @@ export type TLStrategicClassificationShape = TLBaseShape<
   }
 >
 
-const SECTION_WIDTH = 600
-const SECTION_HEIGHT = 156
+const SECTION_WIDTH = STRATEGIC_CLASSIFICATION_WIDTH
+const SECTION_HEIGHT = 180
 
 export class StrategicClassificationShapeUtil extends AbstractClassificationSectionShapeUtil<
   'strategic-classification',
@@ -104,7 +105,7 @@ export class StrategicClassificationShapeUtil extends AbstractClassificationSect
   }
 
   override getBorderClasses(): string {
-    return 'border-x-2 border-b-2'
+    return 'border-b-2 border-x-2'
   }
 
   override getRoundedClasses(): string {

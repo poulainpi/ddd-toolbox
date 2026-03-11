@@ -1,10 +1,11 @@
 import { AbstractTextSectionShapeUtil, TLTextSectionShape } from './abstract-text-section-shape-util'
+import { CANVAS_WIDTH } from '../constants'
 
 export type TLNameSectionShape = TLTextSectionShape<'name-section'>
 
 export class NameSectionShapeUtil extends AbstractTextSectionShapeUtil<'name-section'> {
   static override type = 'name-section' as const
-  static readonly WIDTH = 600
+  static readonly WIDTH = CANVAS_WIDTH
   static readonly HEIGHT = 120
   static readonly FONT_SIZE = 20
 

@@ -14,6 +14,9 @@ import { NameSectionShapeUtil } from './shapes/name-section-shape-util'
 import { PurposeSectionShapeUtil } from './shapes/purpose-section-shape-util'
 import { StrategicClassificationShapeUtil } from './shapes/strategic-classification-section-shape-util'
 import { DomainRolesShapeUtil } from './shapes/domain-roles-section-shape-util'
+import { AssumptionsSectionShapeUtil } from './shapes/assumptions-section-shape-util'
+import { VerificationMetricsSectionShapeUtil } from './shapes/verification-metrics-section-shape-util'
+import { OpenQuestionsSectionShapeUtil } from './shapes/open-questions-section-shape-util'
 
 const components: TLComponents = {
   Toolbar: null,
@@ -34,7 +37,10 @@ function preventSectionDeletion(editor: Editor) {
       shape.type === NameSectionShapeUtil.type ||
       shape.type === PurposeSectionShapeUtil.type ||
       shape.type === StrategicClassificationShapeUtil.type ||
-      shape.type === DomainRolesShapeUtil.type
+      shape.type === DomainRolesShapeUtil.type ||
+      shape.type === AssumptionsSectionShapeUtil.type ||
+      shape.type === VerificationMetricsSectionShapeUtil.type ||
+      shape.type === OpenQuestionsSectionShapeUtil.type
     ) {
       return false
     }
@@ -51,7 +57,6 @@ function initializeTemplate(editor: Editor) {
 
   const startX = 100
   const startY = 100
-  const spacing = 0
 
   editor.createShape({
     type: NameSectionShapeUtil.type,
@@ -62,10 +67,12 @@ function initializeTemplate(editor: Editor) {
     },
   })
 
+  const secondRowY = startY + NameSectionShapeUtil.HEIGHT
+
   editor.createShape({
     type: PurposeSectionShapeUtil.type,
     x: startX,
-    y: startY + NameSectionShapeUtil.HEIGHT + spacing,
+    y: secondRowY,
     props: {
       text: '',
     },
@@ -73,21 +80,45 @@ function initializeTemplate(editor: Editor) {
 
   editor.createShape({
     type: StrategicClassificationShapeUtil.type,
-    x: startX,
-    y: startY + NameSectionShapeUtil.HEIGHT + PurposeSectionShapeUtil.HEIGHT + spacing,
+    x: startX + PurposeSectionShapeUtil.WIDTH,
+    y: secondRowY,
     props: {},
   })
 
   editor.createShape({
     type: DomainRolesShapeUtil.type,
-    x: startX,
-    y:
-      startY +
-      NameSectionShapeUtil.HEIGHT +
-      PurposeSectionShapeUtil.HEIGHT +
-      StrategicClassificationShapeUtil.HEIGHT +
-      spacing,
+    x: startX + PurposeSectionShapeUtil.WIDTH + StrategicClassificationShapeUtil.WIDTH,
+    y: secondRowY,
     props: {},
+  })
+
+  const bottomRowY = secondRowY + PurposeSectionShapeUtil.HEIGHT
+
+  editor.createShape({
+    type: AssumptionsSectionShapeUtil.type,
+    x: startX,
+    y: bottomRowY,
+    props: {
+      text: '',
+    },
+  })
+
+  editor.createShape({
+    type: VerificationMetricsSectionShapeUtil.type,
+    x: startX + AssumptionsSectionShapeUtil.WIDTH,
+    y: bottomRowY,
+    props: {
+      text: '',
+    },
+  })
+
+  editor.createShape({
+    type: OpenQuestionsSectionShapeUtil.type,
+    x: startX + AssumptionsSectionShapeUtil.WIDTH + VerificationMetricsSectionShapeUtil.WIDTH,
+    y: bottomRowY,
+    props: {
+      text: '',
+    },
   })
 }
 
@@ -104,6 +135,9 @@ export function BoundedContextCanvas({ licenseKey }: BoundedContextCanvasProps) 
           PurposeSectionShapeUtil,
           StrategicClassificationShapeUtil,
           DomainRolesShapeUtil,
+          AssumptionsSectionShapeUtil,
+          VerificationMetricsSectionShapeUtil,
+          OpenQuestionsSectionShapeUtil,
         ]}
         onMount={(editor) => {
           setDefaultUserPreferencesWhenNotExisting()

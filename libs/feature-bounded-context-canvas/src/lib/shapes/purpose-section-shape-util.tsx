@@ -1,10 +1,11 @@
 import { AbstractTextSectionShapeUtil, TLTextSectionShape } from './abstract-text-section-shape-util'
+import { PURPOSE_WIDTH } from '../constants'
 
 export type TLPurposeSectionShape = TLTextSectionShape<'purpose-section'>
 
 export class PurposeSectionShapeUtil extends AbstractTextSectionShapeUtil<'purpose-section'> {
   static override type = 'purpose-section' as const
-  static readonly WIDTH = 600
+  static readonly WIDTH = PURPOSE_WIDTH
   static readonly HEIGHT = 180
   static readonly FONT_SIZE = 16
 
@@ -25,7 +26,7 @@ export class PurposeSectionShapeUtil extends AbstractTextSectionShapeUtil<'purpo
   }
 
   override getBorderClasses(): string {
-    return 'border-x-2 border-b-2'
+    return 'border-l-2 border-b-2'
   }
 
   override getRoundedClasses(): string {
@@ -33,6 +34,6 @@ export class PurposeSectionShapeUtil extends AbstractTextSectionShapeUtil<'purpo
   }
 
   override getIndicatorRadius(): number {
-    return 0
+    return 8
   }
 }
