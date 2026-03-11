@@ -37,14 +37,13 @@ export abstract class AbstractSectionShapeUtil<Type extends string, Props extend
     return true
   }
 
-  override onBeforeUpdate(prev: TLBaseShape<Type, Props>, next: TLBaseShape<Type, Props>) {
-    if (prev.x !== next.x || prev.y !== next.y) {
-      return {
-        ...next,
-        x: prev.x,
-        y: prev.y,
-      }
-    }
-    return next
+  override onTranslateStart(shape: TLBaseShape<Type, Props>) {
+    // Prevent user from dragging the shape
+    return shape
+  }
+
+  override onTranslate(shape: TLBaseShape<Type, Props>) {
+    // Also block during translate to ensure no movement
+    return shape
   }
 }

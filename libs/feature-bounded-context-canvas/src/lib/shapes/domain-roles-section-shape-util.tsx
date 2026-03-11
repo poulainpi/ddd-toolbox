@@ -5,6 +5,7 @@ import {
   AbstractClassificationSectionShapeUtil,
   ClassificationDialogProps,
 } from './abstract-classification-section-shape-util'
+import { DOMAIN_ROLES_WIDTH } from '../constants'
 
 export type TLDomainRolesShape = TLBaseShape<
   'domain-roles',
@@ -14,8 +15,8 @@ export type TLDomainRolesShape = TLBaseShape<
   }
 >
 
-const SECTION_WIDTH = 600
-const SECTION_HEIGHT = 156
+const SECTION_WIDTH = DOMAIN_ROLES_WIDTH
+const SECTION_HEIGHT = 180
 
 export class DomainRolesShapeUtil extends AbstractClassificationSectionShapeUtil<
   'domain-roles',
@@ -62,7 +63,7 @@ export class DomainRolesShapeUtil extends AbstractClassificationSectionShapeUtil
   }
 
   override getBorderClasses(): string {
-    return 'border-x-2 border-b-2'
+    return 'border-r-2 border-b-2'
   }
 
   override getRoundedClasses(): string {
@@ -70,7 +71,7 @@ export class DomainRolesShapeUtil extends AbstractClassificationSectionShapeUtil
   }
 
   override getIndicatorRadius(): number {
-    return 0
+    return 8
   }
 
   override renderDialog(props: ClassificationDialogProps<TLDomainRolesShape['props']>) {

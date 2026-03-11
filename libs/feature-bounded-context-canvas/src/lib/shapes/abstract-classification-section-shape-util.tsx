@@ -66,7 +66,7 @@ export abstract class AbstractClassificationSectionShapeUtil<
     const hasValue = displayValue !== ''
 
     return (
-      <div key={category.key} className={`text-center ${hasValue ? 'flex flex-col justify-center' : ''}`}>
+      <div key={category.key} className={`flex-1 text-center ${hasValue ? 'flex flex-col justify-center' : ''}`}>
         <div className="text-muted-foreground mb-1 text-sm font-semibold">{category.label}</div>
         {hasValue ? (
           <div className="text-foreground text-base">{displayValue}</div>
@@ -141,7 +141,7 @@ function ClassificationComponent<Type extends string, Props extends Classificati
     >
       <div className={`border-foreground flex h-full flex-col p-4 ${borderClasses} ${roundedClasses}`}>
         <div className="text-muted-foreground font-draw mb-2 text-base font-semibold">{sectionTitle}</div>
-        <div className={`font-draw grid flex-1 gap-4 grid-cols-${categories.length}`}>
+        <div className="font-draw flex flex-1 flex-row gap-4">
           {categories.map((category) => {
             const value = shape.props[category.key]
             const customValue = shape.props[category.customKey]
