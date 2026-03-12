@@ -1,12 +1,11 @@
 import { AbstractTextSectionShapeUtil, TLTextSectionShape } from './abstract-text-section-shape-util'
-import { PURPOSE_WIDTH } from '../constants'
+import { PURPOSE_WIDTH, SECOND_ROW_HEIGHT } from '../constants'
 
 export type TLPurposeSectionShape = TLTextSectionShape<'purpose-section'>
 
 export class PurposeSectionShapeUtil extends AbstractTextSectionShapeUtil<'purpose-section'> {
   static override type = 'purpose-section' as const
   static readonly WIDTH = PURPOSE_WIDTH
-  static readonly HEIGHT = 180
   static readonly FONT_SIZE = 16
 
   override getLabel(): string {
@@ -17,8 +16,12 @@ export class PurposeSectionShapeUtil extends AbstractTextSectionShapeUtil<'purpo
     return PurposeSectionShapeUtil.WIDTH
   }
 
-  override getHeight(): number {
-    return PurposeSectionShapeUtil.HEIGHT
+  override getDefaultHeight(): number {
+    return SECOND_ROW_HEIGHT
+  }
+
+  override getRowIndex(): number {
+    return 1
   }
 
   override getFontSize(): number {
@@ -34,6 +37,6 @@ export class PurposeSectionShapeUtil extends AbstractTextSectionShapeUtil<'purpo
   }
 
   override getIndicatorRadius(): number {
-    return 8
+    return 0
   }
 }

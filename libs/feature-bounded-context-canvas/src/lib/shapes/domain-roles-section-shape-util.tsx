@@ -1,38 +1,36 @@
 import { RecordProps, T, TLBaseShape } from 'tldraw'
+import { SECOND_ROW_HEIGHT } from '../constants'
 import { DOMAIN_ROLE_DESCRIPTIONS, DOMAIN_ROLE_LABELS, DomainRoleType } from '../types/domain-roles-types'
 import { ClassificationDialog } from '../dialogs/classification-dialog'
 import {
   AbstractClassificationSectionShapeUtil,
   ClassificationDialogProps,
+  ClassificationValues,
+  TLClassificationSectionProps,
 } from './abstract-classification-section-shape-util'
 import { DOMAIN_ROLES_WIDTH } from '../constants'
 
-export type TLDomainRolesShape = TLBaseShape<
-  'domain-roles',
-  {
-    roles?: DomainRoleType[]
-    customRoles?: string
-  }
->
+export type DomainRolesValues = ClassificationValues & {
+  roles?: DomainRoleType[]
+  customRoles?: string
+}
+
+export type TLDomainRolesShape = TLBaseShape<'domain-roles', TLClassificationSectionProps<DomainRolesValues>>
 
 const SECTION_WIDTH = DOMAIN_ROLES_WIDTH
-const SECTION_HEIGHT = 180
 
-export class DomainRolesShapeUtil extends AbstractClassificationSectionShapeUtil<
-  'domain-roles',
-  {
-    roles?: DomainRoleType[]
-    customRoles?: string
-  }
-> {
+export class DomainRolesShapeUtil extends AbstractClassificationSectionShapeUtil<'domain-roles', DomainRolesValues> {
   static override type = 'domain-roles' as const
 
   static override props: RecordProps<TLDomainRolesShape> = {
-    roles: T.arrayOf(T.literalEnum(...Object.values(DomainRoleType))).optional(),
-    customRoles: T.string.optional(),
+    height: T.number,
+    values: T.object({
+      roles: T.arrayOf(T.literalEnum(...Object.values(DomainRoleType))).optional(),
+      customRoles: T.string.optional(),
+    }),
   }
 
-  override getDefaultProps(): TLDomainRolesShape['props'] {
+  override getDefaultValues(): DomainRolesValues {
     return {}
   }
 
@@ -58,8 +56,12 @@ export class DomainRolesShapeUtil extends AbstractClassificationSectionShapeUtil
     return SECTION_WIDTH
   }
 
-  override getHeight(): number {
-    return SECTION_HEIGHT
+  override getDefaultHeight(): number {
+    return SECOND_ROW_HEIGHT
+  }
+
+  override getRowIndex(): number {
+    return 1
   }
 
   override getBorderClasses(): string {
@@ -71,10 +73,10 @@ export class DomainRolesShapeUtil extends AbstractClassificationSectionShapeUtil
   }
 
   override getIndicatorRadius(): number {
-    return 8
+    return 0
   }
 
-  override renderDialog(props: ClassificationDialogProps<TLDomainRolesShape['props']>) {
+  override renderDialog(props: ClassificationDialogProps<DomainRolesValues>) {
     return (
       <ClassificationDialog
         title="Domain Roles"

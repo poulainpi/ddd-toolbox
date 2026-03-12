@@ -1,12 +1,11 @@
 import { AbstractTextSectionShapeUtil, TLTextSectionShape } from './abstract-text-section-shape-util'
-import { VERIFICATION_METRICS_WIDTH } from '../constants'
+import { VERIFICATION_METRICS_WIDTH, BOTTOM_ROW_HEIGHT } from '../constants'
 
 export type TLVerificationMetricsSectionShape = TLTextSectionShape<'verification-metrics-section'>
 
 export class VerificationMetricsSectionShapeUtil extends AbstractTextSectionShapeUtil<'verification-metrics-section'> {
   static override type = 'verification-metrics-section' as const
   static readonly WIDTH = VERIFICATION_METRICS_WIDTH
-  static readonly HEIGHT = 120
   static readonly FONT_SIZE = 16
 
   override getLabel(): string {
@@ -17,8 +16,12 @@ export class VerificationMetricsSectionShapeUtil extends AbstractTextSectionShap
     return VerificationMetricsSectionShapeUtil.WIDTH
   }
 
-  override getHeight(): number {
-    return VerificationMetricsSectionShapeUtil.HEIGHT
+  override getDefaultHeight(): number {
+    return BOTTOM_ROW_HEIGHT
+  }
+
+  override getRowIndex(): number {
+    return 2
   }
 
   override getFontSize(): number {

@@ -1,7 +1,7 @@
 import { HTMLContainer, TLBaseShape, Editor } from 'tldraw'
 import { useDisclosure } from '@ddd-toolbox/util'
 import { useEffect, JSX } from 'react'
-import { AbstractSectionShapeUtil } from './abstract-section-shape-util'
+import { AbstractSectionShapeUtil, TLSectionBaseProps } from './abstract-section-shape-util'
 
 export interface ClassificationCategory<T extends string = string> {
   key: string
@@ -13,23 +13,33 @@ export interface ClassificationCategory<T extends string = string> {
   descriptions: Record<T, string>
 }
 
-export interface ClassificationValues {
-  [key: string]: string | string[] | undefined
+export type ClassificationValues = Record<string, string | string[] | undefined>
+
+export type TLClassificationSectionProps<Values extends ClassificationValues> = TLSectionBaseProps & {
+  values: Values
 }
 
-export interface ClassificationDialogProps<Props extends ClassificationValues> {
+export interface ClassificationDialogProps<Values extends ClassificationValues> {
   disclosure: ReturnType<typeof useDisclosure> & { setIsOpen: (open: boolean) => void }
-  initialValues: Props
-  onSave: (values: Props) => void
+  initialValues: Values
+  onSave: (values: Values) => void
 }
 
 export abstract class AbstractClassificationSectionShapeUtil<
   Type extends string,
-  Props extends ClassificationValues,
-> extends AbstractSectionShapeUtil<Type, Props> {
+  Values extends ClassificationValues,
+> extends AbstractSectionShapeUtil<Type, TLClassificationSectionProps<Values>> {
   abstract getSectionTitle(): string
   abstract getCategories(): ClassificationCategory[]
-  abstract renderDialog(props: ClassificationDialogProps<Props>): JSX.Element
+  abstract renderDialog(props: ClassificationDialogProps<Values>): JSX.Element
+  abstract getDefaultValues(): Values
+
+  override getDefaultProps(): TLClassificationSectionProps<Values> {
+    return {
+      height: this.getDefaultHeight(),
+      values: this.getDefaultValues(),
+    }
+  }
 
   protected getDisplayValue(
     value: string | string[] | undefined,
@@ -81,25 +91,25 @@ export abstract class AbstractClassificationSectionShapeUtil<
     )
   }
 
-  override component(shape: TLBaseShape<Type, Props>) {
+  override component(shape: TLBaseShape<Type, TLClassificationSectionProps<Values>>) {
     const isEditing = this.editor.getEditingShapeId() === shape.id
     return <ClassificationComponent shape={shape} editor={this.editor} isEditing={isEditing} util={this} />
   }
 }
 
-function ClassificationComponent<Type extends string, Props extends ClassificationValues>({
+function ClassificationComponent<Type extends string, Values extends ClassificationValues>({
   shape,
   editor,
   isEditing,
   util,
 }: {
-  shape: TLBaseShape<Type, Props>
+  shape: TLBaseShape<Type, TLClassificationSectionProps<Values>>
   editor: Editor
   isEditing: boolean
-  util: AbstractClassificationSectionShapeUtil<Type, Props>
+  util: AbstractClassificationSectionShapeUtil<Type, Values>
 }) {
   const width = util.getWidth()
-  const height = util.getHeight()
+  const height = shape.props.height
   const borderClasses = util.getBorderClasses()
   const roundedClasses = util.getRoundedClasses()
   const categories = util.getCategories()
@@ -113,10 +123,10 @@ function ClassificationComponent<Type extends string, Props extends Classificati
     }
   }, [isEditing, disclosure])
 
-  const handleSave = (values: Props) => {
+  const handleSave = (values: Values) => {
     editor.updateShape({
       ...shape,
-      props: values,
+      props: { ...shape.props, values },
     })
     editor.setEditingShape(null)
   }
@@ -143,15 +153,15 @@ function ClassificationComponent<Type extends string, Props extends Classificati
         <div className="text-muted-foreground font-draw mb-2 text-base font-semibold">{sectionTitle}</div>
         <div className="font-draw flex flex-1 flex-row gap-4">
           {categories.map((category) => {
-            const value = shape.props[category.key]
-            const customValue = shape.props[category.customKey]
+            const value = shape.props.values[category.key]
+            const customValue = shape.props.values[category.customKey]
             return util.renderCategoryColumn(category, value, customValue)
           })}
         </div>
       </div>
       {util.renderDialog({
         disclosure: { ...disclosure, setIsOpen: handleOpenChange },
-        initialValues: shape.props,
+        initialValues: shape.props.values,
         onSave: handleSave,
       })}
     </HTMLContainer>

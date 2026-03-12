@@ -1,4 +1,5 @@
 import { RecordProps, T, TLBaseShape } from 'tldraw'
+import { SECOND_ROW_HEIGHT } from '../constants'
 import {
   BUSINESS_MODEL_DESCRIPTIONS,
   BUSINESS_MODEL_LABELS,
@@ -14,49 +15,47 @@ import { ClassificationDialog } from '../dialogs/classification-dialog'
 import {
   AbstractClassificationSectionShapeUtil,
   ClassificationDialogProps,
+  ClassificationValues,
+  TLClassificationSectionProps,
 } from './abstract-classification-section-shape-util'
 import { STRATEGIC_CLASSIFICATION_WIDTH } from '../constants'
 
+export type StrategicClassificationValues = ClassificationValues & {
+  domain?: DomainType
+  customDomain?: string
+  businessModel?: BusinessModelType
+  customBusinessModel?: string
+  evolution?: EvolutionType
+  customEvolution?: string
+}
+
 export type TLStrategicClassificationShape = TLBaseShape<
   'strategic-classification',
-  {
-    domain?: DomainType
-    customDomain?: string
-    businessModel?: BusinessModelType
-    customBusinessModel?: string
-    evolution?: EvolutionType
-    customEvolution?: string
-  }
+  TLClassificationSectionProps<StrategicClassificationValues>
 >
 
 const SECTION_WIDTH = STRATEGIC_CLASSIFICATION_WIDTH
-const SECTION_HEIGHT = 180
 
 export class StrategicClassificationShapeUtil extends AbstractClassificationSectionShapeUtil<
   'strategic-classification',
-  {
-    domain?: DomainType
-    customDomain?: string
-    businessModel?: BusinessModelType
-    customBusinessModel?: string
-    evolution?: EvolutionType
-    customEvolution?: string
-  }
+  StrategicClassificationValues
 > {
   static override type = 'strategic-classification' as const
   static readonly WIDTH = SECTION_WIDTH
-  static readonly HEIGHT = SECTION_HEIGHT
 
   static override props: RecordProps<TLStrategicClassificationShape> = {
-    domain: T.literalEnum(...Object.values(DomainType)).optional(),
-    customDomain: T.string.optional(),
-    businessModel: T.literalEnum(...Object.values(BusinessModelType)).optional(),
-    customBusinessModel: T.string.optional(),
-    evolution: T.literalEnum(...Object.values(EvolutionType)).optional(),
-    customEvolution: T.string.optional(),
+    height: T.number,
+    values: T.object({
+      domain: T.literalEnum(...Object.values(DomainType)).optional(),
+      customDomain: T.string.optional(),
+      businessModel: T.literalEnum(...Object.values(BusinessModelType)).optional(),
+      customBusinessModel: T.string.optional(),
+      evolution: T.literalEnum(...Object.values(EvolutionType)).optional(),
+      customEvolution: T.string.optional(),
+    }),
   }
 
-  override getDefaultProps(): TLStrategicClassificationShape['props'] {
+  override getDefaultValues(): StrategicClassificationValues {
     return {}
   }
 
@@ -100,8 +99,12 @@ export class StrategicClassificationShapeUtil extends AbstractClassificationSect
     return SECTION_WIDTH
   }
 
-  override getHeight(): number {
-    return SECTION_HEIGHT
+  override getDefaultHeight(): number {
+    return SECOND_ROW_HEIGHT
+  }
+
+  override getRowIndex(): number {
+    return 1
   }
 
   override getBorderClasses(): string {
@@ -116,7 +119,7 @@ export class StrategicClassificationShapeUtil extends AbstractClassificationSect
     return 0
   }
 
-  override renderDialog(props: ClassificationDialogProps<TLStrategicClassificationShape['props']>) {
+  override renderDialog(props: ClassificationDialogProps<StrategicClassificationValues>) {
     return (
       <ClassificationDialog
         title="Strategic Classification"
