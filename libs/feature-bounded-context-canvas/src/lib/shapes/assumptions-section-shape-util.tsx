@@ -1,12 +1,11 @@
 import { AbstractTextSectionShapeUtil, TLTextSectionShape } from './abstract-text-section-shape-util'
-import { ASSUMPTIONS_WIDTH } from '../constants'
+import { ASSUMPTIONS_WIDTH, BOTTOM_ROW_HEIGHT } from '../constants'
 
 export type TLAssumptionsSectionShape = TLTextSectionShape<'assumptions-section'>
 
 export class AssumptionsSectionShapeUtil extends AbstractTextSectionShapeUtil<'assumptions-section'> {
   static override type = 'assumptions-section' as const
   static readonly WIDTH = ASSUMPTIONS_WIDTH
-  static readonly HEIGHT = 120
   static readonly FONT_SIZE = 16
 
   override getLabel(): string {
@@ -17,8 +16,12 @@ export class AssumptionsSectionShapeUtil extends AbstractTextSectionShapeUtil<'a
     return AssumptionsSectionShapeUtil.WIDTH
   }
 
-  override getHeight(): number {
-    return AssumptionsSectionShapeUtil.HEIGHT
+  override getDefaultHeight(): number {
+    return BOTTOM_ROW_HEIGHT
+  }
+
+  override getRowIndex(): number {
+    return 2
   }
 
   override getFontSize(): number {

@@ -1,12 +1,11 @@
 import { AbstractTextSectionShapeUtil, TLTextSectionShape } from './abstract-text-section-shape-util'
-import { CANVAS_WIDTH } from '../constants'
+import { CANVAS_WIDTH, NAME_HEIGHT } from '../constants'
 
 export type TLNameSectionShape = TLTextSectionShape<'name-section'>
 
 export class NameSectionShapeUtil extends AbstractTextSectionShapeUtil<'name-section'> {
   static override type = 'name-section' as const
   static readonly WIDTH = CANVAS_WIDTH
-  static readonly HEIGHT = 120
   static readonly FONT_SIZE = 20
 
   override getLabel(): string {
@@ -17,8 +16,12 @@ export class NameSectionShapeUtil extends AbstractTextSectionShapeUtil<'name-sec
     return NameSectionShapeUtil.WIDTH
   }
 
-  override getHeight(): number {
-    return NameSectionShapeUtil.HEIGHT
+  override getDefaultHeight(): number {
+    return NAME_HEIGHT
+  }
+
+  override getRowIndex(): number {
+    return 0
   }
 
   override getFontSize(): number {

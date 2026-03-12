@@ -17,6 +17,7 @@ import { DomainRolesShapeUtil } from './shapes/domain-roles-section-shape-util'
 import { AssumptionsSectionShapeUtil } from './shapes/assumptions-section-shape-util'
 import { VerificationMetricsSectionShapeUtil } from './shapes/verification-metrics-section-shape-util'
 import { OpenQuestionsSectionShapeUtil } from './shapes/open-questions-section-shape-util'
+import { NAME_HEIGHT, SECOND_ROW_HEIGHT, BOTTOM_ROW_HEIGHT } from './constants'
 
 const components: TLComponents = {
   Toolbar: null,
@@ -64,10 +65,11 @@ function initializeTemplate(editor: Editor) {
     y: startY,
     props: {
       text: '',
+      height: NAME_HEIGHT,
     },
   })
 
-  const secondRowY = startY + NameSectionShapeUtil.HEIGHT
+  const secondRowY = startY + NAME_HEIGHT
 
   editor.createShape({
     type: PurposeSectionShapeUtil.type,
@@ -75,6 +77,7 @@ function initializeTemplate(editor: Editor) {
     y: secondRowY,
     props: {
       text: '',
+      height: SECOND_ROW_HEIGHT,
     },
   })
 
@@ -82,17 +85,17 @@ function initializeTemplate(editor: Editor) {
     type: StrategicClassificationShapeUtil.type,
     x: startX + PurposeSectionShapeUtil.WIDTH,
     y: secondRowY,
-    props: {},
+    props: { height: SECOND_ROW_HEIGHT, values: {} },
   })
 
   editor.createShape({
     type: DomainRolesShapeUtil.type,
     x: startX + PurposeSectionShapeUtil.WIDTH + StrategicClassificationShapeUtil.WIDTH,
     y: secondRowY,
-    props: {},
+    props: { height: SECOND_ROW_HEIGHT, values: {} },
   })
 
-  const bottomRowY = secondRowY + PurposeSectionShapeUtil.HEIGHT
+  const bottomRowY = secondRowY + SECOND_ROW_HEIGHT
 
   editor.createShape({
     type: AssumptionsSectionShapeUtil.type,
@@ -100,6 +103,7 @@ function initializeTemplate(editor: Editor) {
     y: bottomRowY,
     props: {
       text: '',
+      height: BOTTOM_ROW_HEIGHT,
     },
   })
 
@@ -109,6 +113,7 @@ function initializeTemplate(editor: Editor) {
     y: bottomRowY,
     props: {
       text: '',
+      height: BOTTOM_ROW_HEIGHT,
     },
   })
 
@@ -118,6 +123,7 @@ function initializeTemplate(editor: Editor) {
     y: bottomRowY,
     props: {
       text: '',
+      height: BOTTOM_ROW_HEIGHT,
     },
   })
 }

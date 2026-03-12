@@ -5,15 +5,17 @@ export type TLTextSectionShape<Type extends string> = TLBaseShape<
   Type,
   {
     text: string
+    height: number
   }
 >
 
 export abstract class AbstractTextSectionShapeUtil<Type extends string> extends AbstractSectionShapeUtil<
   Type,
-  { text: string }
+  { text: string; height: number }
 > {
   static override props: RecordProps<TLTextSectionShape<string>> = {
     text: T.string,
+    height: T.number,
   }
 
   abstract getLabel(): string
@@ -22,13 +24,14 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
   override getDefaultProps(): TLTextSectionShape<Type>['props'] {
     return {
       text: '',
+      height: this.getDefaultHeight(),
     }
   }
 
   override component(shape: TLTextSectionShape<Type>) {
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id
     const width = this.getWidth()
-    const height = this.getHeight()
+    const height = shape.props.height
     const fontSize = this.getFontSize()
     const borderClasses = this.getBorderClasses()
     const roundedClasses = this.getRoundedClasses()
