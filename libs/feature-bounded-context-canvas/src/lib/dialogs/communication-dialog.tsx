@@ -148,6 +148,7 @@ export function CommunicationDialog({
 
         {!isLayer2 ? (
           <Layer1
+            direction={direction}
             communications={communications}
             onAdd={handleAddCollaborator}
             onEdit={handleEditCollaborator}
@@ -174,6 +175,7 @@ export function CommunicationDialog({
 }
 
 function Layer1({
+  direction,
   communications,
   onAdd,
   onEdit,
@@ -181,6 +183,7 @@ function Layer1({
   onSave,
   onCancel,
 }: {
+  direction: 'inbound' | 'outbound'
   communications: Communication[]
   onAdd: () => void
   onEdit: (communication: Communication) => void
@@ -196,30 +199,48 @@ function Layer1({
         )}
         {communications.map((communication) => {
           const Icon = COLLABORATOR_ICONS[communication.collaboratorType]
+          const collaboratorLabel = (
+            <>
+              <Icon className="text-muted-foreground h-6 w-6 shrink-0" />
+              <span className="truncate font-medium">{communication.collaboratorName || '(unnamed)'}</span>
+            </>
+          )
+          const leftBadge = communication.leftRelationshipType ? (
+            <span className="bg-foreground text-background rotate-180 rounded px-1.5 py-0.5 font-mono text-xs [writing-mode:vertical-rl]">
+              {communication.leftRelationshipType}
+            </span>
+          ) : null
+          const rightBadge = communication.rightRelationshipType ? (
+            <span className="bg-foreground text-background rotate-180 rounded px-1.5 py-0.5 font-mono text-xs [writing-mode:vertical-rl]">
+              {communication.rightRelationshipType}
+            </span>
+          ) : null
+          const messages = (
+            <div className="flex flex-wrap gap-1">
+              {communication.messages.map((message) => (
+                <span key={message.id} className={`rounded px-1.5 py-0.5 text-xs ${MESSAGE_TYPE_COLORS[message.type]}`}>
+                  {message.label || message.type}
+                </span>
+              ))}
+            </div>
+          )
           return (
             <div key={communication.id} className="flex items-center gap-3 rounded-md border p-3">
               <div className="flex min-w-0 flex-1 items-center gap-2">
-                <Icon className="text-muted-foreground h-6 w-6 shrink-0" />
-                <span className="truncate font-medium">{communication.collaboratorName || '(unnamed)'}</span>
-                {communication.leftRelationshipType && (
-                  <span className="bg-foreground text-background rotate-180 rounded px-1.5 py-0.5 font-mono text-xs [writing-mode:vertical-rl]">
-                    {communication.leftRelationshipType}
-                  </span>
-                )}
-                <div className="flex flex-wrap gap-1">
-                  {communication.messages.map((message) => (
-                    <span
-                      key={message.id}
-                      className={`rounded px-1.5 py-0.5 text-xs ${MESSAGE_TYPE_COLORS[message.type]}`}
-                    >
-                      {message.label || message.type}
-                    </span>
-                  ))}
-                </div>
-                {communication.rightRelationshipType && (
-                  <span className="bg-foreground text-background rotate-180 rounded px-1.5 py-0.5 font-mono text-xs [writing-mode:vertical-rl]">
-                    {communication.rightRelationshipType}
-                  </span>
+                {direction === 'inbound' ? (
+                  <>
+                    {collaboratorLabel}
+                    {leftBadge}
+                    {messages}
+                    {rightBadge}
+                  </>
+                ) : (
+                  <>
+                    {leftBadge}
+                    {messages}
+                    {rightBadge}
+                    {collaboratorLabel}
+                  </>
                 )}
               </div>
               <div className="flex shrink-0 gap-1">
