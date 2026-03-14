@@ -21,7 +21,7 @@ export class VerificationMetricsSectionShapeUtil extends AbstractTextSectionShap
   }
 
   override getRowIndex(): number {
-    return 2
+    return 3
   }
 
   override getFontSize(): number {
