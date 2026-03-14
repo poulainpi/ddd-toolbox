@@ -1,5 +1,5 @@
 import { RecordProps, T, TLBaseShape } from 'tldraw'
-import { SECOND_ROW_HEIGHT } from '../constants'
+import { SECOND_ROW_HEIGHT } from '../../constants'
 import {
   BUSINESS_MODEL_DESCRIPTIONS,
   BUSINESS_MODEL_LABELS,
@@ -10,15 +10,15 @@ import {
   EVOLUTION_DESCRIPTIONS,
   EVOLUTION_LABELS,
   EvolutionType,
-} from '../types/strategic-classification-types'
-import { ClassificationDialog } from '../dialogs/classification-dialog'
+} from '../../types/strategic-classification-types'
+import { ClassificationDialog } from '../../dialogs/classification-dialog'
 import {
   AbstractClassificationSectionShapeUtil,
   ClassificationDialogProps,
   ClassificationValues,
   TLClassificationSectionProps,
 } from './abstract-classification-section-shape-util'
-import { STRATEGIC_CLASSIFICATION_WIDTH } from '../constants'
+import { STRATEGIC_CLASSIFICATION_WIDTH } from '../../constants'
 
 export type StrategicClassificationValues = ClassificationValues & {
   domain?: DomainType

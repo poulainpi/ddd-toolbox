@@ -1,4 +1,4 @@
-import { COMMUNICATION_ROW_HEIGHT, INBOUND_COMMUNICATION_WIDTH } from '../constants'
+import { COMMUNICATION_ROW_HEIGHT, INBOUND_COMMUNICATION_WIDTH } from '../../constants'
 import {
   AbstractCommunicationSectionShapeUtil,
   TLCommunicationSectionShape,

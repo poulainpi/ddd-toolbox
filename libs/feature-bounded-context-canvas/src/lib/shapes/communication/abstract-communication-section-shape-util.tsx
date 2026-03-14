@@ -1,8 +1,8 @@
 import { Editor, HTMLContainer, RecordProps, T, TLBaseShape } from 'tldraw'
 import { useEffect } from 'react'
 import { useDisclosure } from '@ddd-toolbox/util'
-import { AbstractSectionShapeUtil, TLSectionBaseProps } from './abstract-section-shape-util'
-import { CommunicationDialog } from '../dialogs/communication-dialog'
+import { AbstractSectionShapeUtil, TLSectionBaseProps } from '../abstract-section-shape-util'
+import { CommunicationDialog } from '../../dialogs/communication-dialog'
 import {
   Communication,
   MessageType,
@@ -10,7 +10,7 @@ import {
   CommunicationSectionProps,
   COLLABORATOR_ICONS,
   MESSAGE_TYPE_COLORS,
-} from '../types/communication-types'
+} from '../../types/communication-types'
 
 export type TLCommunicationSectionShape<Type extends string> = TLBaseShape<Type, CommunicationSectionProps>
 
