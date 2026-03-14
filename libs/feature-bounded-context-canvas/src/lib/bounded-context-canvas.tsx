@@ -17,7 +17,9 @@ import { DomainRolesShapeUtil } from './shapes/domain-roles-section-shape-util'
 import { AssumptionsSectionShapeUtil } from './shapes/assumptions-section-shape-util'
 import { VerificationMetricsSectionShapeUtil } from './shapes/verification-metrics-section-shape-util'
 import { OpenQuestionsSectionShapeUtil } from './shapes/open-questions-section-shape-util'
-import { NAME_HEIGHT, SECOND_ROW_HEIGHT, BOTTOM_ROW_HEIGHT } from './constants'
+import { InboundCommunicationShapeUtil } from './shapes/inbound-communication-section-shape-util'
+import { OutboundCommunicationShapeUtil } from './shapes/outbound-communication-section-shape-util'
+import { NAME_HEIGHT, SECOND_ROW_HEIGHT, COMMUNICATION_ROW_HEIGHT, BOTTOM_ROW_HEIGHT } from './constants'
 
 const components: TLComponents = {
   Toolbar: null,
@@ -41,7 +43,9 @@ function preventSectionDeletion(editor: Editor) {
       shape.type === DomainRolesShapeUtil.type ||
       shape.type === AssumptionsSectionShapeUtil.type ||
       shape.type === VerificationMetricsSectionShapeUtil.type ||
-      shape.type === OpenQuestionsSectionShapeUtil.type
+      shape.type === OpenQuestionsSectionShapeUtil.type ||
+      shape.type === InboundCommunicationShapeUtil.type ||
+      shape.type === OutboundCommunicationShapeUtil.type
     ) {
       return false
     }
@@ -95,7 +99,23 @@ function initializeTemplate(editor: Editor) {
     props: { height: SECOND_ROW_HEIGHT, values: {} },
   })
 
-  const bottomRowY = secondRowY + SECOND_ROW_HEIGHT
+  const communicationRowY = secondRowY + SECOND_ROW_HEIGHT
+
+  editor.createShape({
+    type: InboundCommunicationShapeUtil.type,
+    x: startX,
+    y: communicationRowY,
+    props: { height: COMMUNICATION_ROW_HEIGHT, communications: [] },
+  })
+
+  editor.createShape({
+    type: OutboundCommunicationShapeUtil.type,
+    x: startX + InboundCommunicationShapeUtil.WIDTH,
+    y: communicationRowY,
+    props: { height: COMMUNICATION_ROW_HEIGHT, communications: [] },
+  })
+
+  const bottomRowY = communicationRowY + COMMUNICATION_ROW_HEIGHT
 
   editor.createShape({
     type: AssumptionsSectionShapeUtil.type,
@@ -144,6 +164,8 @@ export function BoundedContextCanvas({ licenseKey }: BoundedContextCanvasProps) 
           AssumptionsSectionShapeUtil,
           VerificationMetricsSectionShapeUtil,
           OpenQuestionsSectionShapeUtil,
+          InboundCommunicationShapeUtil,
+          OutboundCommunicationShapeUtil,
         ]}
         onMount={(editor) => {
           setDefaultUserPreferencesWhenNotExisting()

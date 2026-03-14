@@ -21,7 +21,7 @@ export class AssumptionsSectionShapeUtil extends AbstractTextSectionShapeUtil<'a
   }
 
   override getRowIndex(): number {
-    return 2
+    return 3
   }
 
   override getFontSize(): number {
