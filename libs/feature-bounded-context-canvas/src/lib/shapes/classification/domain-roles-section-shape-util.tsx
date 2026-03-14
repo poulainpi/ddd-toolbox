@@ -1,14 +1,14 @@
 import { RecordProps, T, TLBaseShape } from 'tldraw'
-import { SECOND_ROW_HEIGHT } from '../constants'
-import { DOMAIN_ROLE_DESCRIPTIONS, DOMAIN_ROLE_LABELS, DomainRoleType } from '../types/domain-roles-types'
-import { ClassificationDialog } from '../dialogs/classification-dialog'
+import { SECOND_ROW_HEIGHT } from '../../constants'
+import { DOMAIN_ROLE_DESCRIPTIONS, DOMAIN_ROLE_LABELS, DomainRoleType } from '../../types/domain-roles-types'
+import { ClassificationDialog } from '../../dialogs/classification-dialog'
 import {
   AbstractClassificationSectionShapeUtil,
   ClassificationDialogProps,
   ClassificationValues,
   TLClassificationSectionProps,
 } from './abstract-classification-section-shape-util'
-import { DOMAIN_ROLES_WIDTH } from '../constants'
+import { DOMAIN_ROLES_WIDTH } from '../../constants'
 
 export type DomainRolesValues = ClassificationValues & {
   roles?: DomainRoleType[]

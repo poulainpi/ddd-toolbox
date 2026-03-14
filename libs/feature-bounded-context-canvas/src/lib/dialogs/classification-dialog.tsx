@@ -16,7 +16,10 @@ import {
 } from '@ddd-toolbox/ui'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
 import { useState } from 'react'
-import { ClassificationCategory, ClassificationValues } from '../shapes/abstract-classification-section-shape-util'
+import {
+  ClassificationCategory,
+  ClassificationValues,
+} from '../shapes/classification/abstract-classification-section-shape-util'
 
 export interface ClassificationDialogProps {
   title: string

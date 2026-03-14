@@ -1,7 +1,7 @@
 import { HTMLContainer, TLBaseShape, Editor } from 'tldraw'
 import { useDisclosure } from '@ddd-toolbox/util'
 import { useEffect, JSX } from 'react'
-import { AbstractSectionShapeUtil, TLSectionBaseProps } from './abstract-section-shape-util'
+import { AbstractSectionShapeUtil, TLSectionBaseProps } from '../abstract-section-shape-util'
 
 export interface ClassificationCategory<T extends string = string> {
   key: string

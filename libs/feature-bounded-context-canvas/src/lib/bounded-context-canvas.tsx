@@ -12,13 +12,13 @@ import {
 import { Menubar } from './menubar/menubar'
 import { NameSectionShapeUtil } from './shapes/name-section-shape-util'
 import { PurposeSectionShapeUtil } from './shapes/purpose-section-shape-util'
-import { StrategicClassificationShapeUtil } from './shapes/strategic-classification-section-shape-util'
-import { DomainRolesShapeUtil } from './shapes/domain-roles-section-shape-util'
+import { StrategicClassificationShapeUtil } from './shapes/classification/strategic-classification-section-shape-util'
+import { DomainRolesShapeUtil } from './shapes/classification/domain-roles-section-shape-util'
 import { AssumptionsSectionShapeUtil } from './shapes/assumptions-section-shape-util'
 import { VerificationMetricsSectionShapeUtil } from './shapes/verification-metrics-section-shape-util'
 import { OpenQuestionsSectionShapeUtil } from './shapes/open-questions-section-shape-util'
-import { InboundCommunicationShapeUtil } from './shapes/inbound-communication-section-shape-util'
-import { OutboundCommunicationShapeUtil } from './shapes/outbound-communication-section-shape-util'
+import { InboundCommunicationShapeUtil } from './shapes/communication/inbound-communication-section-shape-util'
+import { OutboundCommunicationShapeUtil } from './shapes/communication/outbound-communication-section-shape-util'
 import { NAME_HEIGHT, SECOND_ROW_HEIGHT, COMMUNICATION_ROW_HEIGHT, BOTTOM_ROW_HEIGHT } from './constants'
 
 const components: TLComponents = {
