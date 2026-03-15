@@ -290,8 +290,11 @@ function Layer2({
     <div className="flex flex-col gap-4">
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label>Collaborator Name</Label>
+          <Label htmlFor="collaborator-name" className="mb-2 block">
+            Collaborator Name
+          </Label>
           <Input
+            id="collaborator-name"
             value={entry.collaboratorName}
             onChange={(e) => onChange({ ...entry, collaboratorName: e.target.value })}
             placeholder="e.g. Order Management"
@@ -299,7 +302,7 @@ function Layer2({
         </div>
 
         <div className="space-y-2">
-          <Label>Collaborator Type</Label>
+          <span className="mb-2 block text-sm font-medium">Collaborator Type</span>
           <div className="flex flex-wrap gap-2">
             {COLLABORATOR_TYPES.map((collaboratorType) => {
               const Icon = COLLABORATOR_ICONS[collaboratorType]
@@ -321,7 +324,7 @@ function Layer2({
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Left Relationship</Label>
+            <span className="mb-2 block text-sm font-medium">Left Relationship</span>
             <div className="flex flex-wrap gap-1">
               {RELATIONSHIP_TYPES.map((relationship) => (
                 <Tooltip key={relationship}>
@@ -350,7 +353,7 @@ function Layer2({
           </div>
 
           <div className="space-y-2">
-            <Label>Right Relationship</Label>
+            <span className="mb-2 block text-sm font-medium">Right Relationship</span>
             <div className="flex flex-wrap gap-1">
               {RELATIONSHIP_TYPES.map((relationship) => (
                 <Tooltip key={relationship}>
@@ -380,8 +383,8 @@ function Layer2({
         </div>
 
         <div className="space-y-2">
-          <Label>Messages</Label>
-          <div className="flex max-h-48 flex-col gap-2 overflow-y-auto">
+          <span className="mb-2 block text-sm font-medium">Messages</span>
+          <div className="-m-1 flex max-h-48 flex-col gap-2 overflow-y-auto p-1">
             {entry.messages.map((message) => (
               <div key={message.id} className="flex items-center gap-2">
                 <Input
@@ -409,7 +412,7 @@ function Layer2({
               </div>
             ))}
           </div>
-          <Button variant="outline" size="sm" onClick={onAddMessage} className="w-full">
+          <Button variant="outline" size="sm" onClick={onAddMessage} className="mt-2 w-full">
             <Plus className="mr-1 h-3.5 w-3.5" />
             Add Message
           </Button>
