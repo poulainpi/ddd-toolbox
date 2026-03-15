@@ -191,6 +191,30 @@ function CommunicationSectionComponent<Type extends string>({
       <div className={`border-foreground flex h-full flex-col ${borderClasses} ${roundedClasses}`}>
         <div className="text-muted-foreground font-draw mb-2 px-4 pt-3 text-base font-semibold">{sectionTitle}</div>
 
+        {communications.length > 0 && (
+          <div
+            className={`text-muted-foreground/60 font-draw grid px-2 pb-1 text-xs font-medium ${
+              direction === 'inbound' ? 'grid-cols-[1fr_auto_2fr_auto]' : 'grid-cols-[auto_2fr_auto_1fr]'
+            }`}
+          >
+            {direction === 'inbound' ? (
+              <>
+                <span className="text-center">Collaborator</span>
+                <span />
+                <span className="text-center">Messages</span>
+                <span />
+              </>
+            ) : (
+              <>
+                <span />
+                <span className="text-center">Messages</span>
+                <span />
+                <span className="text-center">Collaborator</span>
+              </>
+            )}
+          </div>
+        )}
+
         {communications.length === 0 ? (
           <div className="flex flex-1 items-center justify-center">
             <div className="border-muted-foreground/30 text-muted-foreground rounded-md border-2 border-dashed px-6 py-4 text-center text-sm">
