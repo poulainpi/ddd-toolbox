@@ -19,6 +19,7 @@ import { VerificationMetricsSectionShapeUtil } from './shapes/verification-metri
 import { OpenQuestionsSectionShapeUtil } from './shapes/open-questions-section-shape-util'
 import { InboundCommunicationShapeUtil } from './shapes/communication/inbound-communication-section-shape-util'
 import { OutboundCommunicationShapeUtil } from './shapes/communication/outbound-communication-section-shape-util'
+import { UbiquitousLanguageBusinessDecisionsShapeUtil } from './shapes/ubiquitous-language-business-decisions-section-shape-util'
 import { NAME_HEIGHT, SECOND_ROW_HEIGHT, COMMUNICATION_ROW_HEIGHT, BOTTOM_ROW_HEIGHT } from './constants'
 
 const components: TLComponents = {
@@ -45,7 +46,8 @@ function preventSectionDeletion(editor: Editor) {
       shape.type === VerificationMetricsSectionShapeUtil.type ||
       shape.type === OpenQuestionsSectionShapeUtil.type ||
       shape.type === InboundCommunicationShapeUtil.type ||
-      shape.type === OutboundCommunicationShapeUtil.type
+      shape.type === OutboundCommunicationShapeUtil.type ||
+      shape.type === UbiquitousLanguageBusinessDecisionsShapeUtil.type
     ) {
       return false
     }
@@ -109,8 +111,15 @@ function initializeTemplate(editor: Editor) {
   })
 
   editor.createShape({
-    type: OutboundCommunicationShapeUtil.type,
+    type: UbiquitousLanguageBusinessDecisionsShapeUtil.type,
     x: startX + InboundCommunicationShapeUtil.WIDTH,
+    y: communicationRowY,
+    props: { height: COMMUNICATION_ROW_HEIGHT, terms: [], decisions: [] },
+  })
+
+  editor.createShape({
+    type: OutboundCommunicationShapeUtil.type,
+    x: startX + InboundCommunicationShapeUtil.WIDTH + UbiquitousLanguageBusinessDecisionsShapeUtil.WIDTH,
     y: communicationRowY,
     props: { height: COMMUNICATION_ROW_HEIGHT, communications: [] },
   })
@@ -166,6 +175,7 @@ export function BoundedContextCanvas({ licenseKey }: BoundedContextCanvasProps) 
           OpenQuestionsSectionShapeUtil,
           InboundCommunicationShapeUtil,
           OutboundCommunicationShapeUtil,
+          UbiquitousLanguageBusinessDecisionsShapeUtil,
         ]}
         onMount={(editor) => {
           setDefaultUserPreferencesWhenNotExisting()

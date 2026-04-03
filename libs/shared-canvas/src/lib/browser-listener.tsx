@@ -11,7 +11,7 @@ export const BrowserListener = track(function BrowserListener() {
       const target = e.target as HTMLElement
 
       if (target.tagName?.toLowerCase() === 'textarea' || target.role?.toLowerCase() === 'textbox') {
-        if (e.key === 'Enter' && !e.shiftKey) {
+        if (e.key === 'Enter' && !e.shiftKey && !target.closest('[role="dialog"]')) {
           e.preventDefault()
           e.stopPropagation()
           editor.complete()
