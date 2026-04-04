@@ -4,10 +4,14 @@ import { defineConfig } from 'astro/config'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
+import umami from '@yeskunall/astro-umami'
+import { loadEnv } from 'vite'
+
+const { UMAMI_WEBSITE_ID } = loadEnv(process.env.NODE_ENV, process.cwd(), '')
 
 export default defineConfig({
   site: 'https://dddtoolbox.com',
-  integrations: [react(), sitemap()],
+  integrations: [react(), sitemap(), umami({ id: UMAMI_WEBSITE_ID })],
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',
