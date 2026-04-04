@@ -11,7 +11,7 @@ const { UMAMI_WEBSITE_ID } = loadEnv(process.env.NODE_ENV, process.cwd(), '')
 
 export default defineConfig({
   site: 'https://dddtoolbox.com',
-  integrations: [react(), sitemap(), umami({ id: UMAMI_WEBSITE_ID })],
+  integrations: [react(), sitemap(), umami({ id: UMAMI_WEBSITE_ID, excludeHash: true })],
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',

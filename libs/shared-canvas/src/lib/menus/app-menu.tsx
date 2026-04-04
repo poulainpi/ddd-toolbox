@@ -41,7 +41,7 @@ import {
   SunMoonIcon,
 } from 'lucide-react'
 import { useDocumentPersistence } from '../hooks/use-document-persistence'
-import { useDisclosure } from '@ddd-toolbox/util'
+import { track, useDisclosure } from '@ddd-toolbox/util'
 import { DiscardChangesAlertDialog } from '../dialogs/discard-changes-alert-dialog'
 import { useDocumentName } from '../hooks/use-document-name'
 import { toast } from 'sonner'
@@ -104,6 +104,10 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
     URL.revokeObjectURL(link.href)
   }
 
+  function trackExportEvent(format: 'svg' | 'png' | 'link') {
+    track('canvas-exported', { format })
+  }
+
   async function exportAsSvg() {
     try {
       const shapeIds = validateCanvasForExport()
@@ -121,6 +125,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
 
       const blob = new Blob([result.svg], { type: 'image/svg+xml' })
       downloadFile(blob, `${documentName}-${Date.now()}.svg`)
+      trackExportEvent('svg')
     } catch (error) {
       console.error('Failed to export SVG:', error)
       toast.error('Export failed', {
@@ -147,6 +152,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
       }
 
       downloadFile(result.blob, `${documentName}-${Date.now()}.png`)
+      trackExportEvent('png')
     } catch (error) {
       console.error('Failed to export PNG:', error)
       toast.error('Export failed', {
@@ -166,6 +172,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
 
       await navigator.clipboard.writeText(currentUrl.toString())
 
+      trackExportEvent('link')
       toast.success('Link copied to clipboard', {
         description: 'Share this link to let others view your document.',
       })
