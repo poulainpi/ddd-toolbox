@@ -14,6 +14,7 @@ import {
 } from '@ddd-toolbox/shared-canvas'
 import { Menubar } from './menubar/menubar'
 import { NameSectionShapeUtil } from './shapes/name-section-shape-util'
+import { AttributionSectionShapeUtil } from './shapes/attribution-section-shape-util'
 import { PurposeSectionShapeUtil } from './shapes/purpose-section-shape-util'
 import { StrategicClassificationShapeUtil } from './shapes/classification/strategic-classification-section-shape-util'
 import { DomainRolesShapeUtil } from './shapes/classification/domain-roles-section-shape-util'
@@ -23,7 +24,7 @@ import { OpenQuestionsSectionShapeUtil } from './shapes/open-questions-section-s
 import { InboundCommunicationShapeUtil } from './shapes/communication/inbound-communication-section-shape-util'
 import { OutboundCommunicationShapeUtil } from './shapes/communication/outbound-communication-section-shape-util'
 import { UbiquitousLanguageBusinessDecisionsShapeUtil } from './shapes/ubiquitous-language-business-decisions-section-shape-util'
-import { NAME_HEIGHT, SECOND_ROW_HEIGHT, COMMUNICATION_ROW_HEIGHT, BOTTOM_ROW_HEIGHT } from './constants'
+import { FIRST_ROW_HEIGHT, SECOND_ROW_HEIGHT, COMMUNICATION_ROW_HEIGHT, BOTTOM_ROW_HEIGHT } from './constants'
 
 const components: TLComponents = {
   Toolbar: null,
@@ -50,7 +51,8 @@ function preventSectionDeletion(editor: Editor) {
       shape.type === OpenQuestionsSectionShapeUtil.type ||
       shape.type === InboundCommunicationShapeUtil.type ||
       shape.type === OutboundCommunicationShapeUtil.type ||
-      shape.type === UbiquitousLanguageBusinessDecisionsShapeUtil.type
+      shape.type === UbiquitousLanguageBusinessDecisionsShapeUtil.type ||
+      shape.type === AttributionSectionShapeUtil.type
     ) {
       return false
     }
@@ -74,11 +76,18 @@ function initializeTemplate(editor: Editor) {
     y: startY,
     props: {
       text: '',
-      height: NAME_HEIGHT,
+      height: FIRST_ROW_HEIGHT,
     },
   })
 
-  const secondRowY = startY + NAME_HEIGHT
+  editor.createShape({
+    type: AttributionSectionShapeUtil.type,
+    x: startX + NameSectionShapeUtil.WIDTH,
+    y: startY,
+    props: { height: FIRST_ROW_HEIGHT },
+  })
+
+  const secondRowY = startY + FIRST_ROW_HEIGHT
 
   editor.createShape({
     type: PurposeSectionShapeUtil.type,
@@ -188,6 +197,7 @@ export function BoundedContextCanvas({ licenseKey }: BoundedContextCanvasProps) 
         components={components}
         shapeUtils={[
           NameSectionShapeUtil,
+          AttributionSectionShapeUtil,
           PurposeSectionShapeUtil,
           StrategicClassificationShapeUtil,
           DomainRolesShapeUtil,
