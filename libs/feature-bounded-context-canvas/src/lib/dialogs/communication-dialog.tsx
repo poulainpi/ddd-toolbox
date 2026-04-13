@@ -13,7 +13,7 @@ import {
   TooltipProvider,
 } from '@ddd-toolbox/ui'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, Pencil, Plus, Trash2 } from 'lucide-react'
 import {
   Communication,
@@ -286,6 +286,12 @@ function Layer2({
   onBack: () => void
   onSave: () => void
 }) {
+  const collaboratorNameRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    collaboratorNameRef.current?.focus()
+  }, [])
+
   return (
     <div className="flex flex-col gap-4">
       <div className="space-y-4">
@@ -294,6 +300,7 @@ function Layer2({
             Collaborator Name
           </Label>
           <Input
+            ref={collaboratorNameRef}
             id="collaborator-name"
             value={entry.collaboratorName}
             onChange={(e) => onChange({ ...entry, collaboratorName: e.target.value })}
