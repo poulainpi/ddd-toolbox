@@ -12,6 +12,10 @@ export class AssumptionsSectionShapeUtil extends AbstractTextSectionShapeUtil<'a
     return 'Assumptions'
   }
 
+  override getPlaceholder(): string {
+    return 'Describe which currently unverified assumptions went into this bounded context design. Make those assumptions explicit by documenting them here'
+  }
+
   override getWidth(): number {
     return AssumptionsSectionShapeUtil.WIDTH
   }

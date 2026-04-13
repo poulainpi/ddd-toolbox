@@ -21,6 +21,10 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
   abstract getLabel(): string
   abstract getFontSize(): number
 
+  getPlaceholder(): string | undefined {
+    return undefined
+  }
+
   isInline(): boolean {
     return false
   }
@@ -34,11 +38,14 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
 
   override component(shape: TLTextSectionShape<Type>) {
     const isSelected = this.editor.getOnlySelectedShapeId() === shape.id
+    const isEditing = this.editor.getEditingShapeId() === shape.id
     const width = this.getWidth()
     const height = shape.props.height
     const fontSize = this.getFontSize()
     const borderClasses = this.getBorderClasses()
     const roundedClasses = this.getRoundedClasses()
+    const placeholder = this.getPlaceholder()
+    const showPlaceholder = !isEditing && !shape.props.text && placeholder !== undefined
     const label = (
       <PlainTextLabel
         shapeId={shape.id}
@@ -76,7 +83,15 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
         ) : (
           <div className={`border-foreground flex h-full flex-col p-4 ${borderClasses} ${roundedClasses}`}>
             <div className="text-muted-foreground font-draw mb-2 text-base font-semibold">{this.getLabel()}</div>
-            <div className="relative flex-1">{label}</div>
+            <div className="relative flex-1">
+              {showPlaceholder ? (
+                <div className="font-draw text-muted-foreground/50 flex h-full items-center justify-center text-center text-sm italic">
+                  {placeholder}
+                </div>
+              ) : (
+                label
+              )}
+            </div>
           </div>
         )}
       </HTMLContainer>

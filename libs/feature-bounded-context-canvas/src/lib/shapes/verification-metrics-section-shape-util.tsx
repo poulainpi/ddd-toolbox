@@ -12,6 +12,10 @@ export class VerificationMetricsSectionShapeUtil extends AbstractTextSectionShap
     return 'Verification Metrics'
   }
 
+  override getPlaceholder(): string {
+    return 'Describe metrics which can be used to (in)validate the current structure of this bounded context?'
+  }
+
   override getWidth(): number {
     return VerificationMetricsSectionShapeUtil.WIDTH
   }

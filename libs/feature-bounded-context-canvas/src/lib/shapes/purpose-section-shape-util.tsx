@@ -12,6 +12,10 @@ export class PurposeSectionShapeUtil extends AbstractTextSectionShapeUtil<'purpo
     return 'Purpose'
   }
 
+  override getPlaceholder(): string {
+    return 'What benefits does this context provide, and how does it provide them? Describe the purpose from a business perspective'
+  }
+
   override getWidth(): number {
     return PurposeSectionShapeUtil.WIDTH
   }
