@@ -21,6 +21,10 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
   abstract getLabel(): string
   abstract getFontSize(): number
 
+  isInline(): boolean {
+    return false
+  }
+
   override getDefaultProps(): TLTextSectionShape<Type>['props'] {
     return {
       text: '',
@@ -35,6 +39,21 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
     const fontSize = this.getFontSize()
     const borderClasses = this.getBorderClasses()
     const roundedClasses = this.getRoundedClasses()
+    const label = (
+      <PlainTextLabel
+        shapeId={shape.id}
+        text={shape.props.text}
+        type={shape.type}
+        align={this.isInline() ? 'start' : 'middle'}
+        verticalAlign="middle"
+        font="draw"
+        fontSize={fontSize}
+        lineHeight={1.5}
+        labelColor=""
+        isSelected={isSelected}
+        textWidth={width - 32}
+      />
+    )
 
     return (
       <HTMLContainer
@@ -45,24 +64,21 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
           height,
         }}
       >
-        <div className={`border-foreground flex h-full flex-col p-4 ${borderClasses} ${roundedClasses}`}>
-          <div className="text-muted-foreground font-draw mb-2 text-base font-semibold">{this.getLabel()}</div>
-          <div className="relative flex-1">
-            <PlainTextLabel
-              shapeId={shape.id}
-              text={shape.props.text}
-              type={shape.type}
-              align="middle"
-              verticalAlign="middle"
-              font="draw"
-              fontSize={fontSize}
-              lineHeight={1.5}
-              labelColor=""
-              isSelected={isSelected}
-              textWidth={width - 32}
-            />
+        {this.isInline() ? (
+          <div className={`border-foreground flex h-full items-center gap-2 px-4 ${borderClasses} ${roundedClasses}`}>
+            <span className="text-muted-foreground font-draw shrink-0 text-base font-semibold">
+              {this.getLabel()}:{' '}
+            </span>
+            <div className="relative flex-1 [&_.tl-text-content\_\_wrapper]:!justify-start" style={{ height }}>
+              {label}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className={`border-foreground flex h-full flex-col p-4 ${borderClasses} ${roundedClasses}`}>
+            <div className="text-muted-foreground font-draw mb-2 text-base font-semibold">{this.getLabel()}</div>
+            <div className="relative flex-1">{label}</div>
+          </div>
+        )}
       </HTMLContainer>
     )
   }

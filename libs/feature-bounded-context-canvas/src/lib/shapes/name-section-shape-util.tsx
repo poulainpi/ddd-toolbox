@@ -39,4 +39,8 @@ export class NameSectionShapeUtil extends AbstractTextSectionShapeUtil<'name-sec
   override getIndicatorRadius(): number {
     return 8
   }
+
+  override isInline(): boolean {
+    return true
+  }
 }

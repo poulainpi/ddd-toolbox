@@ -1,6 +1,6 @@
 export const CANVAS_WIDTH = 1400
 
-export const NAME_HEIGHT = 120
+export const NAME_HEIGHT = 56
 export const SECOND_ROW_HEIGHT = 180
 export const COMMUNICATION_ROW_HEIGHT = 240
 export const BOTTOM_ROW_HEIGHT = 120
