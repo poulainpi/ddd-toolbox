@@ -81,7 +81,7 @@ export abstract class AbstractClassificationSectionShapeUtil<
         {hasValue ? (
           <div className="text-foreground text-base">{displayValue}</div>
         ) : (
-          <div className="text-muted-foreground space-y-0.5 text-xs">
+          <div className="text-muted-foreground/50 space-y-0.5 text-xs italic">
             {category.options.slice(0, 4).map((option) => (
               <div key={option}>- {category.labels[option]}</div>
             ))}
