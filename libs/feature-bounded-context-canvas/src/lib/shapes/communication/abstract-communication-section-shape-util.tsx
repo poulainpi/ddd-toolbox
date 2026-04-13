@@ -76,7 +76,7 @@ export abstract class AbstractCommunicationSectionShapeUtil<Type extends string>
 function RelationshipBadge({ type }: { type: RelationshipType | undefined }) {
   if (!type) return <div className="w-8 shrink-0" />
   return (
-    <div className="bg-foreground text-background flex w-7 shrink-0 items-center justify-center self-stretch rounded font-mono text-sm font-bold">
+    <div className="bg-foreground text-background flex w-6 shrink-0 items-center justify-center self-stretch rounded font-mono text-sm font-bold">
       <span className="font-draw rotate-180 text-lg tracking-widest [writing-mode:vertical-rl]">{type}</span>
     </div>
   )
@@ -85,7 +85,7 @@ function RelationshipBadge({ type }: { type: RelationshipType | undefined }) {
 function MessageChip({ label, type }: { label: string; type: MessageType }) {
   return (
     <span
-      className={`font-draw flex min-h-12 w-24 items-center justify-center rounded px-1.5 py-0.5 text-center text-xs font-medium ${MESSAGE_TYPE_COLORS[type]}`}
+      className={`font-draw flex min-h-12 w-[93px] items-center justify-center rounded px-1.5 py-0.5 text-center text-xs font-medium ${MESSAGE_TYPE_COLORS[type]}`}
     >
       {label || type}
     </span>
@@ -101,9 +101,9 @@ function CommunicationRow({
 }) {
   const CollaboratorIcon = COLLABORATOR_ICONS[communication.collaboratorType]
   const collaborator = (
-    <div className={`flex items-center gap-2 p-2 ${direction === 'outbound' ? 'flex-row-reverse' : ''}`}>
+    <div className={`flex min-w-0 items-center gap-2 p-2 ${direction === 'outbound' ? 'flex-row-reverse' : ''}`}>
       <CollaboratorIcon className="text-muted-foreground h-10 w-10 shrink-0" />
-      <span className="font-draw text-sm leading-tight font-medium">
+      <span className="font-draw min-w-0 text-sm leading-tight font-medium break-words">
         {communication.collaboratorName || '(unnamed)'}
       </span>
     </div>
