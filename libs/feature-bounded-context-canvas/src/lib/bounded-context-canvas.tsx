@@ -1,4 +1,5 @@
-import { Editor, TLComponents, Tldraw } from 'tldraw'
+import { useEffect } from 'react'
+import { Editor, TLComponents, Tldraw, useEditor } from 'tldraw'
 import 'tldraw/tldraw.css'
 import './index.css'
 import { useThemeSync } from '@ddd-toolbox/ui'
@@ -8,6 +9,8 @@ import {
   setDefaultUserPreferencesWhenNotExisting,
   ToolBar,
   ZoomPanel,
+  events,
+  NEW_DOCUMENT_CREATED,
 } from '@ddd-toolbox/shared-canvas'
 import { Menubar } from './menubar/menubar'
 import { NameSectionShapeUtil } from './shapes/name-section-shape-util'
@@ -157,6 +160,24 @@ function initializeTemplate(editor: Editor) {
   })
 }
 
+function NewDocumentListener() {
+  const editor = useEditor()
+
+  useEffect(() => {
+    const handleNewDocument = () => {
+      initializeTemplate(editor)
+    }
+
+    events.on(NEW_DOCUMENT_CREATED, handleNewDocument)
+
+    return () => {
+      events.off(NEW_DOCUMENT_CREATED, handleNewDocument)
+    }
+  }, [editor])
+
+  return null
+}
+
 export function BoundedContextCanvas({ licenseKey }: BoundedContextCanvasProps) {
   useThemeSync()
 
@@ -185,6 +206,7 @@ export function BoundedContextCanvas({ licenseKey }: BoundedContextCanvasProps) 
         persistenceKey={process.env.NODE_ENV === 'development' ? 'bounded-context-canvas' : undefined}
       >
         <OnMountListener />
+        <NewDocumentListener />
         <BrowserListener />
         <Menubar />
         <ToolBar />
