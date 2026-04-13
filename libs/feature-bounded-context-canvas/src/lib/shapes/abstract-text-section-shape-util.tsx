@@ -47,7 +47,7 @@ export abstract class AbstractTextSectionShapeUtil<Type extends string> extends 
       >
         <div className={`border-foreground flex h-full flex-col p-4 ${borderClasses} ${roundedClasses}`}>
           <div className="text-muted-foreground font-draw mb-2 text-base font-semibold">{this.getLabel()}</div>
-          <div className="flex flex-1 items-center justify-center">
+          <div className="relative flex-1">
             <PlainTextLabel
               shapeId={shape.id}
               text={shape.props.text}
