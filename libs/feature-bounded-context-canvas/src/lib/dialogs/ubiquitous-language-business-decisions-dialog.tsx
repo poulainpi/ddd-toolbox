@@ -48,6 +48,8 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
 }: UbiquitousLanguageBusinessDecisionsDialogProps) {
   const [terms, setTerms] = useState<UbiquitousLanguageTerm[]>(initialTerms)
   const [decisions, setDecisions] = useState<BusinessDecision[]>(initialDecisions)
+  const [focusedTermId, setFocusedTermId] = useState<string | null>(null)
+  const [focusedDecisionId, setFocusedDecisionId] = useState<string | null>(null)
   const termsListRef = useRef<HTMLDivElement>(null)
   const decisionsListRef = useRef<HTMLDivElement>(null)
 
@@ -125,6 +127,12 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                       <Field>
                         <FieldLabel htmlFor={`term-${term.id}`}>Term</FieldLabel>
                         <Input
+                          ref={(element) => {
+                            if (focusedTermId === term.id && element) {
+                              element.focus()
+                              setFocusedTermId(null)
+                            }
+                          }}
                           id={`term-${term.id}`}
                           value={term.term}
                           onChange={(event) =>
@@ -165,7 +173,9 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
               <Button
                 variant="outline"
                 onClick={() => {
-                  setTerms((previousTerms) => [...previousTerms, emptyTerm()])
+                  const newTerm = emptyTerm()
+                  setTerms((previousTerms) => [...previousTerms, newTerm])
+                  setFocusedTermId(newTerm.id)
                   scrollToBottom(termsListRef)
                 }}
                 className="w-full"
@@ -205,6 +215,12 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                       <Field>
                         <FieldLabel htmlFor={`decision-${decision.id}`}>Description</FieldLabel>
                         <Textarea
+                          ref={(element) => {
+                            if (focusedDecisionId === decision.id && element) {
+                              element.focus()
+                              setFocusedDecisionId(null)
+                            }
+                          }}
                           id={`decision-${decision.id}`}
                           value={decision.description}
                           onChange={(event) =>
@@ -228,7 +244,9 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
               <Button
                 variant="outline"
                 onClick={() => {
-                  setDecisions((previousDecisions) => [...previousDecisions, emptyDecision()])
+                  const newDecision = emptyDecision()
+                  setDecisions((previousDecisions) => [...previousDecisions, newDecision])
+                  setFocusedDecisionId(newDecision.id)
                   scrollToBottom(decisionsListRef)
                 }}
                 className="w-full"
