@@ -76,7 +76,7 @@ export abstract class AbstractClassificationSectionShapeUtil<
     const hasValue = displayValue !== ''
 
     return (
-      <div key={category.key} className={`flex-1 text-center ${hasValue ? 'flex flex-col justify-center' : ''}`}>
+      <div key={category.key} className="flex flex-1 flex-col justify-center text-center">
         <div className="text-muted-foreground mb-1 text-sm font-semibold">{category.label}</div>
         {hasValue ? (
           <div className="text-foreground text-base">{displayValue}</div>
