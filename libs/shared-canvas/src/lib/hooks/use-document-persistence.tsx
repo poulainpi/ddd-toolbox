@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { decompressFromEncodedURIComponent } from 'lz-string'
 import { resetTrackedChanges } from './use-change-tracking'
 import { fileOpen, fileSave } from 'browser-fs-access'
+import { goToContent } from '../utils/editor-helper'
 
 function isPlainObjectEmpty(obj: object) {
   for (const _key in obj) return false
@@ -129,12 +130,4 @@ export function loadFromUrlIfNeeded(editor: Editor): boolean {
     // Clear the hash to prevent reloading on refresh
     window.history.replaceState(null, '', window.location.pathname + window.location.search)
   }
-}
-
-function goToContent(editor: Editor) {
-  const bounds = editor.getSelectionPageBounds() ?? editor.getCurrentPageBounds()
-  if (!bounds) return
-  editor.zoomToBounds(bounds, {
-    targetZoom: Math.min(1, editor.getZoomLevel()),
-  })
 }

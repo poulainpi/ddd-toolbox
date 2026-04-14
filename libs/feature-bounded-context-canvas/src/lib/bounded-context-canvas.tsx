@@ -11,6 +11,7 @@ import {
   ZoomPanel,
   events,
   NEW_DOCUMENT_CREATED,
+  goToContent,
 } from '@ddd-toolbox/shared-canvas'
 import { Menubar } from './menubar/menubar'
 import { NameSectionShapeUtil } from './shapes/name-section-shape-util'
@@ -67,13 +68,10 @@ function initializeTemplate(editor: Editor) {
     return
   }
 
-  const startX = 100
-  const startY = 100
-
   editor.createShape({
     type: NameSectionShapeUtil.type,
-    x: startX,
-    y: startY,
+    x: 0,
+    y: 0,
     props: {
       text: '',
       height: FIRST_ROW_HEIGHT,
@@ -82,16 +80,16 @@ function initializeTemplate(editor: Editor) {
 
   editor.createShape({
     type: AttributionSectionShapeUtil.type,
-    x: startX + NameSectionShapeUtil.WIDTH,
-    y: startY,
+    x: NameSectionShapeUtil.WIDTH,
+    y: 0,
     props: { height: FIRST_ROW_HEIGHT },
   })
 
-  const secondRowY = startY + FIRST_ROW_HEIGHT
+  const secondRowY = FIRST_ROW_HEIGHT
 
   editor.createShape({
     type: PurposeSectionShapeUtil.type,
-    x: startX,
+    x: 0,
     y: secondRowY,
     props: {
       text: '',
@@ -101,14 +99,14 @@ function initializeTemplate(editor: Editor) {
 
   editor.createShape({
     type: StrategicClassificationShapeUtil.type,
-    x: startX + PurposeSectionShapeUtil.WIDTH,
+    x: PurposeSectionShapeUtil.WIDTH,
     y: secondRowY,
     props: { height: SECOND_ROW_HEIGHT, values: {} },
   })
 
   editor.createShape({
     type: DomainRolesShapeUtil.type,
-    x: startX + PurposeSectionShapeUtil.WIDTH + StrategicClassificationShapeUtil.WIDTH,
+    x: PurposeSectionShapeUtil.WIDTH + StrategicClassificationShapeUtil.WIDTH,
     y: secondRowY,
     props: { height: SECOND_ROW_HEIGHT, values: {} },
   })
@@ -117,21 +115,21 @@ function initializeTemplate(editor: Editor) {
 
   editor.createShape({
     type: InboundCommunicationShapeUtil.type,
-    x: startX,
+    x: 0,
     y: communicationRowY,
     props: { height: COMMUNICATION_ROW_HEIGHT, communications: [] },
   })
 
   editor.createShape({
     type: UbiquitousLanguageBusinessDecisionsShapeUtil.type,
-    x: startX + InboundCommunicationShapeUtil.WIDTH,
+    x: InboundCommunicationShapeUtil.WIDTH,
     y: communicationRowY,
     props: { height: COMMUNICATION_ROW_HEIGHT, terms: [], decisions: [] },
   })
 
   editor.createShape({
     type: OutboundCommunicationShapeUtil.type,
-    x: startX + InboundCommunicationShapeUtil.WIDTH + UbiquitousLanguageBusinessDecisionsShapeUtil.WIDTH,
+    x: InboundCommunicationShapeUtil.WIDTH + UbiquitousLanguageBusinessDecisionsShapeUtil.WIDTH,
     y: communicationRowY,
     props: { height: COMMUNICATION_ROW_HEIGHT, communications: [] },
   })
@@ -140,7 +138,7 @@ function initializeTemplate(editor: Editor) {
 
   editor.createShape({
     type: AssumptionsSectionShapeUtil.type,
-    x: startX,
+    x: 0,
     y: bottomRowY,
     props: {
       text: '',
@@ -150,7 +148,7 @@ function initializeTemplate(editor: Editor) {
 
   editor.createShape({
     type: VerificationMetricsSectionShapeUtil.type,
-    x: startX + AssumptionsSectionShapeUtil.WIDTH,
+    x: AssumptionsSectionShapeUtil.WIDTH,
     y: bottomRowY,
     props: {
       text: '',
@@ -160,13 +158,15 @@ function initializeTemplate(editor: Editor) {
 
   editor.createShape({
     type: OpenQuestionsSectionShapeUtil.type,
-    x: startX + AssumptionsSectionShapeUtil.WIDTH + VerificationMetricsSectionShapeUtil.WIDTH,
+    x: AssumptionsSectionShapeUtil.WIDTH + VerificationMetricsSectionShapeUtil.WIDTH,
     y: bottomRowY,
     props: {
       text: '',
       height: BOTTOM_ROW_HEIGHT,
     },
   })
+
+  goToContent(editor)
 }
 
 function NewDocumentListener() {
