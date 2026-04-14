@@ -2,10 +2,12 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
+  Field,
+  FieldLabel,
   Input,
-  Label,
   Toggle,
   Tooltip,
   TooltipTrigger,
@@ -14,7 +16,7 @@ import {
 } from '@ddd-toolbox/ui'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
 import { useEffect, useRef, useState } from 'react'
-import { ArrowDown, ArrowLeft, ArrowUp, Plus, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowLeft, ArrowUp, Pencil, Plus, Trash2 } from 'lucide-react'
 import {
   Communication,
   CommunicationMessage,
@@ -157,7 +159,6 @@ export function CommunicationDialog({
 
         {!isLayer2 ? (
           <Layer1
-            direction={direction}
             communications={communications}
             onAdd={handleAddCollaborator}
             onEdit={handleEditCollaborator}
@@ -185,7 +186,6 @@ export function CommunicationDialog({
 }
 
 function Layer1({
-  direction,
   communications,
   onAdd,
   onEdit,
@@ -194,7 +194,6 @@ function Layer1({
   onSave,
   onCancel,
 }: {
-  direction: 'inbound' | 'outbound'
   communications: Communication[]
   onAdd: () => void
   onEdit: (communication: Communication) => void
@@ -205,99 +204,95 @@ function Layer1({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex max-h-96 flex-col gap-2 overflow-y-auto">
+      <div className="flex h-96 flex-col gap-3 overflow-y-auto pr-1">
         {communications.length === 0 && (
-          <div className="text-muted-foreground py-8 text-center text-sm">No communications yet. Add one below.</div>
+          <div className="text-muted-foreground rounded-md border border-dashed py-10 text-center text-sm">
+            No communications yet. Add one below.
+          </div>
         )}
-        {communications.map((communication) => {
+        {communications.map((communication, index) => {
           const Icon = COLLABORATOR_ICONS[communication.collaboratorType]
-          const collaboratorLabel = (
-            <>
-              <Icon className="text-muted-foreground h-6 w-6 shrink-0" />
-              <span className="truncate font-medium">{communication.collaboratorName || '(unnamed)'}</span>
-            </>
-          )
-          const leftBadge = communication.leftRelationshipType ? (
-            <span className="bg-foreground text-background rotate-180 rounded px-1.5 py-0.5 font-mono text-xs [writing-mode:vertical-rl]">
-              {communication.leftRelationshipType}
-            </span>
-          ) : null
-          const rightBadge = communication.rightRelationshipType ? (
-            <span className="bg-foreground text-background rotate-180 rounded px-1.5 py-0.5 font-mono text-xs [writing-mode:vertical-rl]">
-              {communication.rightRelationshipType}
-            </span>
-          ) : null
-          const messages = (
-            <div className="flex flex-wrap gap-1">
-              {communication.messages.map((message) => (
-                <span key={message.id} className={`rounded px-1.5 py-0.5 text-xs ${MESSAGE_TYPE_COLORS[message.type]}`}>
-                  {message.label || message.type}
-                </span>
-              ))}
-            </div>
-          )
-          const index = communications.indexOf(communication)
           const isFirst = index === 0
           const isLast = index === communications.length - 1
           return (
             <div
               key={communication.id}
-              className="hover:bg-accent flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-colors"
+              className="bg-muted/30 cursor-pointer rounded-lg border"
               onClick={() => onEdit(communication)}
             >
-              <div className="flex min-w-0 flex-1 items-center gap-2">
-                {direction === 'inbound' ? (
-                  <>
-                    {collaboratorLabel}
-                    {leftBadge}
-                    {messages}
-                    {rightBadge}
-                  </>
-                ) : (
-                  <>
-                    {leftBadge}
-                    {messages}
-                    {rightBadge}
-                    {collaboratorLabel}
-                  </>
-                )}
+              <div className="flex items-center justify-between border-b px-4 py-2.5">
+                <div className="flex min-w-0 items-center gap-2">
+                  <Icon className="text-muted-foreground h-5 w-5 shrink-0" />
+                  <span className="truncate text-sm font-medium">{communication.collaboratorName || '(unnamed)'}</span>
+                </div>
+                <div className="flex shrink-0 items-center gap-0.5">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-muted-foreground h-7 w-7"
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      onEdit(communication)
+                    }}
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-muted-foreground h-7 w-7"
+                    disabled={isFirst}
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      onReorder(index, index - 1)
+                    }}
+                  >
+                    <ArrowUp className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-muted-foreground h-7 w-7"
+                    disabled={isLast}
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      onReorder(index, index + 1)
+                    }}
+                  >
+                    <ArrowDown className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-muted-foreground hover:text-destructive -mr-1 h-7 w-7"
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      onDelete(communication.id)
+                    }}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
               </div>
-              <div className="flex shrink-0 gap-1">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  disabled={isFirst}
-                  className="hover:bg-foreground/10"
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    onReorder(index, index - 1)
-                  }}
-                >
-                  <ArrowUp className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  disabled={isLast}
-                  className="hover:bg-foreground/10"
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    onReorder(index, index + 1)
-                  }}
-                >
-                  <ArrowDown className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="hover:bg-foreground/10"
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    onDelete(communication.id)
-                  }}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+              <div className="flex cursor-pointer flex-wrap items-center gap-2 px-4 py-3">
+                {communication.leftRelationshipType && (
+                  <span className="bg-foreground text-background rotate-180 rounded px-1.5 py-0.5 font-mono text-xs [writing-mode:vertical-rl]">
+                    {communication.leftRelationshipType}
+                  </span>
+                )}
+                {communication.messages.map((message) => (
+                  <span
+                    key={message.id}
+                    className={`rounded px-1.5 py-0.5 text-xs ${MESSAGE_TYPE_COLORS[message.type]}`}
+                  >
+                    {message.label || message.type}
+                  </span>
+                ))}
+                {communication.rightRelationshipType && (
+                  <span className="bg-foreground text-background rotate-180 rounded px-1.5 py-0.5 font-mono text-xs [writing-mode:vertical-rl]">
+                    {communication.rightRelationshipType}
+                  </span>
+                )}
               </div>
             </div>
           )
@@ -307,12 +302,12 @@ function Layer1({
         <Plus className="mr-2 h-4 w-4" />
         Add Communication
       </Button>
-      <div className="flex justify-end gap-2">
+      <DialogFooter>
         <Button variant="outline" onClick={onCancel}>
           Cancel
         </Button>
         <Button onClick={onSave}>Save</Button>
-      </div>
+      </DialogFooter>
     </div>
   )
 }
@@ -342,11 +337,9 @@ function Layer2({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="collaborator-name" className="mb-2 block">
-            Collaborator Name
-          </Label>
+      <div className="-mx-1 -my-1 flex max-h-[60vh] flex-col gap-4 overflow-y-auto px-1 py-1">
+        <Field>
+          <FieldLabel htmlFor="collaborator-name">Collaborator Name</FieldLabel>
           <Input
             ref={collaboratorNameRef}
             id="collaborator-name"
@@ -354,10 +347,10 @@ function Layer2({
             onChange={(e) => onChange({ ...entry, collaboratorName: e.target.value })}
             placeholder="e.g. Order Management"
           />
-        </div>
+        </Field>
 
-        <div className="space-y-2">
-          <span className="mb-2 block text-sm font-medium">Collaborator Type</span>
+        <Field>
+          <FieldLabel>Collaborator Type</FieldLabel>
           <div className="flex flex-wrap gap-2">
             {COLLABORATOR_TYPES.map((collaboratorType) => {
               const Icon = COLLABORATOR_ICONS[collaboratorType]
@@ -375,11 +368,11 @@ function Layer2({
               )
             })}
           </div>
-        </div>
+        </Field>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <span className="mb-2 block text-sm font-medium">Left Relationship</span>
+          <Field>
+            <FieldLabel>Left Relationship</FieldLabel>
             <div className="flex flex-wrap gap-1">
               {RELATIONSHIP_TYPES.map((relationship) => (
                 <Tooltip key={relationship}>
@@ -405,10 +398,10 @@ function Layer2({
                 </Tooltip>
               ))}
             </div>
-          </div>
+          </Field>
 
-          <div className="space-y-2">
-            <span className="mb-2 block text-sm font-medium">Right Relationship</span>
+          <Field>
+            <FieldLabel>Right Relationship</FieldLabel>
             <div className="flex flex-wrap gap-1">
               {RELATIONSHIP_TYPES.map((relationship) => (
                 <Tooltip key={relationship}>
@@ -434,12 +427,12 @@ function Layer2({
                 </Tooltip>
               ))}
             </div>
-          </div>
+          </Field>
         </div>
 
-        <div className="space-y-2">
-          <span className="mb-2 block text-sm font-medium">Messages</span>
-          <div className="-m-1 flex max-h-48 flex-col gap-2 overflow-y-auto p-1">
+        <Field>
+          <FieldLabel>Messages</FieldLabel>
+          <div className="flex flex-col gap-2">
             {entry.messages.map((message) => (
               <div key={message.id} className="flex items-center gap-2">
                 <Input
@@ -461,26 +454,31 @@ function Layer2({
                     </Toggle>
                   ))}
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => onDeleteMessage(message.id)}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground hover:text-destructive h-7 w-7 shrink-0"
+                  onClick={() => onDeleteMessage(message.id)}
+                >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
               </div>
             ))}
+            <Button variant="outline" onClick={onAddMessage} className="w-full">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Message
+            </Button>
           </div>
-          <Button variant="outline" size="sm" onClick={onAddMessage} className="mt-2 w-full">
-            <Plus className="mr-1 h-3.5 w-3.5" />
-            Add Message
-          </Button>
-        </div>
+        </Field>
       </div>
 
-      <div className="flex justify-between">
+      <DialogFooter className="justify-between sm:justify-between">
         <Button variant="outline" onClick={onBack}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
         </Button>
         <Button onClick={onSave}>Save</Button>
-      </div>
+      </DialogFooter>
     </div>
   )
 }
