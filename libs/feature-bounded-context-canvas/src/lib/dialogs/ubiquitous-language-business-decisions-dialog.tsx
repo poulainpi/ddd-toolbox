@@ -16,7 +16,7 @@ import {
 } from '@ddd-toolbox/ui'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
 import { useRef, useState } from 'react'
-import { Plus, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react'
 import { BusinessDecision, UbiquitousLanguageTerm } from '../types/ubiquitous-language-business-decisions-types'
 
 interface UbiquitousLanguageBusinessDecisionsDialogProps {
@@ -37,6 +37,13 @@ function emptyTerm(): UbiquitousLanguageTerm {
 
 function emptyDecision(): BusinessDecision {
   return { id: generateId(), description: '' }
+}
+
+function moveItem<T>(items: T[], fromIndex: number, toIndex: number): T[] {
+  const result = [...items]
+  const [removed] = result.splice(fromIndex, 1)
+  result.splice(toIndex, 0, removed)
+  return result
 }
 
 export function UbiquitousLanguageBusinessDecisionsDialog({
@@ -110,18 +117,38 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                       <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
                         Term {index + 1}
                       </span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-muted-foreground hover:text-destructive -mr-1 h-7 w-7"
-                        onClick={() =>
-                          setTerms((previousTerms) =>
-                            previousTerms.filter((existingTerm) => existingTerm.id !== term.id),
-                          )
-                        }
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
+                      <div className="flex items-center gap-0.5">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground h-7 w-7"
+                          disabled={index === 0}
+                          onClick={() => setTerms((previousTerms) => moveItem(previousTerms, index, index - 1))}
+                        >
+                          <ArrowUp className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground h-7 w-7"
+                          disabled={index === terms.length - 1}
+                          onClick={() => setTerms((previousTerms) => moveItem(previousTerms, index, index + 1))}
+                        >
+                          <ArrowDown className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground hover:text-destructive -mr-1 h-7 w-7"
+                          onClick={() =>
+                            setTerms((previousTerms) =>
+                              previousTerms.filter((existingTerm) => existingTerm.id !== term.id),
+                            )
+                          }
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
                     </div>
                     <div className="flex flex-col gap-4 p-4">
                       <Field>
@@ -198,18 +225,42 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                       <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
                         Decision {index + 1}
                       </span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-muted-foreground hover:text-destructive -mr-1 h-7 w-7"
-                        onClick={() =>
-                          setDecisions((previousDecisions) =>
-                            previousDecisions.filter((existingDecision) => existingDecision.id !== decision.id),
-                          )
-                        }
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
+                      <div className="flex items-center gap-0.5">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground h-7 w-7"
+                          disabled={index === 0}
+                          onClick={() =>
+                            setDecisions((previousDecisions) => moveItem(previousDecisions, index, index - 1))
+                          }
+                        >
+                          <ArrowUp className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground h-7 w-7"
+                          disabled={index === decisions.length - 1}
+                          onClick={() =>
+                            setDecisions((previousDecisions) => moveItem(previousDecisions, index, index + 1))
+                          }
+                        >
+                          <ArrowDown className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground hover:text-destructive -mr-1 h-7 w-7"
+                          onClick={() =>
+                            setDecisions((previousDecisions) =>
+                              previousDecisions.filter((existingDecision) => existingDecision.id !== decision.id),
+                            )
+                          }
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
                     </div>
                     <div className="p-4">
                       <Field>
