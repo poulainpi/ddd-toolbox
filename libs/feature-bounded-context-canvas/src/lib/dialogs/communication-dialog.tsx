@@ -14,7 +14,7 @@ import {
 } from '@ddd-toolbox/ui'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Pencil, Plus, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowLeft, ArrowUp, Plus, Trash2 } from 'lucide-react'
 import {
   Communication,
   CommunicationMessage,
@@ -87,6 +87,18 @@ export function CommunicationDialog({
     setCommunications((previous) => previous.filter((communication) => communication.id !== id))
   }
 
+  const handleReorderCommunication = (id: string, direction: 'up' | 'down') => {
+    setCommunications((previous) => {
+      const index = previous.findIndex((communication) => communication.id === id)
+      if (index === -1) return previous
+      const targetIndex = direction === 'up' ? index - 1 : index + 1
+      if (targetIndex < 0 || targetIndex >= previous.length) return previous
+      const updated = [...previous]
+      ;[updated[index], updated[targetIndex]] = [updated[targetIndex], updated[index]]
+      return updated
+    })
+  }
+
   const handleBack = () => {
     setEditingEntry(null)
     setIsLayer2(false)
@@ -153,6 +165,7 @@ export function CommunicationDialog({
             onAdd={handleAddCollaborator}
             onEdit={handleEditCollaborator}
             onDelete={handleDeleteCollaborator}
+            onReorder={handleReorderCommunication}
             onSave={handleSaveAll}
             onCancel={() => handleOpenChange(false)}
           />
@@ -180,6 +193,7 @@ function Layer1({
   onAdd,
   onEdit,
   onDelete,
+  onReorder,
   onSave,
   onCancel,
 }: {
@@ -188,6 +202,7 @@ function Layer1({
   onAdd: () => void
   onEdit: (communication: Communication) => void
   onDelete: (id: string) => void
+  onReorder: (id: string, direction: 'up' | 'down') => void
   onSave: () => void
   onCancel: () => void
 }) {
@@ -224,8 +239,15 @@ function Layer1({
               ))}
             </div>
           )
+          const index = communications.indexOf(communication)
+          const isFirst = index === 0
+          const isLast = index === communications.length - 1
           return (
-            <div key={communication.id} className="flex items-center gap-3 rounded-md border p-3">
+            <div
+              key={communication.id}
+              className="hover:bg-accent flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-colors"
+              onClick={() => onEdit(communication)}
+            >
               <div className="flex min-w-0 flex-1 items-center gap-2">
                 {direction === 'inbound' ? (
                   <>
@@ -244,10 +266,39 @@ function Layer1({
                 )}
               </div>
               <div className="flex shrink-0 gap-1">
-                <Button variant="ghost" size="icon" onClick={() => onEdit(communication)}>
-                  <Pencil className="h-4 w-4" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  disabled={isFirst}
+                  className="hover:bg-foreground/10"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onReorder(communication.id, 'up')
+                  }}
+                >
+                  <ArrowUp className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="icon" onClick={() => onDelete(communication.id)}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  disabled={isLast}
+                  className="hover:bg-foreground/10"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onReorder(communication.id, 'down')
+                  }}
+                >
+                  <ArrowDown className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="hover:bg-foreground/10"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onDelete(communication.id)
+                  }}
+                >
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
