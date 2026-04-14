@@ -87,15 +87,12 @@ export function CommunicationDialog({
     setCommunications((previous) => previous.filter((communication) => communication.id !== id))
   }
 
-  const handleReorderCommunication = (id: string, direction: 'up' | 'down') => {
+  const handleReorderCommunication = (fromIndex: number, toIndex: number) => {
     setCommunications((previous) => {
-      const index = previous.findIndex((communication) => communication.id === id)
-      if (index === -1) return previous
-      const targetIndex = direction === 'up' ? index - 1 : index + 1
-      if (targetIndex < 0 || targetIndex >= previous.length) return previous
-      const updated = [...previous]
-      ;[updated[index], updated[targetIndex]] = [updated[targetIndex], updated[index]]
-      return updated
+      const result = [...previous]
+      const [removed] = result.splice(fromIndex, 1)
+      result.splice(toIndex, 0, removed)
+      return result
     })
   }
 
@@ -202,7 +199,7 @@ function Layer1({
   onAdd: () => void
   onEdit: (communication: Communication) => void
   onDelete: (id: string) => void
-  onReorder: (id: string, direction: 'up' | 'down') => void
+  onReorder: (fromIndex: number, toIndex: number) => void
   onSave: () => void
   onCancel: () => void
 }) {
@@ -273,7 +270,7 @@ function Layer1({
                   className="hover:bg-foreground/10"
                   onClick={(event) => {
                     event.stopPropagation()
-                    onReorder(communication.id, 'up')
+                    onReorder(index, index - 1)
                   }}
                 >
                   <ArrowUp className="h-4 w-4" />
@@ -285,7 +282,7 @@ function Layer1({
                   className="hover:bg-foreground/10"
                   onClick={(event) => {
                     event.stopPropagation()
-                    onReorder(communication.id, 'down')
+                    onReorder(index, index + 1)
                   }}
                 >
                   <ArrowDown className="h-4 w-4" />
