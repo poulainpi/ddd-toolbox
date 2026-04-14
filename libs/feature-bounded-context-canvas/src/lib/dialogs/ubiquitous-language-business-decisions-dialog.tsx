@@ -98,7 +98,7 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
             </TabsList>
 
             <TabsContent value="ubiquitous-language" className="flex flex-col gap-4">
-              <div ref={termsListRef} className="flex max-h-96 flex-col gap-3 overflow-y-auto pr-1">
+              <div ref={termsListRef} className="flex h-96 flex-col gap-3 overflow-y-auto pr-1">
                 {terms.length === 0 && (
                   <div className="text-muted-foreground rounded-md border border-dashed py-10 text-center text-sm">
                     No terms yet. Add one below.
@@ -186,7 +186,7 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
             </TabsContent>
 
             <TabsContent value="business-decisions" className="flex flex-col gap-4">
-              <div ref={decisionsListRef} className="flex max-h-96 flex-col gap-3 overflow-y-auto pr-1">
+              <div ref={decisionsListRef} className="flex h-96 flex-col gap-3 overflow-y-auto pr-1">
                 {decisions.length === 0 && (
                   <div className="text-muted-foreground rounded-md border border-dashed py-10 text-center text-sm">
                     No decisions yet. Add one below.
