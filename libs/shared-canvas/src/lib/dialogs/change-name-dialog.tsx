@@ -66,7 +66,7 @@ export function ChangeNameDialog({
 
         <DialogFooter>
           <Button type="submit" form={formId}>
-            {isNew ? 'Create' : 'Save'}
+            {isNew ? 'Create' : 'Confirm'}
           </Button>
         </DialogFooter>
       </DialogContent>
