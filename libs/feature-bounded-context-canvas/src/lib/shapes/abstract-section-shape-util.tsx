@@ -39,6 +39,10 @@ export abstract class AbstractSectionShapeUtil<Type extends string, Props extend
     return true
   }
 
+  override hideRotateHandle(_shape: TLBaseShape<Type, Props>): boolean {
+    return true
+  }
+
   override indicator(shape: TLBaseShape<Type, Props>) {
     const indicatorRadius = this.getIndicatorRadius()
     return <rect width={this.getWidth()} height={shape.props.height} rx={indicatorRadius} />
