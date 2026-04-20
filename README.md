@@ -31,6 +31,7 @@ DDD Toolbox is a modern web application that provides strategic design tools for
   ![Demo](https://i.imgur.com/P3yrtU9.png)
 
 - **[Bounded Context Canvas](https://dddtoolbox.com/bounded-context-canvas)** - Document and design your bounded contexts using a structured canvas approach. Capture business model, ubiquitous language, and integration patterns.
+  ![Demo](https://i.imgur.com/oSk4SjL.png)
 
 ### 📋 Planned
 
