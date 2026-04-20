@@ -12,14 +12,10 @@ export function SiteHeader() {
         </div>
 
         <div className="flex items-center space-x-2">
-          <Button variant="ghost" size="icon" asChild>
-            <a
-              href="https://github.com/poulainpi/ddd-toolbox"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View on GitHub"
-            >
+          <Button variant="ghost" size="sm" asChild>
+            <a href="https://github.com/poulainpi/ddd-toolbox" target="_blank" rel="noopener noreferrer">
               <Github className="h-4 w-4" />
+              Star on GitHub
             </a>
           </Button>
           <ThemeToggle />
