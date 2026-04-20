@@ -4,14 +4,14 @@ import { ArrowRight, ExternalLink } from 'lucide-react'
 interface ToolCardProps {
   title: string
   description: string
-  status: 'available' | 'coming-soon' | 'coming-later'
+  status: 'available' | 'new-available' | 'coming-soon' | 'coming-later'
   href?: string
   exampleHref?: string
   icon: React.ReactNode
 }
 
 export function ToolCard({ title, description, status, href, exampleHref, icon }: ToolCardProps) {
-  const isAvailable = status === 'available'
+  const isAvailable = status === 'available' || status === 'new-available'
 
   const cardContent = (
     <div
@@ -29,9 +29,12 @@ export function ToolCard({ title, description, status, href, exampleHref, icon }
             {icon}
           </div>
         </div>
-        <Badge variant={isAvailable ? 'default' : 'secondary'} className="ml-4">
-          {isAvailable ? 'Available' : status === 'coming-soon' ? 'Coming Soon' : 'Coming Later'}
-        </Badge>
+        <div className="ml-4 flex items-center gap-2">
+          {status === 'new-available' && <Badge className="bg-purple-500 text-white hover:bg-purple-500">New</Badge>}
+          <Badge variant={isAvailable ? 'default' : 'secondary'}>
+            {isAvailable ? 'Available' : status === 'coming-soon' ? 'Coming Soon' : 'Coming Later'}
+          </Badge>
+        </div>
       </div>
 
       <div className="mt-4">

@@ -21,6 +21,9 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
+      "path": "../../libs/feature-bounded-context-canvas"
+    },
+    {
       "path": "../../libs/feature-event-storming"
     },
     {

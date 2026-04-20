@@ -2,6 +2,7 @@ import { ToolCard } from './tool-card'
 import { ArrowUpDown, BarChart3, FileText, MessageSquare, Network, Zap } from 'lucide-react'
 import { DOMAIN_STORYTELLING_EXAMPLE_URL } from '@ddd-toolbox/domain-storytelling-constants'
 import { EVENT_STORMING_EXAMPLE_URL } from '@ddd-toolbox/event-storming-constants'
+import { BOUNDED_CONTEXT_CANVAS_EXAMPLE_URL } from '@ddd-toolbox/bounded-context-canvas-constants'
 
 const tools = [
   {
@@ -29,7 +30,9 @@ const tools = [
     title: 'Bounded Context Canvas',
     description:
       'Document and design your bounded contexts using a structured canvas approach. Capture business model, ubiquitous language, and integration patterns.',
-    status: 'coming-soon' as const,
+    status: 'new-available' as const,
+    href: '/bounded-context-canvas',
+    exampleHref: BOUNDED_CONTEXT_CANVAS_EXAMPLE_URL,
     icon: <FileText className="h-6 w-6" />,
   },
   {

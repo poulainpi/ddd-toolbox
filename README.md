@@ -12,6 +12,8 @@
         <a href="https://dddtoolbox.com/domain-storytelling">Try Domain Storytelling →</a>
         <br>
         <a href="https://dddtoolbox.com/event-storming">Try Event Storming →</a>
+        <br>
+        <a href="https://dddtoolbox.com/bounded-context-canvas">Try Bounded Context Canvas →</a>
     </p>
 </div>
 
@@ -28,11 +30,11 @@ DDD Toolbox is a modern web application that provides strategic design tools for
 - **[Event Storming](https://dddtoolbox.com/event-storming)** - Rapidly discover business processes and identify domain boundaries through collaborative workshop techniques. Map out the flow of domain events across your system.
   ![Demo](https://i.imgur.com/P3yrtU9.png)
 
+- **[Bounded Context Canvas](https://dddtoolbox.com/bounded-context-canvas)** - Document and design your bounded contexts using a structured canvas approach. Capture business model, ubiquitous language, and integration patterns.
+
 ### 📋 Planned
 
 - **Context Mapping** - Define and visualize relationships between bounded contexts. Understand integration patterns and team interactions across different parts of your domain.
-
-- **Bounded Context Canvas** - Document and design your bounded contexts using a structured canvas approach. Capture business model, ubiquitous language, and integration patterns.
 
 - **Aggregate Design Canvas** - Design and document your aggregates using a structured canvas approach. Define aggregate boundaries, invariants, and behavioral patterns.
 
