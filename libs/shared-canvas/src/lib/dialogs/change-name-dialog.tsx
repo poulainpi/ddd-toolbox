@@ -55,10 +55,10 @@ export function ChangeNameDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {isNew ? 'New' : 'Edit'} {type} name
+            {isNew ? 'New' : 'Edit'} {type}
           </DialogTitle>
           <DialogDescription>
-            {isNew ? 'Create' : 'Change'} the name of your {type} here.
+            {isNew ? 'Define' : 'Change'} the name of your {type} here.
           </DialogDescription>
         </DialogHeader>
 
