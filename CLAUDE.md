@@ -131,3 +131,17 @@ Pre-commit hooks are configured with Husky to run:
 **Development Workflow:**
 
 - After completing code changes, always run typecheck and lint commands to ensure no errors remain
+
+## Agent skills
+
+### Issue tracker
+
+Issues and product requirement documents live in the `poulainpi/ddd-toolbox` GitHub Issues, managed with the `gh` command line interface. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical triage roles use their default label strings. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context — one `CONTEXT.md` plus `docs/adr/` at the repository root. See `docs/agents/domain.md`.
