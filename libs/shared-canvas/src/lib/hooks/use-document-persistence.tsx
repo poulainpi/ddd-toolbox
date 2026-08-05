@@ -11,6 +11,10 @@ function isPlainObjectEmpty(obj: object) {
   return true
 }
 
+function isAbortError(error: unknown) {
+  return error instanceof DOMException && error.name === 'AbortError'
+}
+
 const $persistenceState = atom<{
   fileHandle: FileSystemFileHandle | undefined
   latestChangesSaved: boolean
@@ -31,15 +35,36 @@ export function useDocumentPersistence(): UseDocumentPersistenceReturn {
   const { fileHandle, latestChangesSaved } = useValue($persistenceState)
 
   async function open() {
-    const fileWithHandle = await fileOpen({
-      mimeTypes: ['application/json'],
-      extensions: ['.json'],
-    })
+    let fileWithHandle
+    try {
+      fileWithHandle = await fileOpen({
+        mimeTypes: ['application/json'],
+        extensions: ['.json'],
+      })
+    } catch (error) {
+      // Dismissing the file picker rejects with an AbortError, which is a normal
+      // user action rather than a failure, so it must not surface an error.
+      if (!isAbortError(error)) {
+        console.error('Failed to open the file picker:', error)
+        toast.error('Failed to open document', {
+          description: 'The file could not be selected.',
+        })
+      }
+      return
+    }
 
-    const jsonContent = JSON.parse(await fileWithHandle.text())
-    loadSnapshot(editor.store, { document: jsonContent })
-    editor.clearHistory()
-    goToContent(editor)
+    try {
+      const jsonContent = JSON.parse(await fileWithHandle.text())
+      loadSnapshot(editor.store, { document: jsonContent })
+      editor.clearHistory()
+      goToContent(editor)
+    } catch (error) {
+      console.error('Failed to open document:', error)
+      toast.error('Failed to open document', {
+        description: 'The file appears to be invalid or corrupted.',
+      })
+      return
+    }
 
     // setTimeout else changeHappened are triggered after latestChangesSaved are set to true
     setTimeout(() => {
