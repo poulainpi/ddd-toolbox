@@ -1,5 +1,6 @@
 import { Badge, Button } from '@ddd-toolbox/ui'
 import { ArrowRight, ExternalLink } from 'lucide-react'
+import { useT } from '@ddd-toolbox/i18n'
 
 interface ToolCardProps {
   title: string
@@ -11,6 +12,7 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ title, description, status, href, exampleHref, icon }: ToolCardProps) {
+  const t = useT()
   const isAvailable = status === 'available' || status === 'new-available'
 
   const cardContent = (
@@ -30,9 +32,15 @@ export function ToolCard({ title, description, status, href, exampleHref, icon }
           </div>
         </div>
         <div className="ml-4 flex items-center gap-2">
-          {status === 'new-available' && <Badge className="bg-purple-500 text-white hover:bg-purple-500">New</Badge>}
+          {status === 'new-available' && (
+            <Badge className="bg-purple-500 text-white hover:bg-purple-500">{t('app.badgeNew')}</Badge>
+          )}
           <Badge variant={isAvailable ? 'default' : 'secondary'}>
-            {isAvailable ? 'Available' : status === 'coming-soon' ? 'Coming Soon' : 'Coming Later'}
+            {isAvailable
+              ? t('app.badgeAvailable')
+              : status === 'coming-soon'
+                ? t('app.badgeComingSoon')
+                : t('app.badgeComingLater')}
           </Badge>
         </div>
       </div>
@@ -52,7 +60,7 @@ export function ToolCard({ title, description, status, href, exampleHref, icon }
         <div className="mt-6">
           <Button size="sm" className="w-full" asChild>
             <span>
-              Open Tool
+              {t('app.openTool')}
               <ArrowRight className="ml-1 h-4 w-4" />
             </span>
           </Button>
@@ -66,7 +74,7 @@ export function ToolCard({ title, description, status, href, exampleHref, icon }
                 window.open(exampleHref, '_blank', 'noopener,noreferrer')
               }}
             >
-              View Example
+              {t('app.viewExample')}
               <ExternalLink className="ml-1 h-4 w-4" />
             </Button>
           )}
@@ -76,7 +84,7 @@ export function ToolCard({ title, description, status, href, exampleHref, icon }
       {!isAvailable && (
         <div className="mt-6">
           <Button size="sm" variant="secondary" disabled className="w-full">
-            {status === 'coming-soon' ? 'Coming Soon' : 'Coming Later'}
+            {status === 'coming-soon' ? t('app.badgeComingSoon') : t('app.badgeComingLater')}
           </Button>
         </div>
       )}

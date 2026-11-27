@@ -10,6 +10,7 @@ import {
 import { Check, Copy, MoreVertical, Pencil, Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react'
 import { useDisclosure, UseDisclosureReturn } from '@ddd-toolbox/util'
 import { useState } from 'react'
+import { useT } from '@ddd-toolbox/i18n'
 
 export interface PagesMenuProps {
   ChangePageNameDialogComponent: React.ComponentType<{
@@ -20,7 +21,8 @@ export interface PagesMenuProps {
   label?: string
 }
 
-export function PagesMenu({ ChangePageNameDialogComponent, label = 'Pages' }: PagesMenuProps) {
+export function PagesMenu({ ChangePageNameDialogComponent, label }: PagesMenuProps) {
+  const t = useT()
   const editor = useEditor()
   const pages = editor.getPages()
   const currentPage = editor.getCurrentPage()
@@ -105,7 +107,7 @@ export function PagesMenu({ ChangePageNameDialogComponent, label = 'Pages' }: Pa
 
         <DropdownMenuContent className="min-w-56" align="start">
           <div className="flex items-center justify-between px-2 py-1.5">
-            <span className="text-sm font-semibold">{label}</span>
+            <span className="text-sm font-semibold">{label ?? t('canvas.pages')}</span>
             <div className="flex items-center gap-1">
               <Button variant="ghost" size="icon" className="h-6 w-6" onClick={openCreateNewPage}>
                 <Plus className="h-4 w-4" />
@@ -147,20 +149,20 @@ export function PagesMenu({ ChangePageNameDialogComponent, label = 'Pages' }: Pa
                   <DropdownMenuContent side="right" align="start">
                     <DropdownMenuItem onClick={() => openRenamePage(page.id)}>
                       <Pencil className="mr-2 h-4 w-4" />
-                      <span>Rename</span>
+                      <span>{t('common.rename')}</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => openDuplicatePage(page.id)}>
                       <Copy className="mr-2 h-4 w-4" />
-                      <span>Duplicate</span>
+                      <span>{t('common.duplicate')}</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => movePageUp(page.id)} disabled={isFirst}>
                       <ArrowUp className="mr-2 h-4 w-4" />
-                      <span>Move Up</span>
+                      <span>{t('canvas.pagesMoveUp')}</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => movePageDown(page.id)} disabled={isLast}>
                       <ArrowDown className="mr-2 h-4 w-4" />
-                      <span>Move Down</span>
+                      <span>{t('canvas.pagesMoveDown')}</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
@@ -169,7 +171,7 @@ export function PagesMenu({ ChangePageNameDialogComponent, label = 'Pages' }: Pa
                       className="text-destructive focus:text-destructive"
                     >
                       <Trash2 className="mr-2 h-4 w-4" />
-                      <span>Delete</span>
+                      <span>{t('common.delete')}</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

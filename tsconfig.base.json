@@ -21,6 +21,7 @@
       "@ddd-toolbox/domain-storytelling-constants": ["libs/feature-domain-storytelling/src/constants-index.ts"],
       "@ddd-toolbox/event-storming": ["libs/feature-event-storming/src/index.ts"],
       "@ddd-toolbox/event-storming-constants": ["libs/feature-event-storming/src/constants-index.ts"],
+      "@ddd-toolbox/i18n": ["libs/i18n/src/index.ts"],
       "@ddd-toolbox/shared-canvas": ["libs/shared-canvas/src/index.ts"],
       "@ddd-toolbox/ui": ["libs/ui/src/index.ts"],
       "@ddd-toolbox/ui-loadable-icon": ["libs/ui/src/loadable-icon-index.ts"],

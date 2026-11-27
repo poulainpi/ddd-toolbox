@@ -3,6 +3,7 @@ import { EventStorming as EventStormingComponent } from '@ddd-toolbox/event-stor
 import Layout from '../Layout.astro'
 import LoadingScreen from '../components/LoadingScreen.astro'
 import StructuredData from '../components/structured-data.astro'
+import { LocaleMeta } from '../components/locale-meta'
 import { AstroSeo } from '@astrolib/seo'
 
 const pageDescription =
@@ -13,6 +14,7 @@ const licenseKey = import.meta.env.TLDRAW_LICENSE_KEY
 <AstroSeo title="Event Storming | DDD Toolbox" description={pageDescription} />
 
 <Layout>
+  <LocaleMeta client:load titleKey="meta.eventStorming.title" descriptionKey="meta.eventStorming.description" />
   <StructuredData type="software" title="Event Storming Tool" description={pageDescription} />
   <EventStormingComponent client:only="react" licenseKey={licenseKey}>
     <LoadingScreen slot="fallback" toolName="Event Storming" />

@@ -34,6 +34,7 @@ import {
   GithubIcon,
   ImageDownIcon,
   LightbulbIcon,
+  LanguagesIcon,
   LinkIcon,
   MenuIcon,
   MonitorSpeakerIcon,
@@ -42,7 +43,9 @@ import {
 } from 'lucide-react'
 import { useDocumentPersistence } from '../hooks/use-document-persistence'
 import { track, useDisclosure } from '@ddd-toolbox/util'
+import { useLocale, useT, setLocale } from '@ddd-toolbox/i18n'
 import { DiscardChangesAlertDialog } from '../dialogs/discard-changes-alert-dialog'
+import { useEffect } from 'react'
 import { useDocumentName } from '../hooks/use-document-name'
 import { toast } from 'sonner'
 
@@ -52,7 +55,9 @@ export interface AppMenuProps {
   exampleHref?: string
 }
 
-export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampleHref }: AppMenuProps) {
+export function AppMenu({ newDocument, newDocumentLabel, exampleHref }: AppMenuProps) {
+  const t = useT()
+  const locale = useLocale()
   const editor = useEditor()
   const gridModeActivated = useValue('grid mode activated', () => editor.getInstanceState().isGridMode, [])
   const isReadonlyMode = useReadonly()
@@ -61,6 +66,10 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
   const { latestChangesSaved, open, saveAs } = useDocumentPersistence()
   const confirmDiscardChangesDisclosure = useDisclosure()
   const { documentName } = useDocumentName()
+
+  useEffect(() => {
+    editor.user.updateUserPreferences({ locale: locale === 'zh-CN' ? 'zh-cn' : 'en' })
+  }, [editor, locale])
 
   function changeUserPreferences(newPreferences: Partial<TLUserPreferences>) {
     setUserPreferences({
@@ -91,8 +100,8 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
   }
 
   function showEmptyCanvasToast() {
-    toast.error('Cannot export empty canvas', {
-      description: 'Please add some shapes to the canvas before exporting.',
+    toast.error(t('toast.emptyCanvasTitle'), {
+      description: t('toast.emptyCanvasDescription'),
     })
   }
 
@@ -128,8 +137,8 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
       trackExportEvent('svg')
     } catch (error) {
       console.error('Failed to export SVG:', error)
-      toast.error('Export failed', {
-        description: 'Failed to export SVG. Please try again.',
+      toast.error(t('toast.exportFailedTitle'), {
+        description: t('toast.exportFailedSvg'),
       })
     }
   }
@@ -155,8 +164,8 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
       trackExportEvent('png')
     } catch (error) {
       console.error('Failed to export PNG:', error)
-      toast.error('Export failed', {
-        description: 'Failed to export PNG. Please try again.',
+      toast.error(t('toast.exportFailedTitle'), {
+        description: t('toast.exportFailedPng'),
       })
     }
   }
@@ -173,13 +182,13 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
       await navigator.clipboard.writeText(currentUrl.toString())
 
       trackExportEvent('link')
-      toast.success('Link copied to clipboard', {
-        description: 'Share this link to let others view your document.',
+      toast.success(t('toast.linkCopiedTitle'), {
+        description: t('toast.linkCopiedDescription'),
       })
     } catch (error) {
       console.error('Failed to export as link:', error)
-      toast.error('Export failed', {
-        description: 'Failed to create shareable link. Please try again.',
+      toast.error(t('toast.exportFailedTitle'), {
+        description: t('toast.exportFailedLink'),
       })
     }
   }
@@ -198,7 +207,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
             <DropdownMenuItem asChild>
               <a href="/">
                 <ArrowLeftIcon />
-                Back to toolbox
+                {t('canvas.backToToolbox')}
               </a>
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -207,18 +216,18 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={checkUnsavedChangesAndOpen}>
               <FolderIcon />
-              <span>Open</span>
+              <span>{t('canvas.open')}</span>
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={saveAs}>
               <FileDownIcon />
-              <span>Save to...</span>
+              <span>{t('canvas.saveTo')}</span>
             </DropdownMenuItem>
 
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <DownloadIcon />
-                <span>Export</span>
+                <span>{t('canvas.export')}</span>
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
@@ -232,7 +241,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={exportAsLink}>
                     <LinkIcon />
-                    <span>Link to share</span>
+                    <span>{t('canvas.exportLink')}</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
@@ -240,7 +249,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
 
             <DropdownMenuItem onClick={newDocument}>
               <FilePlusIcon />
-              <span>{newDocumentLabel}</span>
+              <span>{newDocumentLabel ?? t('canvas.newDocument')}</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
@@ -248,7 +257,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
               <SettingsIcon />
-              <span>Settings</span>
+              <span>{t('canvas.settings')}</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
@@ -257,14 +266,14 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
                   onCheckedChange={() => changeUserPreferences({ isSnapMode: !userPreferences.isSnapMode })}
                   closeOnSelect={false}
                 >
-                  Always snap
+                  {t('canvas.alwaysSnap')}
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
                   checked={gridModeActivated}
                   onCheckedChange={() => editor.updateInstanceState({ isGridMode: !gridModeActivated })}
                   closeOnSelect={false}
                 >
-                  Show grid
+                  {t('canvas.showGrid')}
                 </DropdownMenuCheckboxItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
@@ -274,7 +283,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <SunMoonIcon />
-                <span>Theme</span>
+                <span>{t('canvas.theme')}</span>
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
@@ -286,9 +295,24 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
                       })
                     }
                   >
-                    <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="light">{t('canvas.themeLight')}</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="dark">{t('canvas.themeDark')}</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="system">{t('canvas.themeSystem')}</DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <LanguagesIcon />
+                <span>{t('canvas.language')}</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuRadioGroup value={locale} onValueChange={(value) => setLocale(value as 'en' | 'zh-CN')}>
+                    <DropdownMenuRadioItem value="en">{t('canvas.languageEnglish')}</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="zh-CN">{t('canvas.languageChinese')}</DropdownMenuRadioItem>
                   </DropdownMenuRadioGroup>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
@@ -296,7 +320,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
 
             <DropdownMenuItem onClick={togglePresentationMode}>
               <MonitorSpeakerIcon />
-              <span>{isReadonlyMode ? 'Exit' : 'Enter'} Presentation Mode</span>
+              <span>{isReadonlyMode ? t('canvas.exitPresentation') : t('canvas.enterPresentation')}</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
@@ -306,7 +330,7 @@ export function AppMenu({ newDocument, newDocumentLabel = 'New document', exampl
               <DropdownMenuItem asChild>
                 <a href={exampleHref} target="_blank" rel="noreferrer">
                   <LightbulbIcon />
-                  View Example
+                  {t('canvas.viewExample')}
                   <ExternalLinkIcon className="ml-auto" />
                 </a>
               </DropdownMenuItem>

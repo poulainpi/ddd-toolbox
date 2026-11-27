@@ -1,8 +1,11 @@
 import { Button } from '@ddd-toolbox/ui'
+import { useT } from '@ddd-toolbox/i18n'
 import { ThemeToggle } from './theme-toggle'
 import { Github } from 'lucide-react'
 
 export function SiteHeader() {
+  const t = useT()
+
   return (
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
@@ -15,7 +18,7 @@ export function SiteHeader() {
           <Button variant="ghost" size="sm" asChild>
             <a href="https://github.com/poulainpi/ddd-toolbox" target="_blank" rel="noopener noreferrer">
               <Github className="h-4 w-4" />
-              Star on GitHub
+              {t('app.starOnGitHub')}
             </a>
           </Button>
           <ThemeToggle />

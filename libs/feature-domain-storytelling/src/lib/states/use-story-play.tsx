@@ -14,6 +14,7 @@ import { ActorShapeUtil } from '../shapes/actor-shape-util'
 import { WorkObjectShapeUtil } from '../shapes/work-object-shape-util'
 import { CommentShapeUtil } from '../shapes/comment-shape-util'
 import { toast } from 'sonner'
+import { useT } from '@ddd-toolbox/i18n'
 
 export const $hiddenShapesState = atom<Set<TLShapeId>>('hidden shapes', new Set())
 export const $currentStepShapesState = atom<Set<TLShapeId>>('current step shapes', new Set())
@@ -47,6 +48,7 @@ export interface UseStoryPlayReturn {
 }
 
 export function useStoryPlay(): UseStoryPlayReturn {
+  const t = useT()
   const editor = useEditor()
   const { isPlaying, currentStep } = useValue($storyPlayState)
 
@@ -71,8 +73,8 @@ export function useStoryPlay(): UseStoryPlayReturn {
     const activitiesNumbers = activitiesArrows.map((arrow) => arrow.meta.activityNumber as number)
     const missingActivityNumbers = findMissingActivityNumbers(activitiesNumbers)
     if (missingActivityNumbers.length > 0) {
-      toast.error('Domain Story is incomplete', {
-        description: `The following activity numbers are missing: ${missingActivityNumbers.join(', ')}`,
+      toast.error(t('toast.storyIncompleteTitle'), {
+        description: t('toast.storyIncompleteDescription', { numbers: missingActivityNumbers.join(', ') }),
       })
       return false
     }

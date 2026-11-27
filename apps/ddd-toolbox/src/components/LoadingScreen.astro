@@ -1,23 +1,24 @@
 ---
 export interface Props {
-  toolName: string;
+  toolName: string
 }
 
-const { toolName } = Astro.props;
+const { toolName } = Astro.props
 ---
 
 <div class="min-h-screen flex items-center justify-center bg-background">
   <div class="text-center">
     <div class="relative mb-8">
       <div class="w-16 h-16 mx-auto border-4 border-muted rounded-full animate-spin border-t-primary"></div>
-      <div class="absolute inset-0 w-16 h-16 mx-auto border-4 border-transparent rounded-full animate-pulse border-t-primary/60 animation-delay-150"></div>
+      <div
+        class="absolute inset-0 w-16 h-16 mx-auto border-4 border-transparent rounded-full animate-pulse border-t-primary/60 animation-delay-150"
+      >
+      </div>
     </div>
-    <h2 class="text-2xl font-semibold text-foreground mb-2">
+    <h2 class="text-2xl font-semibold text-foreground mb-2" data-loading-title data-tool={toolName}>
       Preparing {toolName}
     </h2>
-    <p class="text-muted-foreground mb-4">
-      Setting up your canvas...
-    </p>
+    <p class="text-muted-foreground mb-4" data-loading-subtitle>Setting up your canvas...</p>
     <div class="flex items-center justify-center space-x-1">
       <div class="w-2 h-2 bg-primary rounded-full animate-bounce animation-delay-0"></div>
       <div class="w-2 h-2 bg-primary rounded-full animate-bounce animation-delay-150"></div>
@@ -25,3 +26,25 @@ const { toolName } = Astro.props;
     </div>
   </div>
 </div>
+
+<script is:inline>
+  ;(() => {
+    function pickLocale() {
+      try {
+        const stored = localStorage.getItem('ddd-toolbox.locale')
+        if (stored === 'en' || stored === 'zh-CN') return stored
+      } catch {}
+      const languages = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]
+      return languages.some((language) => /^zh\b/i.test(language)) ? 'zh-CN' : 'en'
+    }
+
+    if (pickLocale() !== 'zh-CN') return
+
+    const title = document.querySelector('[data-loading-title]')
+    if (title) {
+      title.textContent = `正在准备 ${title.getAttribute('data-tool') || ''}`
+    }
+    const subtitle = document.querySelector('[data-loading-subtitle]')
+    if (subtitle) subtitle.textContent = '正在搭建画布…'
+  })()
+</script>

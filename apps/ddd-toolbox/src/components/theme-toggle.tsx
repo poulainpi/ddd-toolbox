@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import { Button, resolveTheme, useThemeSync } from '@ddd-toolbox/ui'
 import { Moon, Sun } from 'lucide-react'
 import { getUserPreferences, setUserPreferences } from 'tldraw'
+import { useT } from '@ddd-toolbox/i18n'
 
 export function ThemeToggle() {
+  const t = useT()
   useThemeSync()
 
   const [mounted, setMounted] = useState(false)
@@ -30,7 +32,7 @@ export function ThemeToggle() {
   return (
     <Button variant="ghost" size="icon" onClick={toggleTheme}>
       {mounted && effectiveTheme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-      <span className="sr-only">Toggle theme</span>
+      <span className="sr-only">{t('app.themeToggle')}</span>
     </Button>
   )
 }

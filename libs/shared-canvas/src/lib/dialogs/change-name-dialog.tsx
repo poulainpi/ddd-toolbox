@@ -13,6 +13,7 @@ import { useForm, UseFormReturn } from 'react-hook-form'
 import { useDocumentName } from '../hooks/use-document-name'
 import { usePageName } from '../hooks/use-page-name'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
+import { useT } from '@ddd-toolbox/i18n'
 
 export interface ChangeNameDialogProps {
   mode: 'document' | 'page'
@@ -31,6 +32,7 @@ export function ChangeNameDialog({
   helperComponent: HelperComponent,
   onConfirm,
 }: ChangeNameDialogProps) {
+  const t = useT()
   const documentNameHook = useDocumentName()
   const pageNameHook = usePageName()
 
@@ -55,10 +57,10 @@ export function ChangeNameDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {isNew ? 'New' : 'Edit'} {type}
+            {isNew ? t('canvas.changeNameNew', { type }) : t('canvas.changeNameEdit', { type })}
           </DialogTitle>
           <DialogDescription>
-            {isNew ? 'Define' : 'Change'} the name of your {type} here.
+            {isNew ? t('canvas.changeNameDefine', { type }) : t('canvas.changeNameChange', { type })}
           </DialogDescription>
         </DialogHeader>
 
@@ -66,7 +68,7 @@ export function ChangeNameDialog({
 
         <DialogFooter>
           <Button type="submit" form={formId}>
-            {isNew ? 'Create' : 'Confirm'}
+            {isNew ? t('common.create') : t('common.confirm')}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -89,7 +91,7 @@ export function ChangeNameForm({
 
   return (
     <Form form={form} onSubmit={(data) => onSubmit(data.name)} id={formId}>
-      <FormInput name="name" label="Name" autoComplete="off" />
+      <FormInput name="name" label={t('common.name')} autoComplete="off" />
       {HelperComponent && <HelperComponent form={form} />}
     </Form>
   )

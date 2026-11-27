@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
 } from '@ddd-toolbox/ui'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
+import { useT } from '@ddd-toolbox/i18n'
 
 export interface DiscardChangesAlertDialogProps {
   disclosure: UseDisclosureReturn
@@ -16,17 +17,19 @@ export interface DiscardChangesAlertDialogProps {
 }
 
 export function DiscardChangesAlertDialog({ disclosure, onConfirm }: DiscardChangesAlertDialogProps) {
+  const t = useT()
+
   return (
     <AlertDialog open={disclosure.isOpen} onOpenChange={disclosure.setIsOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>There are some unsaved changes. Do you want to discard them?</AlertDialogDescription>
+          <AlertDialogTitle>{t('canvas.discardTitle')}</AlertDialogTitle>
+          <AlertDialogDescription>{t('canvas.discardDescription')}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
           <AlertDialogAction variant="destructive" onClick={onConfirm}>
-            Continue
+            {t('canvas.discardContinue')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

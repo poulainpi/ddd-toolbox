@@ -15,6 +15,7 @@ import {
   TooltipProvider,
 } from '@ddd-toolbox/ui'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
+import { useT } from '@ddd-toolbox/i18n'
 import { useState } from 'react'
 import {
   ClassificationCategory,
@@ -38,6 +39,7 @@ export function ClassificationDialog({
   initialValues,
   onSave,
 }: ClassificationDialogProps) {
+  const t = useT()
   const [values, setValues] = useState<ClassificationValues>(initialValues)
 
   const handleToggle = (categoryKey: string, option: string, multiSelect: boolean) => {
@@ -151,9 +153,9 @@ export function ClassificationDialog({
 
         <DialogFooter>
           <Button variant="outline" onClick={() => disclosure.setIsOpen(false)}>
-            Cancel
+            {t('common.cancel')}
           </Button>
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={handleSave}>{t('common.save')}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

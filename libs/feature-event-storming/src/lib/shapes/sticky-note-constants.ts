@@ -1,3 +1,4 @@
+import type { MessageKey } from '@ddd-toolbox/i18n'
 import { StickyNoteType } from '../types/sticky-note-types'
 
 export const STICKY_NOTE_SIZE = 140
@@ -7,15 +8,15 @@ export function getStickyNoteSize(type: StickyNoteType): number {
   return type === StickyNoteType.ACTOR ? ACTOR_STICKY_NOTE_SIZE : STICKY_NOTE_SIZE
 }
 
-export const STICKY_NOTE_LABELS: Record<StickyNoteType, string> = {
-  [StickyNoteType.EVENT]: 'Domain Events',
-  [StickyNoteType.COMMAND]: 'Commands',
-  [StickyNoteType.CONSTRAINT]: 'Constraints',
-  [StickyNoteType.SYSTEM]: 'Systems',
-  [StickyNoteType.POLICY]: 'Policies',
-  [StickyNoteType.QUERY_MODEL]: 'Query Models',
-  [StickyNoteType.ACTOR]: 'Actors',
-  [StickyNoteType.HOTSPOT]: 'Hotspots',
+export const STICKY_NOTE_LABEL_KEYS: Record<StickyNoteType, MessageKey> = {
+  [StickyNoteType.EVENT]: 'es.sticky.event',
+  [StickyNoteType.COMMAND]: 'es.sticky.command',
+  [StickyNoteType.CONSTRAINT]: 'es.sticky.constraint',
+  [StickyNoteType.SYSTEM]: 'es.sticky.system',
+  [StickyNoteType.POLICY]: 'es.sticky.policy',
+  [StickyNoteType.QUERY_MODEL]: 'es.sticky.queryModel',
+  [StickyNoteType.ACTOR]: 'es.sticky.actor',
+  [StickyNoteType.HOTSPOT]: 'es.sticky.hotspot',
 }
 
 export const STICKY_NOTE_BG_COLORS: Record<StickyNoteType, string> = {

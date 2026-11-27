@@ -5,6 +5,7 @@ import { decompressFromEncodedURIComponent } from 'lz-string'
 import { resetTrackedChanges } from './use-change-tracking'
 import { fileOpen, fileSave } from 'browser-fs-access'
 import { goToContent } from '../utils/editor-helper'
+import { getLocale, translate } from '@ddd-toolbox/i18n'
 
 function isPlainObjectEmpty(obj: object) {
   for (const _key in obj) return false
@@ -122,8 +123,8 @@ export function loadFromUrlIfNeeded(editor: Editor): boolean {
     return true
   } catch (error) {
     console.error('Failed to load document from URL:', error)
-    toast.error('Failed to load document', {
-      description: 'The shared link appears to be invalid or corrupted.',
+    toast.error(translate(getLocale(), 'toast.loadFailedTitle'), {
+      description: translate(getLocale(), 'toast.loadFailedLinkDescription'),
     })
     return false
   } finally {

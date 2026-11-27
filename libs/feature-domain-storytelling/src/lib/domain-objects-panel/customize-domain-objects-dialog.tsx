@@ -18,6 +18,7 @@ import { UseWorkObjectsReturn } from '../states/use-work-objects'
 import { useForm } from 'react-hook-form'
 import { UseActorsReturn } from '../states/use-actors'
 import { dynamicIconImports, IconName } from 'lucide-react/dynamic'
+import { useT } from '@ddd-toolbox/i18n'
 
 export interface CustomizeDomainObjectsDialogProps {
   actorsState: UseActorsReturn
@@ -25,6 +26,7 @@ export interface CustomizeDomainObjectsDialogProps {
 }
 
 export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: CustomizeDomainObjectsDialogProps) {
+  const t = useT()
   const actors = actorsState.actors
   const workObjects = workObjectsState.workObjects
   return (
@@ -41,20 +43,21 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Customize Icon Set</DialogTitle>
+          <DialogTitle>{t('ds.customizeTitle')}</DialogTitle>
           <DialogDescription>
-            You can find the list of available icons{' '}
+            {t('ds.customizeBefore')}{' '}
             <Button variant="link" asChild className="p-0">
               <a href="https://lucide.dev/icons" target="_blank" rel="noopener noreferrer">
-                here
+                {t('ds.customizeHere')}
               </a>
-            </Button>
+            </Button>{' '}
+            {t('ds.customizeAfter')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col">
           <div className="flex items-center justify-between">
-            <span className="text-lg">Actors</span>
+            <span className="text-lg">{t('ds.actors')}</span>
             <AddDomainObjectForm
               alreadyUsedDomainObjects={actors}
               onDomainObjectAdded={(actor: string) => actorsState.addActor(actor)}
@@ -68,9 +71,9 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
                 icon={actor}
                 onClick={() => {
                   const oldActors = [...actors]
-                  toast(`Actor "${actor}" deleted`, {
+                  toast(t('toast.actorDeleted', { name: actor }), {
                     action: {
-                      label: 'Undo',
+                      label: t('common.undo'),
                       onClick: () => actorsState.setActors(oldActors),
                     },
                   })
@@ -83,7 +86,7 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
           <Separator className="my-4" />
 
           <div className="flex items-center justify-between">
-            <span className="text-lg">Work Objects</span>
+            <span className="text-lg">{t('ds.workObjects')}</span>
             <AddDomainObjectForm
               alreadyUsedDomainObjects={workObjects}
               onDomainObjectAdded={(workObject: string) => workObjectsState.addWorkObject(workObject)}
@@ -97,9 +100,9 @@ export function CustomizeDomainObjectsDialog({ actorsState, workObjectsState }: 
                 icon={workObject}
                 onClick={() => {
                   const oldWorkObjects = [...workObjects]
-                  toast(`Work Object "${workObject}" deleted`, {
+                  toast(t('toast.workObjectDeleted', { name: workObject }), {
                     action: {
-                      label: 'Undo',
+                      label: t('common.undo'),
                       onClick: () => workObjectsState.setWorkObjects(oldWorkObjects),
                     },
                   })
@@ -134,13 +137,14 @@ function AddDomainObjectForm({
   alreadyUsedDomainObjects: string[]
   onDomainObjectAdded: (icon: string) => void
 }) {
+  const t = useT()
   const form = useForm({ defaultValues: { icon: '' } })
 
   function onSubmit({ icon }: { icon: string }) {
     if (alreadyUsedDomainObjects.includes(icon)) {
-      form.setError('icon', { message: `"${icon}" is already used` })
+      form.setError('icon', { message: t('ds.iconAlreadyUsed', { icon }) })
     } else if (dynamicIconImports[icon as IconName] === undefined) {
-      form.setError('icon', { message: 'Icon not found' })
+      form.setError('icon', { message: t('ds.iconNotFound') })
     } else {
       form.setValue('icon', '')
       onDomainObjectAdded(icon)
@@ -149,7 +153,7 @@ function AddDomainObjectForm({
 
   return (
     <Form form={form} onSubmit={onSubmit} className="flex gap-2">
-      <FormInput name="icon" placeholder="Icon name" autoComplete="off" />
+      <FormInput name="icon" placeholder={t('ds.iconName')} autoComplete="off" />
       <Button type="submit" variant="outline">
         <PlusIcon />
       </Button>

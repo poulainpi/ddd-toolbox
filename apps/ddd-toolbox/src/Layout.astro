@@ -6,52 +6,70 @@ import './styles.css'
 const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).href
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <base href="/" />
+  <head>
+    <meta charset="utf-8" />
+    <base href="/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href={canonicalUrl} />
-  <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
 
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
 
-  <script>
-    // Apply theme immediately to prevent flash
-    (function() {
-      function getSystemTheme() {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      }
-
-      function getUserTheme() {
-        const storage = localStorage.getItem('TLDRAW_USER_DATA_v3')
-        if (storage) {
+    <script is:inline>
+      // Set the document language before paint based on the stored preference
+      ;(function () {
+        function detectLocale() {
           try {
-            const data = JSON.parse(storage)
-            return data.user.colorScheme ?? 'system'
-          } catch (e) {
-            return 'system'
-          }
+            var stored = localStorage.getItem('ddd-toolbox.locale')
+            if (stored === 'en' || stored === 'zh-CN') return stored
+          } catch (e) {}
+          var languages = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]
+          return languages.some(function (language) {
+            return /^zh\b/i.test(language)
+          })
+            ? 'zh-CN'
+            : 'en'
         }
-        return 'system'
-      }
+        document.documentElement.lang = detectLocale()
+      })()
+    </script>
+    <script>
+      // Apply theme immediately to prevent flash
+      ;(function () {
+        function getSystemTheme() {
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
 
-      function resolveTheme() {
-        const userTheme = getUserTheme()
-        return userTheme === 'system' ? getSystemTheme() : userTheme
-      }
+        function getUserTheme() {
+          const storage = localStorage.getItem('TLDRAW_USER_DATA_v3')
+          if (storage) {
+            try {
+              const data = JSON.parse(storage)
+              return data.user.colorScheme ?? 'system'
+            } catch (e) {
+              return 'system'
+            }
+          }
+          return 'system'
+        }
 
-      const resolvedTheme = resolveTheme()
-      document.documentElement.classList.add(resolvedTheme)
-    })()
-  </script>
-</head>
-<body>
-<slot />
-<Toaster client:only="react" />
-</body>
+        function resolveTheme() {
+          const userTheme = getUserTheme()
+          return userTheme === 'system' ? getSystemTheme() : userTheme
+        }
+
+        const resolvedTheme = resolveTheme()
+        document.documentElement.classList.add(resolvedTheme)
+      })()
+    </script>
+  </head>
+  <body>
+    <slot />
+    <Toaster client:only="react" />
+  </body>
 </html>

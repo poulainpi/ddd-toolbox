@@ -15,17 +15,18 @@ import {
   TooltipProvider,
 } from '@ddd-toolbox/ui'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
+import { useT } from '@ddd-toolbox/i18n'
+import type { MessageKey } from '@ddd-toolbox/i18n'
 import { useEffect, useRef, useState } from 'react'
 import { ArrowDown, ArrowLeft, ArrowUp, Pencil, Plus, Trash2 } from 'lucide-react'
 import {
   Communication,
   CommunicationMessage,
+  CollaboratorType,
   MessageType,
   COLLABORATOR_ICONS,
   COLLABORATOR_TYPES,
-  COLLABORATOR_TYPE_LABELS,
   MESSAGE_TYPE_COLORS,
-  RELATIONSHIP_DESCRIPTIONS,
   RELATIONSHIP_TYPES,
 } from '../types/communication-types'
 
@@ -34,6 +35,13 @@ interface CommunicationDialogProps {
   disclosure: UseDisclosureReturn
   initialCommunications: Communication[]
   onSave: (communications: Communication[]) => void
+}
+
+const COLLABORATOR_LABEL_KEYS: Record<CollaboratorType, MessageKey> = {
+  'bounded-context': 'bcc.collaborator.boundedContext',
+  'external-system': 'bcc.collaborator.externalSystem',
+  frontend: 'bcc.collaborator.frontend',
+  'direct-user-interaction': 'bcc.collaborator.directUser',
 }
 
 function generateId() {
@@ -61,6 +69,7 @@ export function CommunicationDialog({
   initialCommunications,
   onSave,
 }: CommunicationDialogProps) {
+  const t = useT()
   const [communications, setCommunications] = useState<Communication[]>(initialCommunications)
   const [editingEntry, setEditingEntry] = useState<Communication | null>(null)
   const [isLayer2, setIsLayer2] = useState(false)
@@ -141,7 +150,7 @@ export function CommunicationDialog({
     setEditingEntry({ ...editingEntry, messages: editingEntry.messages.filter((message) => message.id !== messageId) })
   }
 
-  const title = direction === 'inbound' ? 'Inbound Communication' : 'Outbound Communication'
+  const title = direction === 'inbound' ? t('bcc.communication.inboundTitle') : t('bcc.communication.outboundTitle')
 
   return (
     <Dialog open={disclosure.isOpen} onOpenChange={handleOpenChange}>
@@ -151,8 +160,8 @@ export function CommunicationDialog({
           <DialogTitle>
             {isLayer2
               ? editingEntry && communications.find((communication) => communication.id === editingEntry.id)
-                ? 'Edit Collaborator'
-                : 'Add Collaborator'
+                ? t('bcc.communication.editCollaborator')
+                : t('bcc.communication.addCollaborator')
               : title}
           </DialogTitle>
         </DialogHeader>
@@ -202,12 +211,13 @@ function Layer1({
   onSave: () => void
   onCancel: () => void
 }) {
+  const t = useT()
   return (
     <div className="flex flex-col gap-4">
       <div className="flex h-96 flex-col gap-3 overflow-y-auto pr-1">
         {communications.length === 0 && (
           <div className="text-muted-foreground rounded-md border border-dashed py-10 text-center text-sm">
-            No communications yet. Add one below.
+            {t('bcc.communication.noCommunications')}
           </div>
         )}
         {communications.map((communication, index) => {
@@ -223,7 +233,9 @@ function Layer1({
               <div className="flex items-center justify-between border-b px-4 py-2.5">
                 <div className="flex min-w-0 items-center gap-2">
                   <Icon className="text-muted-foreground h-5 w-5 shrink-0" />
-                  <span className="truncate text-sm font-medium">{communication.collaboratorName || '(unnamed)'}</span>
+                  <span className="truncate text-sm font-medium">
+                    {communication.collaboratorName || t('bcc.communication.unnamed')}
+                  </span>
                 </div>
                 <div className="flex shrink-0 items-center gap-0.5">
                   <Button
@@ -300,13 +312,13 @@ function Layer1({
       </div>
       <Button variant="outline" onClick={onAdd} className="w-full">
         <Plus className="mr-2 h-4 w-4" />
-        Add Communication
+        {t('bcc.communication.addCommunication')}
       </Button>
       <DialogFooter>
         <Button variant="outline" onClick={onCancel}>
-          Cancel
+          {t('common.cancel')}
         </Button>
-        <Button onClick={onSave}>Save</Button>
+        <Button onClick={onSave}>{t('common.save')}</Button>
       </DialogFooter>
     </div>
   )
@@ -329,6 +341,7 @@ function Layer2({
   onBack: () => void
   onSave: () => void
 }) {
+  const t = useT()
   const collaboratorNameRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -339,18 +352,18 @@ function Layer2({
     <div className="flex flex-col gap-4">
       <div className="-mx-1 -my-1 flex max-h-[60vh] flex-col gap-4 overflow-y-auto px-1 py-1">
         <Field>
-          <FieldLabel htmlFor="collaborator-name">Collaborator Name</FieldLabel>
+          <FieldLabel htmlFor="collaborator-name">{t('bcc.communication.collaboratorName')}</FieldLabel>
           <Input
             ref={collaboratorNameRef}
             id="collaborator-name"
             value={entry.collaboratorName}
             onChange={(e) => onChange({ ...entry, collaboratorName: e.target.value })}
-            placeholder="e.g. Order Management"
+            placeholder={t('bcc.communication.collaboratorPlaceholder')}
           />
         </Field>
 
         <Field>
-          <FieldLabel>Collaborator Type</FieldLabel>
+          <FieldLabel>{t('bcc.communication.collaboratorType')}</FieldLabel>
           <div className="flex flex-wrap gap-2">
             {COLLABORATOR_TYPES.map((collaboratorType) => {
               const Icon = COLLABORATOR_ICONS[collaboratorType]
@@ -363,7 +376,7 @@ function Layer2({
                   className="flex items-center gap-1.5"
                 >
                   <Icon className="h-6 w-6" />
-                  {COLLABORATOR_TYPE_LABELS[collaboratorType]}
+                  {t(COLLABORATOR_LABEL_KEYS[collaboratorType])}
                 </Toggle>
               )
             })}
@@ -372,7 +385,7 @@ function Layer2({
 
         <div className="grid grid-cols-2 gap-4">
           <Field>
-            <FieldLabel>Left Relationship</FieldLabel>
+            <FieldLabel>{t('bcc.communication.leftRelationship')}</FieldLabel>
             <div className="flex flex-wrap gap-1">
               {RELATIONSHIP_TYPES.map((relationship) => (
                 <Tooltip key={relationship}>
@@ -394,14 +407,14 @@ function Layer2({
                       </Toggle>
                     </div>
                   </TooltipTrigger>
-                  <TooltipContent>{RELATIONSHIP_DESCRIPTIONS[relationship]}</TooltipContent>
+                  <TooltipContent>{t(`bcc.relationship.${relationship}` as MessageKey)}</TooltipContent>
                 </Tooltip>
               ))}
             </div>
           </Field>
 
           <Field>
-            <FieldLabel>Right Relationship</FieldLabel>
+            <FieldLabel>{t('bcc.communication.rightRelationship')}</FieldLabel>
             <div className="flex flex-wrap gap-1">
               {RELATIONSHIP_TYPES.map((relationship) => (
                 <Tooltip key={relationship}>
@@ -423,7 +436,7 @@ function Layer2({
                       </Toggle>
                     </div>
                   </TooltipTrigger>
-                  <TooltipContent>{RELATIONSHIP_DESCRIPTIONS[relationship]}</TooltipContent>
+                  <TooltipContent>{t(`bcc.relationship.${relationship}` as MessageKey)}</TooltipContent>
                 </Tooltip>
               ))}
             </div>
@@ -431,14 +444,14 @@ function Layer2({
         </div>
 
         <Field>
-          <FieldLabel>Messages</FieldLabel>
+          <FieldLabel>{t('bcc.communication.messages')}</FieldLabel>
           <div className="flex flex-col gap-2">
             {entry.messages.map((message) => (
               <div key={message.id} className="flex items-center gap-2">
                 <Input
                   value={message.label}
                   onChange={(e) => onUpdateMessage(message.id, 'label', e.target.value)}
-                  placeholder="Message label"
+                  placeholder={t('bcc.communication.messageLabel')}
                   className="flex-1"
                 />
                 <div className="flex gap-1">
@@ -466,7 +479,7 @@ function Layer2({
             ))}
             <Button variant="outline" onClick={onAddMessage} className="w-full">
               <Plus className="mr-2 h-4 w-4" />
-              Add Message
+              {t('bcc.communication.addMessage')}
             </Button>
           </div>
         </Field>
@@ -475,9 +488,9 @@ function Layer2({
       <DialogFooter className="justify-between sm:justify-between">
         <Button variant="outline" onClick={onBack}>
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
+          {t('common.back')}
         </Button>
-        <Button onClick={onSave}>Save</Button>
+        <Button onClick={onSave}>{t('common.save')}</Button>
       </DialogFooter>
     </div>
   )

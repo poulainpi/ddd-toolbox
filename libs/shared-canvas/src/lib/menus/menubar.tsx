@@ -1,6 +1,7 @@
 import { track, useEditor } from 'tldraw'
 import { useDisclosure, UseDisclosureReturn } from '@ddd-toolbox/util'
 import { Button } from '@ddd-toolbox/ui'
+import { useT } from '@ddd-toolbox/i18n'
 import { useDocumentName } from '../hooks/use-document-name'
 import { useDocumentPersistence } from '../hooks/use-document-persistence'
 import { SaveIcon } from 'lucide-react'
@@ -27,6 +28,7 @@ export const Menubar = track(function Menubar({
   ChangePageNameDialogComponent,
   pagesMenuLabel,
 }: MenubarProps) {
+  const t = useT()
   const editor = useEditor()
   const { documentName } = useDocumentName()
   const nameDocumentDisclosure = useDisclosure()
@@ -59,7 +61,7 @@ export const Menubar = track(function Menubar({
       <div className="bg-muted/50 flex items-center gap-1 rounded-br-md p-1">
         <AppMenuComponent newDocument={newDocument} />
         <Button variant="ghost" size="sm" onClick={renameDocumentDisclosure.open}>
-          {documentName}
+          {documentName === 'untitled' ? t('canvas.documentUntitled') : documentName}
         </Button>
         <span className="text-muted-foreground">/</span>
         <PagesMenu ChangePageNameDialogComponent={ChangePageNameDialogComponent} label={pagesMenuLabel} />

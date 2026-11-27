@@ -9,8 +9,10 @@ import { WorkObjectToolUtil } from './tools/work-object-tool-util'
 import { ActorToolUtil } from './tools/actor-tool-util'
 import { CommentToolUtil } from './tools/comment-tool-util'
 import { ChangeIconDialog } from './shape-menu/change-icon-dialog'
+import { useT } from '@ddd-toolbox/i18n'
 
 export function ShapeMenu() {
+  const t = useT()
   const editor = useEditor()
   const { actors } = useActors()
   const { workObjects } = useWorkObjects()
@@ -52,12 +54,12 @@ export function ShapeMenu() {
   const isWorkObjectSelected = onlySelectedShape?.type === WorkObjectShapeUtil.type
 
   const availableIcons = isActorSelected ? actors : workObjects
-  const shapeTypeName = isActorSelected ? 'Actor' : 'Work Object'
+  const shapeTypeName = isActorSelected ? t('ds.typeActor') : t('ds.typeWorkObject')
 
   const firstLineActions = [
     {
       icon: 'message-square',
-      tooltip: 'Add comment',
+      tooltip: t('ds.addComment'),
       onClick: (editor: Editor, selectedShape: TLShape) => {
         editor.selectNone()
         editor.setCurrentTool(CommentToolUtil.id, { initiatorShapeId: selectedShape.id })
@@ -65,7 +67,7 @@ export function ShapeMenu() {
     },
     {
       icon: 'arrow-right-left',
-      tooltip: 'Change icon',
+      tooltip: t('ds.changeIcon'),
       onClick: handleChangeIconClick,
     },
   ]

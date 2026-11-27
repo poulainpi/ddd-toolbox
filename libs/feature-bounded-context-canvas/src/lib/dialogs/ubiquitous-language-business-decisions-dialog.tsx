@@ -15,6 +15,7 @@ import {
   Textarea,
 } from '@ddd-toolbox/ui'
 import { UseDisclosureReturn } from '@ddd-toolbox/util'
+import { useT } from '@ddd-toolbox/i18n'
 import { useRef, useState } from 'react'
 import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react'
 import { BusinessDecision, UbiquitousLanguageTerm } from '../types/ubiquitous-language-business-decisions-types'
@@ -53,6 +54,7 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
   initialTab,
   onSave,
 }: UbiquitousLanguageBusinessDecisionsDialogProps) {
+  const t = useT()
   const [terms, setTerms] = useState<UbiquitousLanguageTerm[]>(initialTerms)
   const [decisions, setDecisions] = useState<BusinessDecision[]>(initialDecisions)
   const [focusedTermId, setFocusedTermId] = useState<string | null>(null)
@@ -91,16 +93,16 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
           }}
         >
           <DialogHeader>
-            <DialogTitle>Ubiquitous Language & Business Decisions</DialogTitle>
+            <DialogTitle>{t('bcc.ulbd.title')}</DialogTitle>
           </DialogHeader>
 
           <Tabs defaultValue={initialTab} className="flex flex-col gap-5">
             <TabsList className="w-full">
               <TabsTrigger value="ubiquitous-language" className="flex-1">
-                Ubiquitous Language
+                {t('bcc.ulbd.tabLanguage')}
               </TabsTrigger>
               <TabsTrigger value="business-decisions" className="flex-1">
-                Business Decisions
+                {t('bcc.ulbd.tabDecisions')}
               </TabsTrigger>
             </TabsList>
 
@@ -108,14 +110,14 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
               <div ref={termsListRef} className="flex h-96 flex-col gap-3 overflow-y-auto pr-1">
                 {terms.length === 0 && (
                   <div className="text-muted-foreground rounded-md border border-dashed py-10 text-center text-sm">
-                    No terms yet. Add one below.
+                    {t('bcc.ulbd.noTerms')}
                   </div>
                 )}
                 {terms.map((term, index) => (
                   <div key={term.id} className="bg-muted/30 rounded-lg border">
                     <div className="flex items-center justify-between border-b px-4 py-2.5">
                       <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-                        Term {index + 1}
+                        {t('bcc.ulbd.termNumber', { number: index + 1 })}
                       </span>
                       <div className="flex items-center gap-0.5">
                         <Button
@@ -152,7 +154,7 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                     </div>
                     <div className="flex flex-col gap-4 p-4">
                       <Field>
-                        <FieldLabel htmlFor={`term-${term.id}`}>Term</FieldLabel>
+                        <FieldLabel htmlFor={`term-${term.id}`}>{t('bcc.ulbd.term')}</FieldLabel>
                         <Input
                           ref={(element) => {
                             if (focusedTermId === term.id && element) {
@@ -171,11 +173,11 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                               ),
                             )
                           }
-                          placeholder="e.g. Rule Cluster"
+                          placeholder={t('bcc.ulbd.termPlaceholder')}
                         />
                       </Field>
                       <Field>
-                        <FieldLabel htmlFor={`definition-${term.id}`}>Definition</FieldLabel>
+                        <FieldLabel htmlFor={`definition-${term.id}`}>{t('bcc.ulbd.definition')}</FieldLabel>
                         <Textarea
                           id={`definition-${term.id}`}
                           value={term.definition}
@@ -188,7 +190,7 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                               ),
                             )
                           }
-                          placeholder="Describe what this term means in this context..."
+                          placeholder={t('bcc.ulbd.definitionPlaceholder')}
                           rows={2}
                           className="min-h-0"
                         />
@@ -208,7 +210,7 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                 className="w-full"
               >
                 <Plus className="mr-2 h-4 w-4" />
-                Add Term
+                {t('bcc.ulbd.addTerm')}
               </Button>
             </TabsContent>
 
@@ -216,14 +218,14 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
               <div ref={decisionsListRef} className="flex h-96 flex-col gap-3 overflow-y-auto pr-1">
                 {decisions.length === 0 && (
                   <div className="text-muted-foreground rounded-md border border-dashed py-10 text-center text-sm">
-                    No decisions yet. Add one below.
+                    {t('bcc.ulbd.noDecisions')}
                   </div>
                 )}
                 {decisions.map((decision, index) => (
                   <div key={decision.id} className="bg-muted/30 rounded-lg border">
                     <div className="flex items-center justify-between border-b px-4 py-2.5">
                       <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-                        Decision {index + 1}
+                        {t('bcc.ulbd.decisionNumber', { number: index + 1 })}
                       </span>
                       <div className="flex items-center gap-0.5">
                         <Button
@@ -264,7 +266,7 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                     </div>
                     <div className="p-4">
                       <Field>
-                        <FieldLabel htmlFor={`decision-${decision.id}`}>Description</FieldLabel>
+                        <FieldLabel htmlFor={`decision-${decision.id}`}>{t('bcc.ulbd.description')}</FieldLabel>
                         <Textarea
                           ref={(element) => {
                             if (focusedDecisionId === decision.id && element) {
@@ -283,7 +285,7 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                               ),
                             )
                           }
-                          placeholder="Describe the business rule or policy..."
+                          placeholder={t('bcc.ulbd.decisionPlaceholder')}
                           rows={3}
                           className="min-h-0"
                         />
@@ -303,16 +305,16 @@ export function UbiquitousLanguageBusinessDecisionsDialog({
                 className="w-full"
               >
                 <Plus className="mr-2 h-4 w-4" />
-                Add Decision
+                {t('bcc.ulbd.addDecision')}
               </Button>
             </TabsContent>
           </Tabs>
 
           <DialogFooter>
             <Button variant="outline" onClick={() => handleOpenChange(false)}>
-              Cancel
+              {t('common.cancel')}
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit">{t('common.save')}</Button>
           </DialogFooter>
         </form>
       </DialogContent>
