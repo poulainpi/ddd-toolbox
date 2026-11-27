@@ -21,6 +21,98 @@
 
 DDD Toolbox is a modern web application that provides strategic design tools for Domain-Driven Design practitioners. Whether you're conducting collaborative workshops, mapping domain boundaries, or documenting complex business processes, our tools help bridge the gap between domain experts and development teams.
 
+## Getting Started
+
+### Prerequisites
+
+- **Node.js** 22 or newer (tested with 24)
+- **pnpm** 10 or newer (tested with 12)
+- **Docker** with Compose v2 — optional, only for the containerized setup
+
+The app is a fully static Astro site: no backend, no database. All diagrams are stored in the browser and can be exported/imported as files.
+
+### Install dependencies
+
+```bash
+pnpm install
+```
+
+The root `postinstall` script also installs the app's own dependencies in `apps/ddd-toolbox`.
+
+> **Note:** pnpm 10+ blocks lifecycle scripts of dependencies by default. This repo allows the required native builds (`esbuild`, `sharp`) through `apps/ddd-toolbox/pnpm-workspace.yaml`. If you still hit `ERR_PNPM_IGNORED_BUILDS`, run `pnpm approve-builds` in `apps/ddd-toolbox` and approve those two packages.
+
+### Run the development server
+
+```bash
+npx nx dev ddd-toolbox
+```
+
+Or directly in the app folder:
+
+```bash
+cd apps/ddd-toolbox
+pnpm dev
+```
+
+The dev server listens on <http://localhost:4321>. To expose it on your LAN:
+
+```bash
+cd apps/ddd-toolbox
+pnpm exec astro dev --host 0.0.0.0 --port 4321
+```
+
+### Build and preview
+
+```bash
+npx nx build ddd-toolbox     # static output in apps/ddd-toolbox/dist
+npx nx preview ddd-toolbox   # serve the production build locally
+```
+
+### Environment variables (optional)
+
+Copy `apps/ddd-toolbox/.env.example` to `apps/ddd-toolbox/.env` and fill in what you need:
+
+| Variable | Purpose |
+| --- | --- |
+| `TLDRAW_LICENSE_KEY` | Removes the tldraw watermark |
+| `UMAMI_WEBSITE_ID` | Enables Umami analytics |
+
+Without them the app runs fine; the drawing canvas just shows the tldraw watermark and no analytics are sent.
+
+## Docker Deployment
+
+The repository ships a multi-stage `Dockerfile`: Node builds the static site, then nginx serves it. The final image is small (about 84 MB) and needs no volumes.
+
+### With Docker Compose (recommended)
+
+```bash
+docker compose up -d --build
+```
+
+The site is then available at <http://localhost:4322>. The port mapping lives in `docker-compose.yml`; change `"4322:80"` if that port is taken (for example `"8080:80"` or `"80:80"`).
+
+Useful commands:
+
+```bash
+docker compose ps
+docker compose logs -f
+docker compose down
+```
+
+### With plain Docker
+
+```bash
+docker build -t ddd-toolbox .
+docker run -d --name ddd-toolbox --restart unless-stopped -p 4322:80 ddd-toolbox
+```
+
+### What the image does
+
+- Builds with `node:24-slim` + pnpm, installing root and app dependencies separately to avoid the repo's nested `postinstall`.
+- Copies `apps/ddd-toolbox/dist` into `nginx:1.27-alpine`.
+- `docker/nginx.conf` maps clean URLs to Astro's `format: 'file'` output (`/domain-storytelling` → `domain-storytelling.html`), enables gzip, and adds long-lived caching for `/_astro/`.
+- Includes a `HEALTHCHECK`; `docker compose ps` reports the container as `healthy` once nginx responds.
+
 ## Strategic Design Tools
 
 ### 🎯 Currently Available

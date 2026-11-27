@@ -1,0 +1,9 @@
+services:
+  ddd-toolbox:
+    build: .
+    image: ddd-toolbox:local
+    container_name: ddd-toolbox
+    ports:
+      # 8080 was already taken on this host; change to "80:80" or "8080:80" as needed
+      - "4322:80"
+    restart: unless-stopped
