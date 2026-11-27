@@ -87,6 +87,7 @@ export function ChangeNameForm({
   formId: string
   helperComponent?: React.ComponentType<{ form: UseFormReturn<{ name: string }> }>
 }) {
+  const t = useT()
   const form = useForm({ defaultValues: { name: initialName } })
 
   return (
